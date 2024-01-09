@@ -4,9 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -198,10 +201,41 @@ public final class Constants {
     public static final double kXboxcontrollerDrift = 0.0;
   }
   public static class FieldConstants {
-    //TODO CHANGE THIS TO ACTUAL FIELD LENGTH FOR 2024
-    public static final double fieldLength = 0.0;
-    public static final double fieldWidth = 0.0;
-    public static final double aprilTagWidth = Units.inchesToMeters(6.0);
+    /**
+     * The field's length in Meters (Found in page 21 of the 2024 game manual)
+     */
+    public static final double fieldLength = Units.inchesToMeters(651.25);
+    /**
+     * The field's width in Meters (Found in page 21 of the 2024 game manual)
+     */
+    public static final double fieldWidth = Units.inchesToMeters(323.25);
+     /**
+     * The width (and length) in meters of the AprilTags (Found in page 35 of the 2024 game manual)
+     */
+    public static final double aprilTagWidth = Units.inchesToMeters(8.125);
+  }
+
+  public static class VisionConstants
+  {
+    // placeholder values
+    public static final double cameraHeightMeters = 0.0;
+    public static final double cameraPitchRadians = Units.degreesToRadians(0);
+    public static final double aprilTagHeightMeters = 0.0;
+
+    public static final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(m_resourceFile);
+
+  }
+
+  public static class AutonomousConstants
+  {
+    // untested values
+      public static final double kLinearP = 0.1;
+      //public static final double kLinearI = 0.0;
+      public static final double kLinearD = 0.0;
+
+      public static final double kAngularP = 0.1;
+      //public static final double kAngularI = 0.0;
+      public static final double kAngularD = 0.0;
   }
   
 }

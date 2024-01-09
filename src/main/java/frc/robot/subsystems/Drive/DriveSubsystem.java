@@ -154,6 +154,7 @@ public class DriveSubsystem extends SubsystemBase {
     //   m_targetAngle = getGyroAngleInRotation2d().getDegrees();
       this.m_swerveSpeeds = new ChassisSpeeds(-xVelocityMpsFieldOriented, -yVelocityMpsFieldOriented, -rotationVelocityRps * 1.2);
 
+      //important! this is the pid controller that will be turned off during teleop but on during auto
       // this.m_swerveSpeeds = new ChassisSpeeds(-xVelocityMpsFieldOriented, -yVelocityMpsFieldOriented, -m_pidController.calculate(this.getGyroAngleInRotation2d().getDegrees()));
       // m_pidController.setSetpoint(m_targetAngle);
 

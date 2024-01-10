@@ -155,7 +155,7 @@ public class SwerveModule extends SubsystemBase {
         this.m_steerMotor.setControl(this.m_voltagePosition.withPosition((this.m_moduleOffset + target_degrees)/360));
     }
 
-    public SwerveModuleState getTargetState(){
+    public SwerveModuleState getTargetState() {
         return m_targetState;
     }
 

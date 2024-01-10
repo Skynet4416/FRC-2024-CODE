@@ -1,48 +1,83 @@
-package frc.robot.subsystems.vision;
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.subsystems.Vision;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-import java.util.List;
 
-public class VisionSubsystem extends SubsystemBase
-{
-    private final PhotonCamera m_camera;
-    boolean hasTarget; // Stores whether or not a target is detected
-    PhotonPipelineResult result; // Stores all the data that Photonvision returns
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Vision;
 
-    public VisionSubsystem()
-    {
-        this.m_camera = new PhotonCamera("Aizen");
+public class VisionSubsystem extends SubsystemBase {
+    private PhotonCamera m_camera;
+    private AprilTagFieldLayout m_layout;
+    private PhotonPoseEstimator m_poseEstimator;
+    private PhotonPipelineResult m_result;
+    
+
+    public VisionSubsystem() {
+        this.m_camera = new PhotonCamera("aizen");
+        this.m_result = getLatestResult();
+        try {
+            this.m_layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
+        } catch (IOException exception) {}
+        this.m_poseEstimator = new PhotonPoseEstimator(m_layout, PoseStrategy.AVERAGE_BEST_TARGETS, Vision.transformCamera);
+
+    }
+// TODO
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+        m_poseEstimator.setReferencePose(prevEstimatedRobotPose);
+        return m_poseEstimator.update();
+    }
+
+
+
+    public Optional<PhotonTrackedTarget> getTargetById(int id) {
+        List<PhotonTrackedTarget> targets = m_result.getTargets();
+        for (PhotonTrackedTarget target : targets) {
+            if (target.getFiducialId() == id) { 
+                return Optional.of(target);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public PhotonPipelineResult getLatestResult() {
+        return m_camera.getLatestResult();
+    }
+
+    public boolean hasTarget() {
+        return m_camera.getLatestResult().hasTargets();
+    }
+
+    public PhotonTrackedTarget getTarget() {
+        return m_camera.getLatestResult().getBestTarget();
     }
 
     @Override
     public void periodic() {
-        PhotonPipelineResult result = m_camera.getLatestResult(); // Query the latest result from PhotonVision
-        hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be true
-        if (hasTarget) {
-            this.result = result;
-        }
+        m_result = getLatestResult();
+        // TODO
     }
-    public PhotonTrackedTarget getTargetWithID(int id) { // Returns the apriltag target with the specified ID (if it exists)
-        List<PhotonTrackedTarget> targets = result.getTargets(); // Create a list of all currently tracked targets
-        for (PhotonTrackedTarget i : targets) {
-            if (i.getFiducialId() == id) { // Check the ID of each target in the list
-                return i; // Found the target with the specified ID!
-            }
-        }
-        return null; // Failed to find the target with the specified ID
-    }
-    
-    public PhotonTrackedTarget getBestTarget() {
-        if (hasTarget) {
-        return result.getBestTarget(); // Returns the best (closest) target
-        }
-        else {
-            return null; // Otherwise, returns null if no targets are currently found
-        }
-    }
-    public boolean getHasTarget() {
-        return hasTarget; // Returns whether or not a target was found
+
+    @Override
+    public void simulationPeriodic() {
+        // This method will be called once per scheduler run during simulation
     }
 }

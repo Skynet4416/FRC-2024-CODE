@@ -16,6 +16,8 @@ public final class Autos {
         //return Commands.sequence(subsystem.exampleMethodCommand(), new ExampleCommand(subsystem));
     // }
 
+    private 
+
     private Autos() {
         throw new UnsupportedOperationException("This is a utility class!");
     }

@@ -175,9 +175,6 @@ import frc.robot.subsystems.Vision.VisionSubsystem;
           setModulesStates(target_states);
      }
 
-
-     public void resetOdometry() {
-          m_odometry.resetPosition(m_navX.getRotation2d(), m_modulePositions, m_currentPose);
      }
 
      public void setAllModulesToZero() {
@@ -205,34 +202,21 @@ import frc.robot.subsystems.Vision.VisionSubsystem;
           return (angleWithOffset > 360) ? angleWithOffset - 360 : (angleWithOffset < 0) ? angleWithOffset + 360 : angleWithOffset;
      }
 
-     public void addVisionMeasurements(Optional<EstimatedRobotPose> visionOptionalPose) {
-          if (visionOptionalPose.isPresent()) {
-               EstimatedRobotPose pose = visionOptionalPose.get();
-               m_poseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
-          }
-     }
-
      @Override
      public void periodic()
      {
           m_modulePositions = new SwerveModulePosition[]{ 
-               new SwerveModulePosition(m_frontLeftModule.getVelocityMetersPerSecond(), m_frontLeftModule.getSteerAngle()), 
-               new SwerveModulePosition(m_frontRightModule.getVelocityMetersPerSecond(), m_frontRightModule.getSteerAngle()),
-               new SwerveModulePosition(m_backLeftModule.getVelocityMetersPerSecond(), m_backLeftModule.getSteerAngle()), 
-               new SwerveModulePosition(m_backRightModule.getVelocityMetersPerSecond(), m_backRightModule.getSteerAngle())
+               new SwerveModulePosition(m_frontLeftModule.getDriveDistance(), m_frontLeftModule.getSteerAngle()), 
+               new SwerveModulePosition(m_frontRightModule.getDriveDistance(), m_frontRightModule.getSteerAngle()),
+               new SwerveModulePosition(m_backLeftModule.getDriveDistance(), m_backLeftModule.getSteerAngle()), 
+               new SwerveModulePosition(m_backRightModule.getDriveDistance(), m_backRightModule.getSteerAngle())
           };
-          m_odometry.update(getGyroAngleInRotation2d(), m_modulePositions);
-
-          SwerveModuleState[] states = Drive.Stats.kinematics.toSwerveModuleStates(m_swerveSpeeds);
-
+     
           m_frontLeftModule.setModuleState(states[0]);
           m_frontRightModule.setModuleState(states[1]);
           m_backLeftModule.setModuleState(states[2]);
           m_backRightModule.setModuleState(states[3]);
 
-          m_poseEstimator.update(getGyroAngleInRotation2d(), m_modulePositions);
-          addVisionMeasurements(m_visionSubsystem.getEstimatedGlobalPose(m_lastPose));
-          m_lastPose = m_poseEstimator.getEstimatedPosition();  
      }
 
 

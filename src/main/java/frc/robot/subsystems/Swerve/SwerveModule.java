@@ -16,6 +16,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Swerve;
@@ -37,6 +38,7 @@ public class SwerveModule extends SubsystemBase {
     private double m_moduleOffset;
 
     private double m_targetRotorVelocity = 0;
+    private double m_driveDistance = 0;
 
     /**
      * @param driveMotorCANID
@@ -228,6 +230,9 @@ public class SwerveModule extends SubsystemBase {
     public TalonFX getSteerMotor() {
         return this.m_steerMotor;
     }
+    public double getDriveDistance() {
+        return this.m_driveDistance;
+    }
 
     public CANcoder getSteerEncoder() {
         return this.m_steerEncoder;
@@ -264,6 +269,9 @@ public class SwerveModule extends SubsystemBase {
     public void periodic() { // todo logs needed - ShuffleBoard
         this.m_moduleState.angle = Rotation2d.fromDegrees(this.m_steerEncoder.getAbsolutePosition().getValueAsDouble() / 360);
         this.m_moduleState.speedMetersPerSecond = rpmToMps(this.m_driveMotor.getRotorVelocity().getValueAsDouble() * 60);
+        this.m_driveDistance += m_moduleState.speedMetersPerSecond;
+
+
     }
 
     @Override

@@ -38,7 +38,6 @@ public class SwerveModule extends SubsystemBase {
     private double m_moduleOffset;
 
     private double m_targetRotorVelocity = 0;
-    private double m_driveDistance = 0;
 
     /**
      * @param driveMotorCANID
@@ -179,8 +178,15 @@ public class SwerveModule extends SubsystemBase {
      */
     public double rpmToMps(double rpmValue) { 
         return (60/(2*Math.PI*Swerve.Stats.wheelRadiusMeters))*rpmValue;
-    }   
-
+    } 
+    /**
+     * 
+     * @param distance
+     * @return
+     */  
+    public double roudnsToMeters(double distance){
+        return distance * 2 * Math.PI * Swerve.Stats.wheelRadiusMeters;
+    }
     /**
      * Convertion from Meters per second to rounds per minute
      * @param value 
@@ -231,7 +237,7 @@ public class SwerveModule extends SubsystemBase {
         return this.m_steerMotor;
     }
     public double getDriveDistance() {
-        return this.m_driveDistance;
+        return roudnsToMeters(this.m_driveMotor.getPosition().getValueAsDouble());
     }
 
     public CANcoder getSteerEncoder() {
@@ -269,8 +275,6 @@ public class SwerveModule extends SubsystemBase {
     public void periodic() { // todo logs needed - ShuffleBoard
         this.m_moduleState.angle = Rotation2d.fromDegrees(this.m_steerEncoder.getAbsolutePosition().getValueAsDouble() / 360);
         this.m_moduleState.speedMetersPerSecond = rpmToMps(this.m_driveMotor.getRotorVelocity().getValueAsDouble() * 60);
-        this.m_driveDistance += m_moduleState.speedMetersPerSecond;
-
 
     }
 

@@ -66,6 +66,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Swerve target velocity fl", m_robotContainer.getDriveSubsystem().get_fl().getTargetRotorVelocityRPM());
     SmartDashboard.putNumber("Swerve target velocity fr", m_robotContainer.getDriveSubsystem().get_fr().getTargetRotorVelocityRPM());
   }
+   private void updateCurrentDistance() {
+    SmartDashboard.putNumber("Swerve distance bl", m_robotContainer.getDriveSubsystem().get_bl().getDriveDistance());
+    SmartDashboard.putNumber("Swerve distance br", m_robotContainer.getDriveSubsystem().get_br().getDriveDistance());
+    SmartDashboard.putNumber("Swerve distance fl", m_robotContainer.getDriveSubsystem().get_fl().getDriveDistance());
+    SmartDashboard.putNumber("Swerve distance fr", m_robotContainer.getDriveSubsystem().get_fr().getDriveDistance());
+  }
 
   private void updateCurrentVelocity() {
     SmartDashboard.putNumber("Swerve current velocity bl", m_robotContainer.getDriveSubsystem().get_bl().getDriveMotor().getRotorVelocity().getValueAsDouble() *60);
@@ -119,6 +125,7 @@ public class Robot extends TimedRobot {
     updateCurrentGyroAngle();
     updateCurrentVelocity();
     updateTargetVelocity();
+    updateCurrentDistance();
 
     // Update Shuffleboard data here if needed
   }

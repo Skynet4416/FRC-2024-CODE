@@ -20,7 +20,6 @@ import com.kauailabs.navx.frc.AHRS;
      import edu.wpi.first.wpilibj2.command.SubsystemBase;
      import frc.robot.Constants.Drive;
      import frc.robot.subsystems.Swerve.SwerveModule;
-import frc.robot.subsystems.Vision.VisionSubsystem;
 
 
      public class DriveSubsystem extends SubsystemBase {
@@ -37,7 +36,6 @@ import frc.robot.subsystems.Vision.VisionSubsystem;
      private final PIDController m_pidController;
      private ChassisSpeeds m_swerveSpeeds;
      private Pose2d m_lastPose;
-     private VisionSubsystem m_visionSubsystem;
      private Pose2d m_currentPose;
      private SwerveDrivePoseEstimator m_poseEstimator;
      private double m_targetAngle;
@@ -106,7 +104,7 @@ import frc.robot.subsystems.Vision.VisionSubsystem;
           m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(), m_modulePositions, m_currentPose);
           m_lastPose = m_poseEstimator.getEstimatedPosition();
           m_navXoffset = (double)m_navX.getCompassHeading();
-          m_visionSubsystem = new VisionSubsystem();
+          // m_visionSubsystem = new VisionSubsystem();
           m_targetAngle = 0.0;
      }
      /**
@@ -175,7 +173,7 @@ import frc.robot.subsystems.Vision.VisionSubsystem;
           setModulesStates(target_states);
      }
 
-     }
+     
 
      public void setAllModulesToZero() {
           SwerveModuleState[] zeroStates = new SwerveModuleState[4];
@@ -211,11 +209,11 @@ import frc.robot.subsystems.Vision.VisionSubsystem;
                new SwerveModulePosition(m_backLeftModule.getDriveDistance(), m_backLeftModule.getSteerAngle()), 
                new SwerveModulePosition(m_backRightModule.getDriveDistance(), m_backRightModule.getSteerAngle())
           };
-     
-          m_frontLeftModule.setModuleState(states[0]);
-          m_frontRightModule.setModuleState(states[1]);
-          m_backLeftModule.setModuleState(states[2]);
-          m_backRightModule.setModuleState(states[3]);
+          
+          // m_frontLeftModule.setModuleState(states[0]);
+          // m_frontRightModule.setModuleState(states[1]);
+          // m_backLeftModule.setModuleState(states[2]);
+          // m_backRightModule.setModuleState(states[3]);
 
      }
 

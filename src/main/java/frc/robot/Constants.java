@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -222,20 +224,10 @@ public final class Constants {
         public static final Translation3d robotMiddleToCamera = new Translation3d(0, 0, 0);
         public static final Rotation3d angleCamera = new Rotation3d(0, 0, 0);
         public static final Transform3d transformCamera = new Transform3d(robotMiddleToCamera, angleCamera);
-        //this value isn't intentional and can be changed, i just copied this line from photonVision's example
-        public static final double targetHeight = Units.inchesToMeters(98.19) - Units.inchesToMeters(81.19);
-        //these variables are for the update of the pose estimator
-        public static final double kFarTgtXPos = Units.feetToMeters(54);
-        public static final double kFarTgtYPos =
-            Units.feetToMeters(27 / 2) - Units.inchesToMeters(43.75) - Units.inchesToMeters(48.0 / 2.0);
-        public static final double kFarTgtZPos =
-            (Units.inchesToMeters(98.19) - targetHeight) / 2 + targetHeight;
+        public static final PoseStrategy poseStrategy = PoseStrategy.AVERAGE_BEST_TARGETS;
 
-        public static final Pose3d kFarTargetPose =
-            new Pose3d(
-                    new Translation3d(kFarTgtXPos, kFarTgtYPos, kFarTgtZPos),
-                    new Rotation3d(0.0, 0.0, Units.degreesToRadians(180)));
-
+        public static String cameraName = "Camera";
+        public static boolean enable =true;
     }
 
     public static class Autonomous

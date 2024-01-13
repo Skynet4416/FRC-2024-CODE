@@ -166,7 +166,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
     public void periodic() {
         m_modulePositions = getModulePositions();
         m_poseEstimator.update(getGyroAngleInRotation2d(), m_modulePositions);
-        field2d.setRobotPose(m_poseEstimator.getEstimatedPosition());
+        field2d.setRobotPose(getCurrentPosition());
     }
 
     public SwerveModulePosition[] getModulePositions() {

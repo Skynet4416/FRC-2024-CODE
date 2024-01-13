@@ -3,19 +3,16 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.subsystems.Drive;
 
-import java.util.Optional;
-
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.subsystems.Vision.VisionObserver;
 import org.photonvision.EstimatedRobotPose;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,13 +27,11 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
     private final SwerveModule m_backLeftModule;
     private final SwerveModule m_backRightModule;
     private final AHRS m_navX;
-    private final double m_navXoffset;
+    private final double m_navXOffset;
     private SwerveModulePosition[] m_modulePositions;
-    private final SwerveDriveOdometry m_odometry;
-    private final PIDController m_pidController;
     private ChassisSpeeds m_swerveSpeeds;
-    private Pose2d m_currentPose;
-    private SwerveDrivePoseEstimator m_poseEstimator;
+    private final SwerveDrivePoseEstimator m_poseEstimator;
+    private final Field2d field2d = new Field2d();
 
     public SwerveModule get_fl() {
         return m_frontLeftModule;
@@ -55,7 +50,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
     }
 
 
-    public DriveSubsystem() {
+    public DriveSubsystem(Pose2d startPos) {
         this.m_frontLeftModule = new SwerveModule(
                 Drive.Motors.kFrontLeftDriveFalconCANID,
                 Drive.Motors.kFrontLeftSteerFalconCANID,
@@ -81,28 +76,11 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
                 Drive.Stats.kBackRightModuleOffsetInDegrees
         );
 
-
         m_navX = new AHRS();
-
-
-        m_modulePositions = new SwerveModulePosition[]{
-                new SwerveModulePosition(m_frontLeftModule.getVelocityMetersPerSecond(), m_frontLeftModule.getSteerAngle()),
-                new SwerveModulePosition(m_frontRightModule.getVelocityMetersPerSecond(), m_frontRightModule.getSteerAngle()),
-                new SwerveModulePosition(m_backLeftModule.getVelocityMetersPerSecond(), m_backLeftModule.getSteerAngle()),
-                new SwerveModulePosition(m_backRightModule.getVelocityMetersPerSecond(), m_backRightModule.getSteerAngle())
-        };
-
-
-        m_odometry = new SwerveDriveOdometry(Drive.Stats.kinematics, Rotation2d.fromDegrees(getHeading()), m_modulePositions);
-
+        m_modulePositions = getModulePositions();
         m_swerveSpeeds = new ChassisSpeeds(0, 0, 0);
-
-        m_currentPose = m_odometry.getPoseMeters(); // TODO needs to take the position from vision
-        m_pidController = new PIDController(Drive.PID.kP, Drive.PID.kI, Drive.PID.kD);
-        m_pidController.enableContinuousInput(0, 360);
-        m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(), m_modulePositions, m_currentPose);
-        m_navXoffset = (double) m_navX.getCompassHeading();
-        // m_visionSubsystem = new VisionSubsystem();
+        m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(), m_modulePositions, startPos);
+        m_navXOffset = m_navX.getCompassHeading();
     }
 
     /**
@@ -178,7 +156,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
     }
 
     public double getHeading() {
-        double angleWithOffset = (double) m_navX.getFusedHeading() + m_navXoffset;
+        double angleWithOffset = (double) m_navX.getFusedHeading() + m_navXOffset;
         // Bigger than 360: angleWithOffset - 360
         // Smaller than 0: angleWithOffset + 360
         return (angleWithOffset > 360) ? angleWithOffset - 360 : (angleWithOffset < 0) ? angleWithOffset + 360 : angleWithOffset;
@@ -186,15 +164,18 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
 
     @Override
     public void periodic() {
-        m_modulePositions = new SwerveModulePosition[]{
+        m_modulePositions = getModulePositions();
+        m_poseEstimator.update(getGyroAngleInRotation2d(), m_modulePositions);
+        field2d.setRobotPose(m_poseEstimator.getEstimatedPosition());
+    }
+
+    public SwerveModulePosition[] getModulePositions() {
+        return new SwerveModulePosition[]{
                 new SwerveModulePosition(m_frontLeftModule.getDriveDistance(), m_frontLeftModule.getSteerAngle()),
                 new SwerveModulePosition(m_frontRightModule.getDriveDistance(), m_frontRightModule.getSteerAngle()),
                 new SwerveModulePosition(m_backLeftModule.getDriveDistance(), m_backLeftModule.getSteerAngle()),
                 new SwerveModulePosition(m_backRightModule.getDriveDistance(), m_backRightModule.getSteerAngle())
         };
-
-        m_poseEstimator.update(getGyroAngleInRotation2d(),m_modulePositions);
-
     }
 
 

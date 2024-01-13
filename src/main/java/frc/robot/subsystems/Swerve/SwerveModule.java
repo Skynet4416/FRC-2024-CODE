@@ -173,7 +173,7 @@ public class SwerveModule extends SubsystemBase {
 
     /**
      * Convertion from Rounds per minute to meters per second
-     * @param value 
+     * @param rpmValue
      * Rounds per minute
      */
     public double rpmToMps(double rpmValue) { 
@@ -189,7 +189,7 @@ public class SwerveModule extends SubsystemBase {
     }
     /**
      * Convertion from Meters per second to rounds per minute
-     * @param value 
+     * @param mpsValue
      * Meters per second
      */
     public double mpsToRpm(double mpsValue) {
@@ -198,7 +198,7 @@ public class SwerveModule extends SubsystemBase {
 
     /**
      * Convertion from Meters per second to rounds per second
-     * @param value 
+     * @param mpsValue
      * Meters per second
      */
     public double mpsToRps(double mpsValue) {

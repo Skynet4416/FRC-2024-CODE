@@ -39,7 +39,7 @@ public class VisionSubsystem extends SubsystemBase {
 //         this.m_poseEstimator = new PhotonPoseEstimator(m_layout, PoseStrategy.AVERAGE_BEST_TARGETS, Vision.transformCamera);
 
 //     }
-// // TODO
+//      //TODO
 //     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
 //         m_poseEstimator.setReferencePose(prevEstimatedRobotPose);
 //         return updatePoseEstimator();
@@ -88,7 +88,7 @@ public class VisionSubsystem extends SubsystemBase {
 
 //     public void resetOdometry() {
 //         m_odometry.resetPosition(m_navX.getRotation2d(), m_modulePositions, m_currentPose);
-
+// }
 //     @Override
 //     public void periodic() {
 //         m_odometry.update(getGyroAngleInRotation2d(), m_modulePositions);

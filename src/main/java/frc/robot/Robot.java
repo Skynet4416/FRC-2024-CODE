@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -13,6 +14,8 @@ import frc.robot.Constants.Swerve.PID;
 import frc.robot.subsystems.Drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -27,6 +30,14 @@ public class Robot extends TimedRobot {
   private ShuffleboardTab SwerveDataTab;
   private ShuffleboardTab drivePIDTab;
   private ShuffleboardTab steerPIDTab;
+
+  // prototype stuff
+  private static final int kJoystickPort = 0;
+  private Joystick m_protoStick;
+  public static final int leadProtoMotorID = 0;
+  public static final int followProtoMotorID = 1;
+  private CANSparkMax m_prototypeMotorLead;
+  private CANSparkMax m_prototypeMotorFollow;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -46,6 +57,16 @@ public class Robot extends TimedRobot {
     // Add PID constants to Shuffleboard
     addPIDConstantsToShuffleboardDrive(drivePIDTab, "Drive");
     addPIDConstantsToShuffleboardSteer(steerPIDTab, "Steer");
+
+    //prepares the prototype testing
+    m_prototypeMotorLead = new CANSparkMax(leadProtoMotorID, MotorType.kBrushless);
+    m_prototypeMotorFollow = new CANSparkMax(followProtoMotorID, MotorType.kBrushless);
+    
+    m_prototypeMotorLead.restoreFactoryDefaults();
+    m_prototypeMotorFollow.restoreFactoryDefaults();
+    
+    m_prototypeMotorFollow.follow(m_prototypeMotorLead,false);
+    m_protoStick = new Joystick(kJoystickPort);
   }
 
   private void updateCurrentGyroAngle() {
@@ -85,7 +106,43 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Swerve t br", m_robotContainer.getDriveSubsystem().get_br().getTargetState().angle.getDegrees());
     SmartDashboard.putNumber("Swerve t fl", m_robotContainer.getDriveSubsystem().get_fl().getTargetState().angle.getDegrees());
     SmartDashboard.putNumber("Swerve t fr", m_robotContainer.getDriveSubsystem().get_fr().getTargetState().angle.getDegrees());
+
   }
+
+/**
+ * resets all of the smart dashboards values
+ */
+private void resetSmartValues()
+{
+  //the gyro's angle
+  SmartDashboard.putNumber("Swerve c Gyro Angle", 0);
+  //each swerve module's current angle
+  SmartDashboard.putNumber("Swerve c bl", m_robotContainer.getDriveSubsystem().get_bl().getModuleState().angle.getDegrees());
+  SmartDashboard.putNumber("Swerve c br", m_robotContainer.getDriveSubsystem().get_br().getModuleState().angle.getDegrees());
+  SmartDashboard.putNumber("Swerve c fl", m_robotContainer.getDriveSubsystem().get_fl().getModuleState().angle.getDegrees());
+  SmartDashboard.putNumber("Swerve c fr", m_robotContainer.getDriveSubsystem().get_fr().getModuleState().angle.getDegrees());
+  //the wanted speed
+  SmartDashboard.putNumber("Swerve target velocity bl", 0);
+  SmartDashboard.putNumber("Swerve target velocity br",0);
+  SmartDashboard.putNumber("Swerve target velocity fl", 0);
+  SmartDashboard.putNumber("Swerve target velocity fr", 0);
+  //current distance (aka the distance we moved since last)
+  SmartDashboard.putNumber("Swerve distance bl",0);
+  SmartDashboard.putNumber("Swerve distance br", 0);
+  SmartDashboard.putNumber("Swerve distance fl", 0);
+  SmartDashboard.putNumber("Swerve distance fr", 0);
+  //the current speed
+  SmartDashboard.putNumber("Swerve current velocity bl", 0);
+  SmartDashboard.putNumber("Swerve current velocity br",0);
+  SmartDashboard.putNumber("Swerve current velocity fl",0);
+  SmartDashboard.putNumber("Swerve current velocity fr",0);
+  // wanted swerve angle
+  SmartDashboard.putNumber("Swerve t bl", 0);
+  SmartDashboard.putNumber("Swerve t br", 0);
+  SmartDashboard.putNumber("Swerve t fl", 0);
+  SmartDashboard.putNumber("Swerve t fr", 0);
+
+}
 
   private void addPIDConstantsToShuffleboardDrive(ShuffleboardTab tab, String name) {
     tab.add(name + " kS", PID.Drive.kS);
@@ -127,6 +184,8 @@ public class Robot extends TimedRobot {
     updateTargetVelocity();
     updateCurrentDistance();
 
+    //moves how fast the motor goes through joystick
+    m_prototypeMotorLead.set(m_protoStick.getY());
     // Update Shuffleboard data here if needed
   }
 

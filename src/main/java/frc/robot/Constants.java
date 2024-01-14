@@ -250,4 +250,11 @@ public final class Constants {
         public static final double kAngularD = 0.0;
     }
     
+    public static class Prototype 
+    {
+        public static final int kJoystickPort = 0;
+        //todo: change to actual id
+        public static final int leadProtoMotorID = 0;
+        public static final int followProtoMotorID = 0;    
+    }
 }

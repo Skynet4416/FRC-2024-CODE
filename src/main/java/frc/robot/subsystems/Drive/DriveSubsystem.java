@@ -8,8 +8,9 @@
 import org.photonvision.EstimatedRobotPose;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
 
-     import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.PIDController;
      import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
      import edu.wpi.first.math.geometry.Pose2d;
      import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,7 +18,8 @@ import com.kauailabs.navx.frc.AHRS;
      import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
      import edu.wpi.first.math.kinematics.SwerveModulePosition;
      import edu.wpi.first.math.kinematics.SwerveModuleState;
-     import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
      import frc.robot.Constants.Drive;
      import frc.robot.subsystems.Swerve.SwerveModule;
 
@@ -106,6 +108,7 @@ import com.kauailabs.navx.frc.AHRS;
           m_navXoffset = (double)m_navX.getCompassHeading();
           // m_visionSubsystem = new VisionSubsystem();
           m_targetAngle = 0.0;
+
      }
      /**
       * Sets the state of all of the swerve modules
@@ -117,6 +120,39 @@ import com.kauailabs.navx.frc.AHRS;
           m_frontRightModule.setModuleState(moduleState[1]);
           m_backLeftModule.setModuleState(moduleState[2]);
           m_backRightModule.setModuleState(moduleState[3]);
+     }
+
+     /**
+      * this is a function to send to the auto, if we integrate the proper vision stuff from Yotam's branch it would replace this
+      * @return
+      */
+     public SwerveDrivePoseEstimator getPoseEstimator()
+     {
+          return this.m_poseEstimator;
+     }
+
+     /**
+      *  this is a function to send to the auto, if we integrate the proper vision stuff from Yotam's branch it would replace this
+      */
+     public void resetOdometry() 
+     {
+             m_odometry.resetPosition(m_navX.getRotation2d(), m_modulePositions, m_currentPose);
+     }
+
+     /**
+      *  this is a function to send to the auto, if we integrate the proper vision stuff from Yotam's branch it would replace this
+      */
+     public Pose2d getCurrentPose() 
+     {
+             return m_currentPose;
+     }
+
+      /**
+      *  this is a function to send to the auto, if we integrate the proper vision stuff from Yotam's branch it would replace this
+      */
+     public ChassisSpeeds getSwerveSpeeds() 
+     {
+             return m_swerveSpeeds;
      }
 
      /**

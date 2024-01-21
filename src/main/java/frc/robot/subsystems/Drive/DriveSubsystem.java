@@ -1,27 +1,26 @@
      // Copyright (c) FIRST and other WPILib contributors.
      // Open Source Software; you can modify and/or share it under the terms of
      // the WPILib BSD license file in the root directory of this project.
-     package frc.robot.subsystems.Drive;
+package frc.robot.subsystems.Drive;
 
-     import java.util.Optional;
+import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.controller.PIDController;
-     import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-     import edu.wpi.first.math.geometry.Pose2d;
-     import edu.wpi.first.math.geometry.Rotation2d;
-     import edu.wpi.first.math.kinematics.ChassisSpeeds;
-     import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
-     import edu.wpi.first.math.kinematics.SwerveModulePosition;
-     import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-     import frc.robot.Constants.Drive;
-     import frc.robot.subsystems.Swerve.SwerveModule;
+import frc.robot.Constants.Drive;
+import frc.robot.subsystems.Swerve.SwerveModule;
 
 
      public class DriveSubsystem extends SubsystemBase {
@@ -132,11 +131,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
      }
 
      /**
-      *  this is a function to send to the auto, if we integrate the proper vision stuff from Yotam's branch it would replace this
+      * returns the odometry of the drive subsystem
+      * @return
       */
-     public void resetOdometry() 
+     public SwerveDriveOdometry getOdometry()
      {
-             m_odometry.resetPosition(m_navX.getRotation2d(), m_modulePositions, m_currentPose);
+          return m_odometry;
+     }
+
+     /**
+      *  this is a function that recives the current position from the auto and updates the odometry
+      */
+     public void resetOdometry(Pose2d currentPose) 
+     {
+             m_odometry.resetPosition(m_navX.getRotation2d(), m_modulePositions, currentPose);
      }
 
      /**

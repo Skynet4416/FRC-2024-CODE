@@ -5,9 +5,11 @@
 package frc.robot;
 
 import frc.robot.subsystems.Drive.DriveSubsystem;
+import frc.robot.subsystems.Auto;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,6 +30,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_driveSubsystem;
   private final OI oi;
+  private final Auto auto;
   private final SendableChooser<Command> autoChooser;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -40,6 +43,7 @@ public class RobotContainer {
     this.oi = new OI();
     configureBindings();
     m_driveSubsystem.setAllModulesToZero();
+    this.auto = new Auto(m_driveSubsystem);
      this.autoChooser = AutoBuilder.buildAutoChooser();
 
     //change to shuffleBoard later if you want
@@ -68,7 +72,13 @@ public class RobotContainer {
 
   public Command getAutonomousCommand()
   {
-      return autoChooser.getSelected();
+    //this is for auto-based autonomous, we relay more on paths   
+    return autoChooser.getSelected();
+      // // Load the path you want to follow using its name in the GUI
+      //   PathPlannerPath path = PathPlannerPath.fromPathFile("path 1");
+
+      //   // Create a path following command using AutoBuilder. This will also trigger event markers.
+      //   return AutoBuilder.followPath(path);
   }
 
   // i think the first getAutonomousCommand lets the driver choose the auto (correct me if i'm wrong) so that's why it stays, but the other one is also here if it's more convinient 

@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import com.pathplanner.lib.util.*;
+import com.pathplanner.lib.path.*;
 
 
 /**
@@ -133,6 +135,11 @@ public final class Constants {
             public static final double kWheelbaseMeters = 85.5;
 
             /**
+             * the distance of each module (assuming the drivetrain is a square) from the center of the drivetrain. i made this for the auto. yes this pythagoram is ugly, i know
+             */
+            public static final double kDriveBaseRadius = Math.sqrt(Math.pow(kTrackWidthMeters/2.0,2.0) + Math.pow(kWheelbaseMeters/2.0,2.0));
+
+            /**
              * The current degree of the steer mechanism (At what degree does the drive wheel start)
              */
             public static final double kFrontLeftModuleOffsetInDegrees = -102;
@@ -161,6 +168,7 @@ public final class Constants {
             );
 
         }
+        //what are these PID's for? like just general?
         public static class PID {
             public static final double kP = 0.002;
             public static final double kI = 0.0;
@@ -217,6 +225,7 @@ public final class Constants {
         public static final double aprilTagWidth = Units.inchesToMeters(8.125);
     }
 
+    //cool it's still here while the vision isn't.
     public static class Vision
     {
         public static final Translation3d robotMiddleToCamera = new Translation3d(0, 0, 0);
@@ -242,12 +251,21 @@ public final class Constants {
     {
         // untested values
         public static final double kLinearP = 0.1;
-        //public static final double kLinearI = 0.0;
+        public static final double kLinearI = 0.0;
         public static final double kLinearD = 0.0;
 
         public static final double kAngularP = 0.1;
-        //public static final double kAngularI = 0.0;
+        public static final double kAngularI = 0.0;
         public static final double kAngularD = 0.0;
+        // i uncommented the i's for the auto (pathplanner wants all 3 values) please don't recomment them. it might just send the auto to the twilight zone.
+
+        public static final HolonomicPathFollowerConfig kHolonomicPathFollowerConfig =  new HolonomicPathFollowerConfig(
+                 new PIDConstants(Autonomous.kLinearP, Autonomous.kLinearI, Autonomous.kLinearD),
+                 new PIDConstants(Autonomous.kAngularP, Autonomous.kAngularI, Autonomous.kAngularD), 
+                 Drive.Stats.kMaxVelocityMetersPerSecond, 
+                 Drive.Stats.kDriveBaseRadius, //Distance from robot center to furthest module.
+                 new ReplanningConfig() // Default path replanning config. See the API for the options here
+         ); 
     }
     
     public static class Prototype 

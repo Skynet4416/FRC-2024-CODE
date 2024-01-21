@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.Swerve.PID;
 import frc.robot.subsystems.Drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot {
   public static final int followProtoMotorID = 1;
   private CANSparkMax m_prototypeMotorLead;
   private CANSparkMax m_prototypeMotorFollow;
+  private final Field2d m_field = new Field2d();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -53,6 +55,7 @@ public class Robot extends TimedRobot {
     SwerveDataTab = Shuffleboard.getTab("Swerve Data");
     drivePIDTab = Shuffleboard.getTab("Drive PID");
     steerPIDTab = Shuffleboard.getTab("Steer PID");
+    SmartDashboard.putData("Field", m_field);
 
     // Add PID constants to Shuffleboard
     addPIDConstantsToShuffleboardDrive(drivePIDTab, "Drive");
@@ -187,6 +190,8 @@ private void resetSmartValues()
     //moves how fast the motor goes through joystick
     m_prototypeMotorLead.set(m_protoStick.getY());
     // Update Shuffleboard data here if needed
+
+    m_field.setRobotPose(m_robotContainer.getDriveSubsystem().getOdometry().getPoseMeters());
   }
 
 
@@ -200,11 +205,11 @@ private void resetSmartValues()
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-      m_robotContainer.getClass();
+      m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.schedule();
-    // }
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
   }
 
   /** This function is called periodically during autonomous. */

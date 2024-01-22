@@ -10,15 +10,18 @@ import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.core.CoreCANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.sim.CANcoderSimState;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.Constants.Swerve;
 
 
@@ -53,8 +56,7 @@ public class SwerveModule extends SubsystemBase {
         this.m_driveMotor = new TalonFX(driveMotorCANID);
         this.m_steerMotor = new TalonFX(steerMotorCANID);
         this.m_steerEncoder = new CANcoder(steerEncoderCANID);
-        
-        
+
         this.m_voltageVelocity = new VelocityVoltage(0,0,false,0,0,false, false, false);
         this.m_voltagePosition = new PositionVoltage(0,0,false,0,0,false, false, false);
         this.m_moduleState = new SwerveModuleState(0, Rotation2d.fromDegrees(0));
@@ -240,7 +242,8 @@ public class SwerveModule extends SubsystemBase {
         return roudnsToMeters(this.m_driveMotor.getPosition().getValueAsDouble());
     }
 
-    public CANcoder getSteerEncoder() {
+    public CANcoder getSteerEncoder() 
+    {
         return this.m_steerEncoder;
     }
 

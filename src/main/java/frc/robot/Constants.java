@@ -119,6 +119,20 @@ public final class Constants {
         }
     }
 
+    public static class Climber
+    {
+        public static class Motors 
+        {
+            public static final int kRightHookMotorID = 0;
+            public static final int kLeftHookMotorID = 0;
+        }
+
+        public static class Stats {
+            public static final double kHeightChangeInMeters = 0.0;
+            public static final double kMaxHeightInMeters = 0.0;
+        }
+    }
+
     public static class Drive {
         
         public static class Stats {

@@ -14,7 +14,7 @@ public class OI
         public final Joystick joystickRight = new Joystick(2);
 
         public final XboxController xboxController = new XboxController(frc.robot.Constants.OI.kXboxControllerPort);
-        // public final JoystickButton A = new JoystickButton(xboxController, XboxController.Button.kA.value);
+        public final JoystickButton A = new JoystickButton(xboxController, XboxController.Button.kA.value);
         // public final JoystickButton B = new JoystickButton(xboxController, XboxController.Button.kB.value);
         // public final JoystickButton X = new JoystickButton(xboxController, XboxController.Button.kX.value);
         // public final JoystickButton Y = new JoystickButton(xboxController, XboxController.Button.kY.value);

@@ -128,8 +128,16 @@ public final class Constants {
         }
 
         public static class Stats {
+            //the meters the climber gains when "open"
             public static final double kHeightChangeInMeters = 0.0;
             public static final double kMaxHeightInMeters = 0.0;
+            //todo: change to actual numbers of stuff
+            //the speed at which the telescop will extend
+            public static final double kExtendSpeed = 0;
+            //the time it takes the telescop to extend at the chosen speed
+            public static final long kExtendTimeMS = 0;
+            //the time it takes the telescop to retract at the chosen speed
+            public static final long kRetractTimeMS = 0;
         }
     }
 

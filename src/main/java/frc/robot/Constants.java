@@ -121,6 +121,13 @@ public final class Constants {
 
     public static class Climber
     {
+        public static class PID
+        {
+            //todo: set actual numbers
+            public static final double kP = 0;
+            public static final double kI = 0;
+            public static final double kD = 0;
+        }
         public static class Motors 
         {
             public static final int kRightHookMotorID = 0;
@@ -132,8 +139,13 @@ public final class Constants {
             public static final double kHeightChangeInMeters = 0.0;
             public static final double kMaxHeightInMeters = 0.0;
             //todo: change to actual numbers of stuff
-            //the speed at which the telescop will extend
-            public static final double kExtendSpeed = 0;
+            //the length we want the climber to climb (i think this is the addition to the peropened telescope)
+            public static final double kDesiredLength = 0.0;
+            public static final double kSpoolCircumference = 0.0;
+            //timsoret
+            public static final double kGearRatio = 0.0;
+            //the rounds the motor needs to do = length we want the climb to go/the circumference of the spool*gear ratio
+            public static final double kExtensionTurnsInRounds = kDesiredLength/kSpoolCircumference*kGearRatio;
             //the time it takes the telescop to extend at the chosen speed
             public static final long kExtendTimeMS = 0;
             //the time it takes the telescop to retract at the chosen speed

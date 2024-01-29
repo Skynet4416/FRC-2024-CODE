@@ -17,14 +17,22 @@ public class ClimbCommand extends Command
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {}
+    public void initialize() 
+    {
+       if(m_ClimberSubsystem.isOpen())
+       {
+            m_ClimberSubsystem.retractTelescope();
+       } 
+       else
+       {
+            m_ClimberSubsystem.extendTelescope();
+       }
+    }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() 
     {
-        m_ClimberSubsystem.extendTelescope();
-        m_ClimberSubsystem.retractTelescope();
     }
 
     // Called once the command ends or is interrupted.
@@ -35,10 +43,6 @@ public class ClimbCommand extends Command
     @Override
     public boolean isFinished() 
     {
-        if (m_ClimberSubsystem.isOpen()) 
-        {
-            return true;
-        }
-        return false;
+        return true;
     }
 }

@@ -3,6 +3,7 @@ package frc.robot.subsystems.Climber;
 
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -19,6 +20,14 @@ public class ClimberSubsystem extends SubsystemBase {
     public ClimberSubsystem() {
         this.m_leftMotor = new CANSparkMax(Climber.Motors.kLeftHookMotorID, MotorType.kBrushless);
         this.m_rightMotor = new CANSparkMax(Climber.Motors.kRightHookMotorID, MotorType.kBrushless);
+
+        m_leftMotor.getPIDController().setP(Climber.PID.kP);
+        m_leftMotor.getPIDController().setI(Climber.PID.kI);
+        m_leftMotor.getPIDController().setD(Climber.PID.kD);
+
+        m_rightMotor.getPIDController().setP(Climber.PID.kP);
+        m_rightMotor.getPIDController().setI(Climber.PID.kI);
+        m_rightMotor.getPIDController().setD(Climber.PID.kD);
 
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Climber");
         // shuffleboardTab.addNumber("Height", () -> {return getCurrentHeight();});
@@ -54,42 +63,15 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void extendTelescope()
     {
-        if(!m_isOpen)
-        {
-            m_leftMotor.set(Climber.Stats.kExtendSpeed);
-            m_rightMotor.set(Climber.Stats.kExtendSpeed);
-            try 
-            {
-                Thread.sleep(Climber.Stats.kExtendTimeMS);
-            } 
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-            m_leftMotor.stopMotor();
-            m_rightMotor.stopMotor();
-        }
-        
-        m_isOpen = true;
+        m_leftMotor.getPIDController().setReference(Climber.Stats.kExtensionTurnsInRounds,ControlType.kPosition);
+        m_rightMotor.getPIDController().setReference(Climber.Stats.kExtensionTurnsInRounds,ControlType.kPosition);
+        this.m_isOpen = true;
     }
 
      public void retractTelescope()
     {
-        if(m_isOpen)
-        {
-            m_leftMotor.set(-Climber.Stats.kExtendSpeed);
-            m_rightMotor.set(-Climber.Stats.kExtendSpeed);
-            try 
-            {
-                Thread.sleep(Climber.Stats.kRetractTimeMS);
-            } 
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-            m_leftMotor.stopMotor();
-            m_rightMotor.stopMotor();
-        }
-        m_isOpen = false;
+        m_leftMotor.getPIDController().setReference(0,ControlType.kPosition);
+        m_rightMotor.getPIDController().setReference(0,ControlType.kPosition);
+        this.m_isOpen = false;
     }
 }

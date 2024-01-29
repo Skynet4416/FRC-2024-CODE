@@ -22,13 +22,14 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Vision;
+import frc.robot.subsystems.Drive.DriveSubsystem;
 
 public class VisionSubsystem extends SubsystemBase {
     private PhotonCamera m_camera;
     private AprilTagFieldLayout m_layout;
     private SwerveDrivePoseEstimator m_poseEstimator;
     private PhotonPipelineResult m_result;
-}
+// }
 
 //     public VisionSubsystem() {
 //         this.m_camera = new PhotonCamera("aizen");
@@ -52,9 +53,9 @@ public class VisionSubsystem extends SubsystemBase {
 //         if (res.hasTargets()) {
 //             var imageCaptureTime = res.getTimestampSeconds();
 //             var camToTargetTrans = res.getBestTarget().getBestCameraToTarget();
-//             var camPose = Constants.kFarTargetPose.transformBy(camToTargetTrans.inverse());
+//             var camPose = Vision.kFarTargetPose.transformBy(camToTargetTrans.inverse());
 //             m_poseEstimator.addVisionMeasurement(
-//                     camPose.transformBy(Constants.kCameraToRobot).toPose2d(), imageCaptureTime);
+//                     camPose.transformBy(Vision.transformCamera).toPose2d(), imageCaptureTime);
 //     }
 
 //     public Optional<PhotonTrackedTarget> getTargetById(int id) {
@@ -91,6 +92,7 @@ public class VisionSubsystem extends SubsystemBase {
 // }
 //     @Override
 //     public void periodic() {
+//         //this really should be elsewhere
 //         m_odometry.update(getGyroAngleInRotation2d(), m_modulePositions);
 //           SwerveModuleState[] states = Drive.Stats.kinematics.toSwerveModuleStates(m_swerveSpeeds);
 
@@ -106,4 +108,4 @@ public class VisionSubsystem extends SubsystemBase {
 //     public void simulationPeriodic() {
 //         // This method will be called once per scheduler run during simulation
 //     }
-// }
+ }

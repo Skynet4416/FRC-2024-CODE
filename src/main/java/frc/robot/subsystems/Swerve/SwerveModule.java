@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
@@ -32,7 +33,7 @@ public class SwerveModule extends SubsystemBase {
     // TODO https://pro.docs.ctr-electronics.com/en/latest/docs/migration/migration-guide/closed-loop-guide.html
     // TODO https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/trapezoidal-profiles.html
 
-    private final TalonFX m_driveMotor;
+    private final CANSparkFlex m_driveMotor;
     private final TalonFX m_steerMotor;
     private final CANcoder m_steerEncoder;
     private final VelocityVoltage m_voltageVelocity;
@@ -55,7 +56,7 @@ public class SwerveModule extends SubsystemBase {
      * The Offset of the module (Relative to the robot)
      */
     public SwerveModule(int driveMotorCANID, int steerMotorCANID, int steerEncoderCANID, double moduleOffsetInDegrees) {
-        this.m_driveMotor = new TalonFX(driveMotorCANID);
+        this.m_driveMotor = new CANSparkFlex(driveMotorCANID, CANSparkLowLevel.MotorType.kBrushless);
         this.m_steerMotor = new TalonFX(steerMotorCANID);
         this.m_steerEncoder = new CANcoder(steerEncoderCANID);
 
@@ -65,7 +66,7 @@ public class SwerveModule extends SubsystemBase {
 
         this.m_moduleOffset = moduleOffsetInDegrees;
         configMotors(steerEncoderCANID);
-        setNeutralMode(NeutralModeValue.Brake);
+        setBreak();
     }
 
     /**
@@ -119,6 +120,9 @@ public class SwerveModule extends SubsystemBase {
 
         ClosedLoopGeneralConfigs talonConfigs = new ClosedLoopGeneralConfigs();
         talonConfigs.ContinuousWrap = true;
+
+        this.m_driveMotor.restoreFactoryDefaults();
+        this.m_driveMotor.trans
 
         this.m_driveMotor.getConfigurator().apply(new TalonFXConfiguration());
 
@@ -188,7 +192,7 @@ public class SwerveModule extends SubsystemBase {
      * @param distance
      * @return
      */  
-    public double roudnsToMeters(double distance){
+    public double roundsToMeters(double distance){
         return distance * 2 * Math.PI * Swerve.Stats.wheelRadiusMeters;
     }
     /**
@@ -209,31 +213,23 @@ public class SwerveModule extends SubsystemBase {
         return (mpsValue / (2 * Math.PI * Swerve.Stats.wheelRadiusMeters));
     }
 
-    /**
-     * @param neutralMode
-     * Set's the NeutralMode of both motors of the module to CTRE'S NeutralMode
-     * 
-     * <i>(Check CTRE's NeutralMode documentation for more info)</i>
-     *  
-     */
-    public void setNeutralMode(NeutralModeValue neutralMode) {
-        this.m_driveMotor.setNeutralMode(neutralMode);
-        this.m_steerMotor.setNeutralMode(neutralMode);
-    }
+
     
     public Rotation2d getSteerAngle() {
         return this.m_moduleState.angle;
     } 
 
     public void setCoast(){
-        setNeutralMode(NeutralModeValue.Coast);
+        m_driveMotor.setIdleMode(IdleMode.kCoast);
+        m_steerMotor.setNeutralMode(NeutralModeValue.Coast);
     }
     
     public void setBreak() {
-        setNeutralMode(NeutralModeValue.Brake);
+        m_driveMotor.setIdleMode(IdleMode.kBrake);
+        m_steerMotor.setNeutralMode(NeutralModeValue.Brake);
     }
 
-    public TalonFX getDriveMotor() {
+    public CANSparkFlex getDriveMotor() {
         return this.m_driveMotor;
     }
 
@@ -241,7 +237,7 @@ public class SwerveModule extends SubsystemBase {
         return this.m_steerMotor;
     }
     public double getDriveDistance() {
-        return roudnsToMeters(this.m_driveMotor.getPosition().getValueAsDouble());
+        return roundsToMeters(this.m_driveMotor.getPosition().getValueAsDouble());
     }
 
     public CANcoder getSteerEncoder() 
@@ -279,8 +275,8 @@ public class SwerveModule extends SubsystemBase {
     @Override
     public void periodic() { // todo logs needed - ShuffleBoard
         this.m_moduleState.angle = Rotation2d.fromDegrees(this.m_steerEncoder.getAbsolutePosition().getValueAsDouble() / 360);
-        this.m_moduleState.speedMetersPerSecond = rpmToMps(this.m_driveMotor.getRotorVelocity().getValueAsDouble() * 60);
-
+        //the function get() returns the speed in percentages, this is kinda ugly but it might work
+        this.m_moduleState.speedMetersPerSecond = rpmToMps((Double)this.m_driveMotor.get() * 60);
     }
 
     @Override

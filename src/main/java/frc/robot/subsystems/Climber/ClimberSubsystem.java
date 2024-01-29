@@ -10,9 +10,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climber;
-import frc.robot.Robot;
-
-import edu.wpi.first.wpilibj.XboxController;
 
 public class ClimberSubsystem extends SubsystemBase {
     private final CANSparkMax m_leftMotor;

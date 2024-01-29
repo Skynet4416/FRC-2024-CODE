@@ -1,20 +1,20 @@
 package frc.robot.commands;
 
+import frc.robot.Constants;
+import frc.robot.Constants.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Climber.ClimberSubsystem;
+import frc.robot.subsystems.Intake.Intake1Motor;
 
-public class ClimbCommand extends Command 
+public class Intake1MotorCommand extends Command
 {
-    private final ClimberSubsystem m_ClimberSubsystem;
+    private final Intake1Motor m_intake;
 
-    public ClimbCommand(ClimberSubsystem climberSubsystem)
+    public Intake1MotorCommand(Intake1Motor intake)
     {
-        this.m_ClimberSubsystem = climberSubsystem;
+        this.m_intake = intake;
 
-        addRequirements(climberSubsystem);
+        addRequirements(intake);
     }
-
-
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {}
@@ -23,8 +23,7 @@ public class ClimbCommand extends Command
     @Override
     public void execute() 
     {
-        m_ClimberSubsystem.extendTelescope();
-        m_ClimberSubsystem.retractTelescope();
+        this.m_intake.SetInOpenLoop(Intake.Stats.kIntakeSpeed);
     }
 
     // Called once the command ends or is interrupted.
@@ -32,13 +31,9 @@ public class ClimbCommand extends Command
     public void end(boolean interrupted) {}
 
     // Returns true when the command should end.
+    //should we have something in there? maybe
     @Override
-    public boolean isFinished() 
-    {
-        if (m_ClimberSubsystem.isOpen()) 
-        {
-            return true;
-        }
+    public boolean isFinished() {
         return false;
     }
 }

@@ -25,7 +25,7 @@ import frc.robot.Constants.Drive;
 import frc.robot.subsystems.Swerve.SwerveModule;
 
 
-     public class DriveSubsystem extends SubsystemBase {
+public class DriveSubsystem extends SubsystemBase {
      // TODO https://github.com/CrossTheRoadElec/Phoenix6-Examples/tree/main/java/SwerveWithPathPlanner
      // TODO https://github.com/CrossTheRoadElec/SwerveDriveExample/blob/main/src/main/java/frc/robot/CTRSwerve/CTRSwerveModule.java
      private final SwerveModule m_frontLeftModule;
@@ -59,60 +59,32 @@ import frc.robot.subsystems.Swerve.SwerveModule;
 
 
      public DriveSubsystem() {
-          if (Robot.isSimulation()) 
-          {
-               this.m_frontLeftModule = new SwerveModule(
+          this.m_frontLeftModule = new SwerveModule(
                Drive.Motors.kFrontLeftDriveFalconCANID, 
                Drive.Motors.kFrontLeftSteerFalconCANID, 
                Drive.Encoders.kFrontLeftSteerEncoderCANID, 
                Drive.Stats.kFrontLeftModuleOffsetInDegrees
-               );
-               this.m_frontRightModule = new SwerveModule(
+          );
+          this.m_frontRightModule = new SwerveModule(
                Drive.Motors.kFrontRightDriveFalconCANID, 
                Drive.Motors.kFrontRightSteerFalconCANID, 
                Drive.Encoders.kFrontRightSteerEncoderCANID,
                Drive.Stats.kFrontRightModuleOffsetInDegrees
-               );
-               this.m_backLeftModule = new SwerveModule(
+          );
+          this.m_backLeftModule = new SwerveModule(
                Drive.Motors.kBackLeftDriveFalconCANID, 
                Drive.Motors.kBackLeftSteerFalconCANID, 
                Drive.Encoders.kBackLeftSteerEncoderCANID,
                Drive.Stats.kBackLeftModuleOffsetInDegrees
-               );
-               this.m_backRightModule = new SwerveModule(
+          );
+          this.m_backRightModule = new SwerveModule(
                Drive.Motors.kBackRightDriveFalconCANID, 
                Drive.Motors.kBackRightSteerFalconCANID, 
                Drive.Encoders.kBackRightSteerEncoderCANID,
                Drive.Stats.kBackRightModuleOffsetInDegrees
-               );
-          }
-          else
-          {
-               this.m_frontLeftModule = new SwerveModule(
-                    Drive.Motors.kFrontLeftDriveFalconCANID, 
-                    Drive.Motors.kFrontLeftSteerFalconCANID, 
-                    Drive.Encoders.kFrontLeftSteerEncoderCANID, 
-                    Drive.Stats.kFrontLeftModuleOffsetInDegrees
-               );
-               this.m_frontRightModule = new SwerveModule(
-                    Drive.Motors.kFrontRightDriveFalconCANID, 
-                    Drive.Motors.kFrontRightSteerFalconCANID, 
-                    Drive.Encoders.kFrontRightSteerEncoderCANID,
-                    Drive.Stats.kFrontRightModuleOffsetInDegrees
-                    );
-               this.m_backLeftModule = new SwerveModule(
-                    Drive.Motors.kBackLeftDriveFalconCANID, 
-                    Drive.Motors.kBackLeftSteerFalconCANID, 
-                    Drive.Encoders.kBackLeftSteerEncoderCANID,
-                    Drive.Stats.kBackLeftModuleOffsetInDegrees
-               );
-               this.m_backRightModule = new SwerveModule(
-                    Drive.Motors.kBackRightDriveFalconCANID, 
-                    Drive.Motors.kBackRightSteerFalconCANID, 
-                    Drive.Encoders.kBackRightSteerEncoderCANID,
-                    Drive.Stats.kBackRightModuleOffsetInDegrees
-               );
-          }
+          );
+     
+
 
           m_navX = new AHRS();
 

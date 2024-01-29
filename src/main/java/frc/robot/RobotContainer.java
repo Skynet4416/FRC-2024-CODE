@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.subsystems.Drive.DriveSubsystem;
+import frc.robot.subsystems.Intake.Intake2MotorsSubsystem;
 import frc.robot.subsystems.Auto;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
 
@@ -15,10 +16,11 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.Intake2MotorsCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,6 +34,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_driveSubsystem;
   private final ClimberSubsystem m_ClimberSubsystem;
+  private final Intake2MotorsSubsystem m_intake;
+  //i left the 2 motor intake in the robot container because its the one i think will happen eventually.
+  // private final Intake1Motor m_intake;
   private final OI oi;
   private final Auto auto;
   private final SendableChooser<Command> autoChooser;
@@ -44,6 +49,7 @@ public class RobotContainer {
   public RobotContainer() {
     this.m_driveSubsystem = new DriveSubsystem();
     this.m_ClimberSubsystem = new ClimberSubsystem();
+    this.m_intake = new Intake2MotorsSubsystem();
     this.oi = new OI();
     configureBindings();
     m_driveSubsystem.setAllModulesToZero();
@@ -72,11 +78,13 @@ public class RobotContainer {
   {  
       // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
       m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX, oi.xboxController::getLeftY, oi.xboxController::getRightX));
-      //if the b button on the xbox is pressed the climbcommand will activate
-      if(oi.xboxController.getBButtonPressed())
+      //apperantly this code makes the command activate for as long as the button is pressed.
+      if(oi.xboxController.getXButtonPressed())
       {
-        new ClimbCommand(m_ClimberSubsystem);
+        new Intake2MotorsCommand(m_intake);
       }
+      //if the b button on the xbox is pressed the climbcommand will activate
+      oi.commandXboxController.b().onTrue(new Intake2MotorsCommand(m_intake));
   }
 
   public Command getAutonomousCommand()

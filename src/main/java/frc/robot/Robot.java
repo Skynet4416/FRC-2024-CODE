@@ -98,10 +98,11 @@ public class Robot extends TimedRobot {
   }
 
   private void updateCurrentVelocity() {
-    SmartDashboard.putNumber("Swerve current velocity bl", m_robotContainer.getDriveSubsystem().get_bl().getDriveMotor().getRotorVelocity().getValueAsDouble() *60);
-    SmartDashboard.putNumber("Swerve current velocity br", m_robotContainer.getDriveSubsystem().get_br().getDriveMotor().getRotorVelocity().getValueAsDouble() *60);
-    SmartDashboard.putNumber("Swerve current velocity fl", m_robotContainer.getDriveSubsystem().get_fl().getDriveMotor().getRotorVelocity().getValueAsDouble() *60);
-    SmartDashboard.putNumber("Swerve current velocity fr", m_robotContainer.getDriveSubsystem().get_fr().getDriveMotor().getRotorVelocity().getValueAsDouble() *60);
+    //the function get() of CANSparkBase returns the speed of the motor in percents. (the percent is in primitive double and not Double so i hope it doesn't change too much)
+    SmartDashboard.putNumber("Swerve current velocity bl", m_robotContainer.getDriveSubsystem().get_bl().getDriveMotor().get() *60);
+    SmartDashboard.putNumber("Swerve current velocity br", m_robotContainer.getDriveSubsystem().get_br().getDriveMotor().get() *60);
+    SmartDashboard.putNumber("Swerve current velocity fl", m_robotContainer.getDriveSubsystem().get_fl().getDriveMotor().get() *60);
+    SmartDashboard.putNumber("Swerve current velocity fr", m_robotContainer.getDriveSubsystem().get_fr().getDriveMotor().get() *60);
   }
 
   private void updateTargetAngle() {

@@ -118,7 +118,20 @@ public final class Constants {
         
         }
     }
-
+    public static class Intake 
+    {
+        public static class Motors
+        {
+            //also the id if there is only one motor
+            public static final int kUpperMotorID = 1;
+            public static final int kLowerMotorID = 2;
+        } 
+        public static class Stats
+        {
+            //todo: set the speed needed
+            public static final double kIntakeSpeed = 0.0;
+        }  
+    }
     public static class Climber
     {
         public static class Motors 

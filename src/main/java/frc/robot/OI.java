@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -13,6 +14,8 @@ public class OI
         public final Joystick joystickLeft = new Joystick(1);
         public final Joystick joystickRight = new Joystick(2);
 
+        //this is very stupid but i think you might just only be able to make commands that activate once a button is pressed (but not only active WHILE it's pressed) is through the CommandXboxController. iiwii
+        public final CommandXboxController commandXboxController = new CommandXboxController(frc.robot.Constants.OI.kXboxControllerPort);
         public final XboxController xboxController = new XboxController(frc.robot.Constants.OI.kXboxControllerPort);
         public final JoystickButton A = new JoystickButton(xboxController, XboxController.Button.kA.value);
         // public final JoystickButton B = new JoystickButton(xboxController, XboxController.Button.kB.value);

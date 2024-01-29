@@ -10,15 +10,15 @@ import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -36,7 +36,6 @@ public class SwerveModule extends SubsystemBase {
     private final CANSparkFlex m_driveMotor;
     private final TalonFX m_steerMotor;
     private final CANcoder m_steerEncoder;
-    private final VelocityVoltage m_voltageVelocity;
     private final PositionVoltage m_voltagePosition;
 
     private SwerveModuleState m_moduleState; // current state of the module without steer offset
@@ -60,7 +59,6 @@ public class SwerveModule extends SubsystemBase {
         this.m_steerMotor = new TalonFX(steerMotorCANID);
         this.m_steerEncoder = new CANcoder(steerEncoderCANID);
 
-        this.m_voltageVelocity = new VelocityVoltage(0,0,false,0,0,false, false, false);
         this.m_voltagePosition = new PositionVoltage(0,0,false,0,0,false, false, false);
         this.m_moduleState = new SwerveModuleState(0, Rotation2d.fromDegrees(0));
 
@@ -122,14 +120,14 @@ public class SwerveModule extends SubsystemBase {
         talonConfigs.ContinuousWrap = true;
 
         this.m_driveMotor.restoreFactoryDefaults();
-        this.m_driveMotor.trans
 
-        this.m_driveMotor.getConfigurator().apply(new TalonFXConfiguration());
+        //current theory is that sparkFlex doesn't need configs. but that just a theory.
+        // this.m_driveMotor.config();
 
-        this.m_driveMotor.getConfigurator().apply(voltageConfigs);
-        this.m_driveMotor.getConfigurator().apply(statorConfigs);
-        this.m_driveMotor.getConfigurator().apply(slot0DriveConfigs);
-        this.m_driveMotor.getConfigurator().apply(driveFeedbackConfigs);
+        // this.m_driveMotor.getConfigurator().apply(voltageConfigs);
+        // this.m_driveMotor.getConfigurator().apply(statorConfigs);
+        // this.m_driveMotor.getConfigurator().apply(slot0DriveConfigs);
+        // this.m_driveMotor.getConfigurator().apply(driveFeedbackConfigs);
         
         
         this.m_steerMotor.getConfigurator().apply(voltageConfigs);
@@ -153,7 +151,7 @@ public class SwerveModule extends SubsystemBase {
      */
     public void setModuleVelocity(double target_velocity){
         this.m_targetRotorVelocity = mpsToRps(target_velocity) * 60 *Swerve.Stats.kRotorToSensorRatioDrive;
-        this.m_driveMotor.setControl(m_voltageVelocity.withVelocity(mpsToRps(target_velocity)*Swerve.Stats.kRotorToSensorRatioDrive));
+        this.m_driveMotor.setVoltage(target_velocity*Swerve.Stats.kRotorToSensorRatioDrive*Swerve.Stats.kVoltsPerRPM);
     }
 
     /**
@@ -204,6 +202,11 @@ public class SwerveModule extends SubsystemBase {
         return (mpsValue / (2 * Math.PI * Swerve.Stats.wheelRadiusMeters)) * 60;
     }
 
+//     //feels like something that should be here.
+//     public void resetOdometry() {
+//         m_odometry.resetPosition(m_navX.getRotation2d(), m_modulePositions, m_currentPose);
+// }
+
     /**
      * Convertion from Meters per second to rounds per second
      * @param value 
@@ -237,7 +240,7 @@ public class SwerveModule extends SubsystemBase {
         return this.m_steerMotor;
     }
     public double getDriveDistance() {
-        return roundsToMeters(this.m_driveMotor.getPosition().getValueAsDouble());
+        return roundsToMeters((Double)this.m_driveMotor.getEncoder().getPosition());
     }
 
     public CANcoder getSteerEncoder() 

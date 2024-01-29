@@ -27,11 +27,11 @@ import frc.robot.subsystems.Drive.DriveSubsystem;
 public class VisionSubsystem extends SubsystemBase {
     private PhotonCamera m_camera;
     private AprilTagFieldLayout m_layout;
-    private SwerveDrivePoseEstimator m_poseEstimator;
+    //this is vision so the pose estimator is vision based fight me
+    private PhotonPoseEstimator m_poseEstimator;
     private PhotonPipelineResult m_result;
-// }
 
-//     public VisionSubsystem() {
+    public VisionSubsystem() {
 //         this.m_camera = new PhotonCamera("aizen");
 //         this.m_result = getLatestResult();
 //         try {
@@ -48,12 +48,13 @@ public class VisionSubsystem extends SubsystemBase {
 
 //     public void updatePoseEstimator()
 //     {
-//         m_poseEstimator.update(getHeading(), SwerveModulePosition)
+//         m_poseEstimator.update();
 //         var res = m_camera.getLatestResult();
 //         if (res.hasTargets()) {
 //             var imageCaptureTime = res.getTimestampSeconds();
 //             var camToTargetTrans = res.getBestTarget().getBestCameraToTarget();
 //             var camPose = Vision.kFarTargetPose.transformBy(camToTargetTrans.inverse());
+//             //this function might???? not even exist???? though they talked about it in their docs????
 //             m_poseEstimator.addVisionMeasurement(
 //                     camPose.transformBy(Vision.transformCamera).toPose2d(), imageCaptureTime);
 //     }
@@ -75,6 +76,8 @@ public class VisionSubsystem extends SubsystemBase {
 //         }
 //    }
 
+
+
 //     public PhotonPipelineResult getLatestResult() {
 //         return m_camera.getLatestResult();
 //     }
@@ -86,10 +89,6 @@ public class VisionSubsystem extends SubsystemBase {
 //     public PhotonTrackedTarget getTarget() {
 //         return m_camera.getLatestResult().getBestTarget();
 //     }
-
-//     public void resetOdometry() {
-//         m_odometry.resetPosition(m_navX.getRotation2d(), m_modulePositions, m_currentPose);
-// }
 //     @Override
 //     public void periodic() {
 //         //this really should be elsewhere
@@ -108,4 +107,5 @@ public class VisionSubsystem extends SubsystemBase {
 //     public void simulationPeriodic() {
 //         // This method will be called once per scheduler run during simulation
 //     }
- }
+  }
+}

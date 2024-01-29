@@ -89,6 +89,9 @@ public final class Constants {
         }
 
         public static class Stats {
+            //todo: change to the actual ratio of the neo vortex
+            public static final double kVoltsPerRPM = 0;    
+
             public static final double kMaxVoltage = 12.0;
             public static final double kStatorCurrentLimit = 35.0;
             public static final double kSupplyCurrentLimit = 35.0;

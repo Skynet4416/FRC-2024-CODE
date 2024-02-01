@@ -126,7 +126,7 @@ public final class Constants {
         public static class Motors
         {
             //also the id if there is only one motor
-            public static final int kUpperMotorID = 1;
+            public static final int kUpperMotorID = 89;
             public static final int kLowerMotorID = 2;
         } 
         public static class Stats
@@ -146,8 +146,8 @@ public final class Constants {
         }
         public static class Motors 
         {
-            public static final int kRightHookMotorID = 0;
-            public static final int kLeftHookMotorID = 0;
+            public static final int kRightHookMotorID = 99;
+            public static final int kLeftHookMotorID = 5;
         }
 
         public static class Stats {
@@ -322,7 +322,7 @@ public final class Constants {
     {
         public static final int kJoystickPort = 0;
         //todo: change to actual id
-        public static final int leadProtoMotorID = 0;
-        public static final int followProtoMotorID = 0;    
+        public static final int leadProtoMotorID = 12;
+        public static final int followProtoMotorID = 13;    
     }
 }

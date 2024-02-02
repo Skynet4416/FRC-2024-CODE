@@ -1,13 +1,13 @@
-package frc.robot.commands;
+package frc.robot.commands.Climb;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
 
-public class ClimbCommand extends Command 
+public class OpenTelescopCommand extends Command 
 {
     private final ClimberSubsystem m_ClimberSubsystem;
 
-    public ClimbCommand(ClimberSubsystem climberSubsystem)
+    public OpenTelescopCommand(ClimberSubsystem climberSubsystem)
     {
         this.m_ClimberSubsystem = climberSubsystem;
 
@@ -19,14 +19,7 @@ public class ClimbCommand extends Command
     @Override
     public void initialize() 
     {
-       if(m_ClimberSubsystem.isOpen())
-       {
-            m_ClimberSubsystem.retractTelescope();
-       } 
-       else
-       {
-            m_ClimberSubsystem.extendTelescope();
-       }
+       m_ClimberSubsystem.extendTelescope();
     }
 
     // Called every time the scheduler runs while the command is scheduled.

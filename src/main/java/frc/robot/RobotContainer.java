@@ -18,9 +18,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.ClimbCommand;
-import frc.robot.commands.DriveCommand;
-import frc.robot.commands.Intake2MotorsCommand;
+import frc.robot.commands.Intake.*;
+import frc.robot.commands.Climb.CloseTelescopCommand;
+import frc.robot.commands.Climb.OpenTelescopCommand;
+import frc.robot.commands.Drive.DriveCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -78,11 +79,11 @@ public class RobotContainer {
   {  
       // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
       m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX, oi.xboxController::getLeftY, oi.xboxController::getRightX));
-      //apperantly this code makes the command activate for as long as the button is pressed.
-      if(oi.xboxController.getXButtonPressed())
-      {
-        new Intake2MotorsCommand(m_intake);
-      }
+      
+      //if the a button is pressed, the climb will extend. once it's not, the climb will retract.
+      oi.commandXboxController.a().onTrue(new OpenTelescopCommand(m_ClimberSubsystem));
+      oi.commandXboxController.a().onFalse(new CloseTelescopCommand(m_ClimberSubsystem));
+
       //if the b button on the xbox is pressed the climbcommand will activate
       oi.commandXboxController.b().onTrue(new Intake2MotorsCommand(m_intake));
   }

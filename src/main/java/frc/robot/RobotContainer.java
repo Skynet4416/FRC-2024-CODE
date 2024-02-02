@@ -32,14 +32,16 @@ public class RobotContainer {
   // ? https://www.chiefdelphi.com/t/why-do-many-teams-put-a-m-in-front-of-many-variable-names/377126
   // ? this is why i put m_(variable name)
   // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem m_driveSubsystem;
+  //drive subsystem comment
+  // private final DriveSubsystem m_driveSubsystem;
   private final ClimberSubsystem m_ClimberSubsystem;
   private final Intake2MotorsSubsystem m_intake;
   //i left the 2 motor intake in the robot container because its the one i think will happen eventually.
   // private final Intake1Motor m_intake;
   private final OI oi;
-  private final Auto auto;
-  private final SendableChooser<Command> autoChooser;
+  //drive subsystem comment
+  // private final Auto auto;
+  // private final SendableChooser<Command> autoChooser;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   // private final CommandXboxController m_driverController =
@@ -47,24 +49,28 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    this.m_driveSubsystem = new DriveSubsystem();
+    //drive subsystem comment
+    // this.m_driveSubsystem = new DriveSubsystem();
     this.m_ClimberSubsystem = new ClimberSubsystem();
     this.m_intake = new Intake2MotorsSubsystem();
     this.oi = new OI();
     configureBindings();
-    m_driveSubsystem.setAllModulesToZero();
-    this.auto = new Auto(m_driveSubsystem);
-     this.autoChooser = AutoBuilder.buildAutoChooser();
+    //drive subsystem comment
+    // m_driveSubsystem.setAllModulesToZero();
+    // this.auto = new Auto(m_driveSubsystem);
+    //  this.autoChooser = AutoBuilder.buildAutoChooser();
 
+     //drive subsystem comment
     //change to shuffleBoard later if you want
     // Another option that allows you to specify the default auto by its name
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-     SmartDashboard.putData("Auto Chooser", autoChooser);
+    //  SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
-  public DriveSubsystem getDriveSubsystem(){
-    return m_driveSubsystem;
-  }
+  //drive subsystem comment
+  // public DriveSubsystem getDriveSubsystem(){
+  //   return m_driveSubsystem;
+  // }
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -77,7 +83,8 @@ public class RobotContainer {
   private void configureBindings() 
   {  
       // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
-      m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX, oi.xboxController::getLeftY, oi.xboxController::getRightX));
+      //drive subsystem comment
+      // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX, oi.xboxController::getLeftY, oi.xboxController::getRightX));
       //apperantly this code makes the command activate for as long as the button is pressed.
       if(oi.xboxController.getXButtonPressed())
       {
@@ -87,16 +94,17 @@ public class RobotContainer {
       oi.commandXboxController.b().onTrue(new Intake2MotorsCommand(m_intake));
   }
 
-  public Command getAutonomousCommand()
-  {
-    //this is for auto-based autonomous, we relay more on paths   
-    return autoChooser.getSelected();
+  //drive subsystem comment
+  // public Command getAutonomousCommand()
+  // {
+  //   //this is for auto-based autonomous, we relay more on paths   
+  //   return autoChooser.getSelected();
       // // Load the path you want to follow using its name in the GUI
       //   PathPlannerPath path = PathPlannerPath.fromPathFile("path 1");
 
       //   // Create a path following command using AutoBuilder. This will also trigger event markers.
       //   return AutoBuilder.followPath(path);
-  }
+  //}
 
   // i think the first getAutonomousCommand lets the driver choose the auto (correct me if i'm wrong) so that's why it stays, but the other one is also here if it's more convinient 
   //  public Command getAutonomousCommand() 

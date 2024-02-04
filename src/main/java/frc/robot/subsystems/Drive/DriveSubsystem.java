@@ -19,13 +19,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Constants.Drive;
 import frc.robot.subsystems.Drive.Swerve.*;
+import frc.robot.subsystems.Vision.VisionObserver;
 
 
-public class DriveSubsystem extends SubsystemBase {
+public class DriveSubsystem extends SubsystemBase implements VisionObserver{
      // TODO https://github.com/CrossTheRoadElec/Phoenix6-Examples/tree/main/java/SwerveWithPathPlanner
      // TODO https://github.com/CrossTheRoadElec/SwerveDriveExample/blob/main/src/main/java/frc/robot/CTRSwerve/CTRSwerveModule.java
      private final SwerveModule m_frontLeftModule;
@@ -42,6 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
      private Pose2d m_currentPose;
      private SwerveDrivePoseEstimator m_poseEstimator;
      private double m_targetAngle;
+     private final Field2d field2d = new Field2d();
 
      public SwerveModule get_fl(){
           return m_frontLeftModule;
@@ -107,7 +110,6 @@ public class DriveSubsystem extends SubsystemBase {
           m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(), m_modulePositions, m_currentPose);
           m_lastPose = m_poseEstimator.getEstimatedPosition();
           m_navXoffset = (double)m_navX.getCompassHeading();
-          // m_visionSubsystem = new VisionSubsystem();
           m_targetAngle = 0.0;
 
      }
@@ -246,9 +248,29 @@ public class DriveSubsystem extends SubsystemBase {
           return (angleWithOffset > 360) ? angleWithOffset - 360 : (angleWithOffset < 0) ? angleWithOffset + 360 : angleWithOffset;
      }
 
+     /**
+      * overrides the addVisionMeasurement method from the implemented VisionObserver
+      */
+     @Override
+     public void addVisionMeasurement(EstimatedRobotPose pos) 
+     {
+        m_poseEstimator.addVisionMeasurement(pos.estimatedPose.toPose2d(), pos.timestampSeconds);
+     }
+
+     /**
+      * overrides the getCurrentPosition method from the implemented VisionObserver
+      */
+     @Override
+    public Pose2d getCurrentPosition() {
+        return m_poseEstimator.getEstimatedPosition();
+    }
+
      @Override
      public void periodic()
      {
+          m_poseEstimator.update(getGyroAngleInRotation2d(), m_modulePositions);
+          field2d.setRobotPose(getCurrentPosition());
+
           m_modulePositions = new SwerveModulePosition[]{ 
                new SwerveModulePosition(m_frontLeftModule.getDriveDistance(), m_frontLeftModule.getSteerAngle()), 
                new SwerveModulePosition(m_frontRightModule.getDriveDistance(), m_frontRightModule.getSteerAngle()),

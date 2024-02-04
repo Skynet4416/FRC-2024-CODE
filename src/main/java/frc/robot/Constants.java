@@ -12,6 +12,9 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import com.pathplanner.lib.util.*;
+
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
 import com.pathplanner.lib.path.*;
 
 
@@ -278,7 +281,10 @@ public final class Constants {
     //cool it's still here while the vision isn't.
     public static class Vision
     {
-        public static final Translation3d robotMiddleToCamera = new Translation3d(0, 0, 0);
+        public static class Stats
+        {
+            public static final String cameraName = "Aizen";
+            public static final Translation3d robotMiddleToCamera = new Translation3d(0, 0, 0);
         public static final Rotation3d angleCamera = new Rotation3d(0, 0, 0);
         public static final Transform3d transformCamera = new Transform3d(robotMiddleToCamera, angleCamera);
         //this value isn't intentional and can be changed, i just copied this line from photonVision's example
@@ -289,11 +295,14 @@ public final class Constants {
             Units.feetToMeters(27 / 2) - Units.inchesToMeters(43.75) - Units.inchesToMeters(48.0 / 2.0);
         public static final double kFarTgtZPos =
             (Units.inchesToMeters(98.19) - targetHeight) / 2 + targetHeight;
-
-        public static final Pose3d kFarTargetPose =
+            public static final Pose3d kFarTargetPose =
             new Pose3d(
                     new Translation3d(kFarTgtXPos, kFarTgtYPos, kFarTgtZPos),
                     new Rotation3d(0.0, 0.0, Units.degreesToRadians(180)));
+
+        }
+        public static boolean enable =true;
+        public static PoseStrategy poseStrategy;
 
     }
 

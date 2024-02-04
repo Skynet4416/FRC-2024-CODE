@@ -5,6 +5,7 @@
 package frc.robot.subsystems.Vision;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,90 +23,55 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Vision;
-import frc.robot.subsystems.Drive.DriveSubsystem;
 
 public class VisionSubsystem extends SubsystemBase {
-    private PhotonCamera m_camera;
-    private AprilTagFieldLayout m_layout;
-    //this is vision so the pose estimator is vision based fight me
-    private PhotonPoseEstimator m_poseEstimator;
-    private PhotonPipelineResult m_result;
+    private final PhotonCamera photonCamera;
+    private final PhotonPoseEstimator photonPoseEstimator;
+    private final ArrayList<VisionObserver> observers;
 
-    public VisionSubsystem() {
-//         this.m_camera = new PhotonCamera("aizen");
-//         this.m_result = getLatestResult();
-//         try {
-//             this.m_layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
-//         } catch (IOException exception) {}
-//         this.m_poseEstimator = new PhotonPoseEstimator(m_layout, PoseStrategy.AVERAGE_BEST_TARGETS, Vision.transformCamera);
+    public VisionSubsystem(ArrayList<VisionObserver> observers) {
+        AprilTagFieldLayout layout = null;
+        try {
+            layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
+        } catch (IOException e) {
+            System.out.println("cant load layout");
+        }
+        this.observers = observers;
+        photonPoseEstimator = new PhotonPoseEstimator(layout, Constants.Vision.poseStrategy, Constants.Vision.Stats.transformCamera);
+        photonCamera = new PhotonCamera(Constants.Vision.Stats.cameraName);
+    }
 
-//     }
-//      //TODO
-//     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
-//         m_poseEstimator.setReferencePose(prevEstimatedRobotPose);
-//         return updatePoseEstimator();
-//     }
+    public boolean aprilTagHasTarget() {
+        if (Constants.Vision.enable) {
+            return photonCamera.getLatestResult().hasTargets();
 
-//     public void updatePoseEstimator()
-//     {
-//         m_poseEstimator.update();
-//         var res = m_camera.getLatestResult();
-//         if (res.hasTargets()) {
-//             var imageCaptureTime = res.getTimestampSeconds();
-//             var camToTargetTrans = res.getBestTarget().getBestCameraToTarget();
-//             var camPose = Vision.kFarTargetPose.transformBy(camToTargetTrans.inverse());
-//             //this function might???? not even exist???? though they talked about it in their docs????
-//             m_poseEstimator.addVisionMeasurement(
-//                     camPose.transformBy(Vision.transformCamera).toPose2d(), imageCaptureTime);
-//     }
+        }
+        return false;
+    }
 
-//     public Optional<PhotonTrackedTarget> getTargetById(int id) {
-//         List<PhotonTrackedTarget> targets = m_result.getTargets();
-//         for (PhotonTrackedTarget target : targets) {
-//             if (target.getFiducialId() == id) { 
-//                 return Optional.of(target);
-//             }
-//         }
-//         return Optional.empty();
-//     }
+    public EstimatedRobotPose getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+        if (Vision.enable) {
+            photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
+            Optional<EstimatedRobotPose> pos = photonPoseEstimator.update();
+            if (pos.isPresent()) {
+                return pos.get();
+            } else {
+                System.out.println("CAMERA DISCONNECTED!!!!");
+            }
+        }
+        return null;
 
-//     public void addVisionMeasurements(Optional<EstimatedRobotPose> visionOptionalPose) {
-//         if (visionOptionalPose.isPresent()) {
-//              EstimatedRobotPose pose = visionOptionalPose.get();
-//              m_poseEstimator.addVisionMeasurement(pose.estimatedPose.toPose2d(), pose.timestampSeconds);
-//         }
-//    }
+    }
+
+    @Override
+    public void periodic() {
+        if (aprilTagHasTarget()) {
+            for (VisionObserver observer : observers
+            ) {
+                observer.addVisionMeasurement(getEstimatedGlobalPose(observer.getCurrentPosition()));
+            }
+        }
+    }
 
 
-
-//     public PhotonPipelineResult getLatestResult() {
-//         return m_camera.getLatestResult();
-//     }
-
-//     public boolean hasTarget() {
-//         return m_camera.getLatestResult().hasTargets();
-//     }
-
-//     public PhotonTrackedTarget getTarget() {
-//         return m_camera.getLatestResult().getBestTarget();
-//     }
-//     @Override
-//     public void periodic() {
-//         //this really should be elsewhere
-//         m_odometry.update(getGyroAngleInRotation2d(), m_modulePositions);
-//           SwerveModuleState[] states = Drive.Stats.kinematics.toSwerveModuleStates(m_swerveSpeeds);
-
-//         m_result = getLatestResult();
-
-//         m_poseEstimator.update(getGyroAngleInRotation2d(), m_modulePositions);
-//           addVisionMeasurements(m_visionSubsystem.getEstimatedGlobalPose(m_lastPose));
-//           m_lastPose = m_poseEstimator.getEstimatedPosition();  
-//         // TODO
-//     }
-
-//     @Override
-//     public void simulationPeriodic() {
-//         // This method will be called once per scheduler run during simulation
-//     }
-  }
 }

@@ -130,13 +130,25 @@ public final class Constants {
         {
             //also the id if there is only one motor
             public static final int kUpperMotorID = 1;
-            public static final int kLowerMotorID = 2;
         } 
         public static class Stats
         {
             //todo: set the speed needed
             public static final double kIntakeSpeed = 0.0;
         }  
+    }
+    public static class Shooter 
+    {
+        public static class Motors 
+        {
+            public static final int ShooterMotorID = 69;
+            
+        }
+        public static class Stats
+        {
+            //todo: set the speed needed
+            public static final double kIShooterSpeed = 0.0;
+        }      
     }
     public static class Climber
     {

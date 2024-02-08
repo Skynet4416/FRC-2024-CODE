@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.subsystems.Drive.DriveSubsystem;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Auto;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
 
@@ -34,9 +35,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_driveSubsystem;
   // private final ClimberSubsystem m_ClimberSubsystem;
-  // private final Intake2MotorsSubsystem m_intake;
-  // //i left the 2 motor intake in the robot container because its the one i think will happen eventually.
-  // // private final Intake1Motor m_intake;
+  // private final IntakeSubsystem m_IntakeSubsystem;
   private final OI oi;
   // private final Auto auto;
   // private final SendableChooser<Command> autoChooser;
@@ -49,7 +48,7 @@ public class RobotContainer {
   public RobotContainer() {
     this.m_driveSubsystem = new DriveSubsystem();
     // this.m_ClimberSubsystem = new ClimberSubsystem();
-    // this.m_intake = new Intake2MotorsSubsystem();
+    // this.m_IntakeSubsystem = new IntakeSubsystem();
     this.oi = new OI();
     configureBindings();
     m_driveSubsystem.setAllModulesToZero();
@@ -84,7 +83,7 @@ public class RobotContainer {
       // oi.commandXboxController.a().onFalse(new CloseTelescopCommand(m_ClimberSubsystem));
 
       // //if the b button on the xbox is pressed the climbcommand will activate
-      // oi.commandXboxController.b().onTrue(new Intake2MotorsCommand(m_intake));
+      // oi.commandXboxController.b().onTrue(new IntakeSpinUp(m_IntakeSubsystem, false));
   }
 
   // public Command getAutonomousCommand()

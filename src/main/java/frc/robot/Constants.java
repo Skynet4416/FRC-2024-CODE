@@ -49,7 +49,7 @@ public final class Constants {
                 /**
                  * Proportional tuning - error
                  */
-                public static final double kP = 0.115;
+                public static final double kP = 0.0115;
                 /**
                  * Integral tuning - learning
                  */
@@ -242,13 +242,13 @@ public final class Constants {
 
         public static class Motors {
             public static final int kFrontLeftDriveFalconCANID = 3;
-            public static final int kFrontLeftSteerFalconCANID = 9;
+            public static final int kFrontLeftSteerFalconCANID = 10;
 
             public static final int kFrontRightDriveFalconCANID = 5;
             public static final int kFrontRightSteerFalconCANID = 6;
 
             public static final int kBackLeftDriveFalconCANID = 4;
-            public static final int kBackLeftSteerFalconCANID = 10;
+            public static final int kBackLeftSteerFalconCANID = 9;
 
             public static final int kBackRightDriveFalconCANID = 8;
             public static final int kBackRightSteerFalconCANID = 7;
@@ -258,9 +258,9 @@ public final class Constants {
 
         public static class Encoders {
             // ? Only the steer encoder exists (seperate from the encoder inside of the Falcon 500 because of ratio problems between the wheels of the swerve modules)
-            public static final int kFrontLeftSteerEncoderCANID = 19;
+            public static final int kFrontLeftSteerEncoderCANID = 21;
             public static final int kFrontRightSteerEncoderCANID = 20;
-            public static final int kBackLeftSteerEncoderCANID = 21;
+            public static final int kBackLeftSteerEncoderCANID = 19;
             public static final int kBackRightSteerEncoderCANID = 18;
         }
 

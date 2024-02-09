@@ -13,7 +13,7 @@ public class OpenTelescopCommand extends Command
 
         addRequirements(climberSubsystem);
     }
-
+    
 
     // Called when the command is initially scheduled.
     @Override
@@ -33,6 +33,7 @@ public class OpenTelescopCommand extends Command
     public void end(boolean interrupted) {}
 
     // Returns true when the command should end.
+    //TODO: return true if the climber has extended;
     @Override
     public boolean isFinished() 
     {

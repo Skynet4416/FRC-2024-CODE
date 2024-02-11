@@ -27,6 +27,23 @@ import com.pathplanner.lib.path.*;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static class Arm{
+        public static class Motors{
+            public static final int kLeftMotorID = 0;
+            public static final int kRightMotorID = 0;
+
+        }
+        public static class Encoders{
+            public static final int kLeftEncoderID = 0;
+            public static final int kRightEncoderID = 0;
+        }
+        public static class Pid {
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        }
+
+    }
 
     public static class Swerve {
 
@@ -129,7 +146,8 @@ public final class Constants {
         public static class Motors
         {
             //also the id if there is only one motor
-            public static final int kUpperMotorID = 1;
+            public static final int kUpperMotorLeftID = 0;
+            public static final int kUpperMotorRightID = 0;
         } 
         public static class Stats
         {
@@ -141,14 +159,21 @@ public final class Constants {
     {
         public static class Motors 
         {
-            public static final int ShooterMotorID = 69;
+            public static final int ShooterMotorLeftID = 69;
+            public static final int ShooterMotorRightID = 69;
             
         }
         public static class Stats
         {
             //todo: set the speed needed
             public static final double kIShooterSpeed = 0.0;
-        }      
+        }
+        public static class PID
+        {
+            public static final double kP = 0;
+            public static final double kI = 0;
+            public static final double kD = 0;
+        }
     }
     public static class Climber
     {

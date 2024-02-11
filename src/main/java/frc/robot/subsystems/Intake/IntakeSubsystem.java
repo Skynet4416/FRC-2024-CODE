@@ -11,20 +11,24 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class IntakeSubsystem extends SubsystemBase
 {
-    private final CANSparkMax m_motor;
+    private final CANSparkMax m_motor_left,m_motor_right;
 
     public IntakeSubsystem()
     {
-        this.m_motor = new CANSparkMax(Intake.Motors.kUpperMotorID,CANSparkLowLevel.MotorType.kBrushless);
+        this.m_motor_left = new CANSparkMax(Intake.Motors.kUpperMotorLeftID,CANSparkLowLevel.MotorType.kBrushless);
+        this.m_motor_right = new CANSparkMax(Intake.Motors.kUpperMotorRightID,CANSparkLowLevel.MotorType.kBrushless);
     }
 
     //does this subsystem need configuration? probably? maybe?
 
     public void SetSpeed(double speed)
     {
-        m_motor.set(speed);
+        m_motor_left.set(speed);
+        m_motor_right.set(speed*-1);
     }
-    public void setVoltage(double voltage){
-        m_motor.setVoltage(voltage);;
+    public void setVoltage(double voltage)
+    {
+        m_motor_left.setVoltage(voltage);
+        m_motor_right.setVoltage(voltage);
     }
 }

@@ -82,6 +82,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Swerve c br", m_robotContainer.getDriveSubsystem().get_br().getModuleState().angle.getDegrees());
     SmartDashboard.putNumber("Swerve c fl", m_robotContainer.getDriveSubsystem().get_fl().getModuleState().angle.getDegrees());
     SmartDashboard.putNumber("Swerve c fr", m_robotContainer.getDriveSubsystem().get_fr().getModuleState().angle.getDegrees());
+ 
   }
 
   private void updateTargetVelocity() {
@@ -89,12 +90,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Swerve target velocity br", m_robotContainer.getDriveSubsystem().get_br().getTargetRotorVelocityRPM());
     SmartDashboard.putNumber("Swerve target velocity fl", m_robotContainer.getDriveSubsystem().get_fl().getTargetRotorVelocityRPM());
     SmartDashboard.putNumber("Swerve target velocity fr", m_robotContainer.getDriveSubsystem().get_fr().getTargetRotorVelocityRPM());
+  
   }
    private void updateCurrentDistance() {
     SmartDashboard.putNumber("Swerve distance bl", m_robotContainer.getDriveSubsystem().get_bl().getDriveDistance());
     SmartDashboard.putNumber("Swerve distance br", m_robotContainer.getDriveSubsystem().get_br().getDriveDistance());
     SmartDashboard.putNumber("Swerve distance fl", m_robotContainer.getDriveSubsystem().get_fl().getDriveDistance());
     SmartDashboard.putNumber("Swerve distance fr", m_robotContainer.getDriveSubsystem().get_fr().getDriveDistance());
+  
   }
 
   private void updateCurrentVelocity() {
@@ -125,7 +128,7 @@ private void resetSmartValues()
   SmartDashboard.putNumber("Swerve c br", m_robotContainer.getDriveSubsystem().get_br().getModuleState().angle.getDegrees());
   SmartDashboard.putNumber("Swerve c fl", m_robotContainer.getDriveSubsystem().get_fl().getModuleState().angle.getDegrees());
   SmartDashboard.putNumber("Swerve c fr", m_robotContainer.getDriveSubsystem().get_fr().getModuleState().angle.getDegrees());
-  //the wanted speed
+  // the wanted speed
   SmartDashboard.putNumber("Swerve target velocity bl", 0);
   SmartDashboard.putNumber("Swerve target velocity br",0);
   SmartDashboard.putNumber("Swerve target velocity fl", 0);

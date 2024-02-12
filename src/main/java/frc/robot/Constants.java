@@ -65,8 +65,10 @@ public final class Constants {
 
                 /**
                  * Proportional tuning - error
+                 * Lower the kP
                  */
-                public static final double kP = 0.0115;
+                
+                public static final double kP = 0.0005;
                 /**
                  * Integral tuning - learning
                  */

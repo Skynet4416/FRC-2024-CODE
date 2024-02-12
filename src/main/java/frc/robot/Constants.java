@@ -31,7 +31,13 @@ public final class Constants {
         public static class Motors{
             public static final int kLeftMotorID = 0;
             public static final int kRightMotorID = 0;
+            }
 
+        public static class Stats{ 
+            public static final double encoderOffset = 0.0;
+            public static final double gearRatio = 1/25.0;
+            public static final double ampAngle = 110;
+            public static final double speakerAngle = 10;
         }
         public static class Encoders{
             public static final int kLeftEncoderID = 0;

@@ -14,29 +14,30 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Arm;
 public class ArmSubsystem extends SubsystemBase {
     /** Creates a new ExampleSubsystem. */
     private final CANSparkMax m_motor_left, m_motor_right;
     private final DutyCycleEncoder m_left_encoder;
     private final SparkPIDController m_Arm_Pid;
     private final RelativeEncoder m_Arm_Encoder;
-    private static final double encoderOffset = 0.0;
-    private static final double gearRatio = 1/25.0;
 
     public ArmSubsystem() {
-        m_motor_left = new CANSparkMax(Constants.Arm.Motors.kLeftMotorID,MotorType.kBrushless);
-        m_motor_right = new CANSparkMax(Constants.Arm.Motors.kRightMotorID, MotorType.kBrushless);
-        DigitalInput Left_encoder_input = new DigitalInput(Constants.Arm.Encoders.kLeftEncoderID);
+        m_motor_left = new CANSparkMax(Arm.Motors.kLeftMotorID,MotorType.kBrushless);
+        m_motor_right = new CANSparkMax(Arm.Motors.kRightMotorID, MotorType.kBrushless);
+        DigitalInput Left_encoder_input = new DigitalInput(Arm.Encoders.kLeftEncoderID);
         m_motor_right.follow(m_motor_left);
+        //the left encoder is not the encoder of the left motor but an external encoder. the arm encoder is the encoder of the left motor.
         m_left_encoder = new DutyCycleEncoder(Left_encoder_input);
         m_Arm_Pid = m_motor_left.getPIDController();
-        m_Arm_Pid.setP(Constants.Arm.Pid.kP);
-        m_Arm_Pid.setI(Constants.Arm.Pid.kI);
-        m_Arm_Pid.setD(Constants.Arm.Pid.kD);
+        m_Arm_Pid.setP(Arm.Pid.kP);
+        m_Arm_Pid.setI(Arm.Pid.kI);
+        m_Arm_Pid.setD(Arm.Pid.kD);
         m_Arm_Encoder = m_motor_left.getEncoder();
     }
     public void init() {
-        double actual = (m_left_encoder.getAbsolutePosition() - encoderOffset)*gearRatio;
+        //in this the external encoder sets the left motor encoder
+        double actual = (m_left_encoder.getAbsolutePosition() - Arm.Stats.encoderOffset)*Arm.Stats.gearRatio;
         m_Arm_Encoder.setPosition(actual);
     }
     /**
@@ -50,25 +51,7 @@ public class ArmSubsystem extends SubsystemBase {
         m_Arm_Pid.setReference(TargetAngle, ControlType.kPosition);
         
     }
-    public Command exampleMethodCommand() {
-        // Inline construction of command goes here.
-        // Subsystem::RunOnce implicitly requires `this` subsystem.
-        return runOnce(
-                () -> {
-                    /* one-time action goes here */
-                });
-    }
 
-    /**
-     * An example method querying a boolean state of the subsystem (for example, a
-     * digital sensor).
-     *
-     * @return value of some boolean subsystem state, such as a digital sensor.
-     */
-    public boolean exampleCondition() {
-        // Query some boolean state, such as a digital sensor.
-        return false;
-    }
 
     @Override
     public void periodic() {

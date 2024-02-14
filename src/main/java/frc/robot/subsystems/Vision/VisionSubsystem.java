@@ -49,13 +49,34 @@ public class VisionSubsystem extends SubsystemBase {
         return false;
     }
 
+    /**
+     * gets the distance from the closest (best) april tag 
+     * @return
+     */
+    public double getDistanceInCM()
+    {
+        var result = photonCamera.getLatestResult();
+        PhotonTrackedTarget target = result.getBestTarget();
+        double angle = target.getPitch();
+        return Math.tan(angle)*(Vision.Stats.targetHeightInCM-Vision.Stats.CameraHeightInCM);
+    }
+
+    public double getAprilTagYaw()
+    {
+        var result = photonCamera.getLatestResult();
+        PhotonTrackedTarget target = result.getBestTarget();
+        return target.getYaw();
+    }
+
     public EstimatedRobotPose getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         if (Vision.enable) {
             photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
             Optional<EstimatedRobotPose> pos = photonPoseEstimator.update();
             if (pos.isPresent()) {
                 return pos.get();
-            } else {
+            } 
+            else {
+                //todo: change to shuffleboard/smart dashboard message
                 System.out.println("CAMERA DISCONNECTED!!!!");
             }
         }
@@ -66,9 +87,16 @@ public class VisionSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (aprilTagHasTarget()) {
-            for (VisionObserver observer : observers
-            ) {
+            for (VisionObserver observer : observers) {
                 observer.addVisionMeasurement(getEstimatedGlobalPose(observer.getCurrentPosition()));
+            }
+        }
+        else
+        {
+            for (VisionObserver observer : observers)
+            {
+                //other interface function meaning: we have no tags
+                observer.hasNoTags();
             }
         }
     }

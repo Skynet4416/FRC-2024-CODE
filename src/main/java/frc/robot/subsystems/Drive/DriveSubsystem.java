@@ -264,10 +264,14 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
       * overrides the addVisionMeasurement method from the implemented VisionObserver
       */
      @Override
-     public void addVisionMeasurement(EstimatedRobotPose pos) {
+     public void addVisionMeasurement(EstimatedRobotPose pos) 
+     {
           m_poseEstimator.addVisionMeasurement(pos.estimatedPose.toPose2d(), pos.timestampSeconds);
      }
 
+     @Override
+     public void hasNoTags()
+     { }
      /**
       * overrides the getCurrentPosition method from the implemented VisionObserver
       */

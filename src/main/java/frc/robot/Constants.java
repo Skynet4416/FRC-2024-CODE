@@ -330,16 +330,17 @@ public final class Constants {
         {
             public static final String cameraName = "Aizen";
             public static final Translation3d robotMiddleToCamera = new Translation3d(0, 0, 0);
-        public static final Rotation3d angleCamera = new Rotation3d(0, 0, 0);
-        public static final Transform3d transformCamera = new Transform3d(robotMiddleToCamera, angleCamera);
-        //this value isn't intentional and can be changed, i just copied this line from photonVision's example
-        public static final double targetHeight = Units.inchesToMeters(98.19) - Units.inchesToMeters(81.19);
-        //these variables are for the update of the pose estimator
-        public static final double kFarTgtXPos = Units.feetToMeters(54);
-        public static final double kFarTgtYPos =
+            public static final Rotation3d angleCamera = new Rotation3d(0, 0, 0);
+            public static final double CameraHeightInCM = 20;
+            public static final Transform3d transformCamera = new Transform3d(robotMiddleToCamera, angleCamera);
+            //this value isn't intentional and can be changed, i just copied this line from photonVision's example
+            public static final double targetHeightInCM = Units.inchesToMeters(98.19) - Units.inchesToMeters(81.19);
+            //these variables are for the update of the pose estimator
+            public static final double kFarTgtXPos = Units.feetToMeters(54);
+            public static final double kFarTgtYPos =
             Units.feetToMeters(27 / 2) - Units.inchesToMeters(43.75) - Units.inchesToMeters(48.0 / 2.0);
-        public static final double kFarTgtZPos =
-            (Units.inchesToMeters(98.19) - targetHeight) / 2 + targetHeight;
+            public static final double kFarTgtZPos =
+            (Units.inchesToMeters(98.19) - targetHeightInCM) / 2 + targetHeightInCM;
             public static final Pose3d kFarTargetPose =
             new Pose3d(
                     new Translation3d(kFarTgtXPos, kFarTgtYPos, kFarTgtZPos),

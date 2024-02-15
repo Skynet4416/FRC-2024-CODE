@@ -73,84 +73,84 @@ public class Robot extends TimedRobot {
     m_protoStick = new Joystick(kJoystickPort);
   }
 
-  private void updateCurrentGyroAngle() {
-    SmartDashboard.putNumber("Swerve c Gyro Angle", m_robotContainer.getDriveSubsystem().getGyroAngleInRotation2d().getDegrees());
-  }
+  // private void updateCurrentGyroAngle() {
+  //   SmartDashboard.putNumber("Swerve c Gyro Angle", m_robotContainer.getDriveSubsystem().getGyroAngleInRotation2d().getDegrees());
+  // }
 
 
-  private void updateCurrentAngle() {
-    SmartDashboard.putNumber("Swerve c bl", m_robotContainer.getDriveSubsystem().get_bl().getModuleState().angle.getDegrees());
-    SmartDashboard.putNumber("Swerve c br", m_robotContainer.getDriveSubsystem().get_br().getModuleState().angle.getDegrees());
-    SmartDashboard.putNumber("Swerve c fl", m_robotContainer.getDriveSubsystem().get_fl().getModuleState().angle.getDegrees());
-    SmartDashboard.putNumber("Swerve c fr", m_robotContainer.getDriveSubsystem().get_fr().getModuleState().angle.getDegrees());
+  // private void updateCurrentAngle() {
+  //   SmartDashboard.putNumber("Swerve c bl", m_robotContainer.getDriveSubsystem().get_bl().getModuleState().angle.getDegrees());
+  //   SmartDashboard.putNumber("Swerve c br", m_robotContainer.getDriveSubsystem().get_br().getModuleState().angle.getDegrees());
+  //   SmartDashboard.putNumber("Swerve c fl", m_robotContainer.getDriveSubsystem().get_fl().getModuleState().angle.getDegrees());
+  //   SmartDashboard.putNumber("Swerve c fr", m_robotContainer.getDriveSubsystem().get_fr().getModuleState().angle.getDegrees());
  
-  }
+  // }
 
-  private void updateTargetVelocity() {
-    SmartDashboard.putNumber("Swerve target velocity bl", m_robotContainer.getDriveSubsystem().get_bl().getTargetRotorVelocityRPM());
-    SmartDashboard.putNumber("Swerve target velocity br", m_robotContainer.getDriveSubsystem().get_br().getTargetRotorVelocityRPM());
-    SmartDashboard.putNumber("Swerve target velocity fl", m_robotContainer.getDriveSubsystem().get_fl().getTargetRotorVelocityRPM());
-    SmartDashboard.putNumber("Swerve target velocity fr", m_robotContainer.getDriveSubsystem().get_fr().getTargetRotorVelocityRPM());
+  // private void updateTargetVelocity() {
+  //   SmartDashboard.putNumber("Swerve target velocity bl", m_robotContainer.getDriveSubsystem().get_bl().getTargetRotorVelocityRPM());
+  //   SmartDashboard.putNumber("Swerve target velocity br", m_robotContainer.getDriveSubsystem().get_br().getTargetRotorVelocityRPM());
+  //   SmartDashboard.putNumber("Swerve target velocity fl", m_robotContainer.getDriveSubsystem().get_fl().getTargetRotorVelocityRPM());
+  //   SmartDashboard.putNumber("Swerve target velocity fr", m_robotContainer.getDriveSubsystem().get_fr().getTargetRotorVelocityRPM());
   
-  }
-   private void updateCurrentDistance() {
-    SmartDashboard.putNumber("Swerve distance bl", m_robotContainer.getDriveSubsystem().get_bl().getDriveDistance());
-    SmartDashboard.putNumber("Swerve distance br", m_robotContainer.getDriveSubsystem().get_br().getDriveDistance());
-    SmartDashboard.putNumber("Swerve distance fl", m_robotContainer.getDriveSubsystem().get_fl().getDriveDistance());
-    SmartDashboard.putNumber("Swerve distance fr", m_robotContainer.getDriveSubsystem().get_fr().getDriveDistance());
+  // }
+  //  private void updateCurrentDistance() {
+  //   SmartDashboard.putNumber("Swerve distance bl", m_robotContainer.getDriveSubsystem().get_bl().getDriveDistance());
+  //   SmartDashboard.putNumber("Swerve distance br", m_robotContainer.getDriveSubsystem().get_br().getDriveDistance());
+  //   SmartDashboard.putNumber("Swerve distance fl", m_robotContainer.getDriveSubsystem().get_fl().getDriveDistance());
+  //   SmartDashboard.putNumber("Swerve distance fr", m_robotContainer.getDriveSubsystem().get_fr().getDriveDistance());
   
-  }
+  // }
 
-  private void updateCurrentVelocity() {
-    //the function get() of CANSparkBase returns the speed of the motor in percents. (the percent is in primitive double and not Double so i hope it doesn't change too much)
-    SmartDashboard.putNumber("Swerve current velocity bl", m_robotContainer.getDriveSubsystem().get_bl().getDriveMotor().get() *60);
-    SmartDashboard.putNumber("Swerve current velocity br", m_robotContainer.getDriveSubsystem().get_br().getDriveMotor().get() *60);
-    SmartDashboard.putNumber("Swerve current velocity fl", m_robotContainer.getDriveSubsystem().get_fl().getDriveMotor().get() *60);
-    SmartDashboard.putNumber("Swerve current velocity fr", m_robotContainer.getDriveSubsystem().get_fr().getDriveMotor().get() *60);
-  }
+  // private void updateCurrentVelocity() {
+  //   //the function get() of CANSparkBase returns the speed of the motor in percents. (the percent is in primitive double and not Double so i hope it doesn't change too much)
+  //   SmartDashboard.putNumber("Swerve current velocity bl", m_robotContainer.getDriveSubsystem().get_bl().getDriveMotor().get() *60);
+  //   SmartDashboard.putNumber("Swerve current velocity br", m_robotContainer.getDriveSubsystem().get_br().getDriveMotor().get() *60);
+  //   SmartDashboard.putNumber("Swerve current velocity fl", m_robotContainer.getDriveSubsystem().get_fl().getDriveMotor().get() *60);
+  //   SmartDashboard.putNumber("Swerve current velocity fr", m_robotContainer.getDriveSubsystem().get_fr().getDriveMotor().get() *60);
+  // }
 
-  private void updateTargetAngle() {
-    SmartDashboard.putNumber("Swerve t bl", m_robotContainer.getDriveSubsystem().get_bl().getTargetState().angle.getDegrees());
-    SmartDashboard.putNumber("Swerve t br", m_robotContainer.getDriveSubsystem().get_br().getTargetState().angle.getDegrees());
-    SmartDashboard.putNumber("Swerve t fl", m_robotContainer.getDriveSubsystem().get_fl().getTargetState().angle.getDegrees());
-    SmartDashboard.putNumber("Swerve t fr", m_robotContainer.getDriveSubsystem().get_fr().getTargetState().angle.getDegrees());
+  // private void updateTargetAngle() {
+  //   SmartDashboard.putNumber("Swerve t bl", m_robotContainer.getDriveSubsystem().get_bl().getTargetState().angle.getDegrees());
+  //   SmartDashboard.putNumber("Swerve t br", m_robotContainer.getDriveSubsystem().get_br().getTargetState().angle.getDegrees());
+  //   SmartDashboard.putNumber("Swerve t fl", m_robotContainer.getDriveSubsystem().get_fl().getTargetState().angle.getDegrees());
+  //   SmartDashboard.putNumber("Swerve t fr", m_robotContainer.getDriveSubsystem().get_fr().getTargetState().angle.getDegrees());
 
-  }
+  // }
 
-/**
- * resets all of the smart dashboards values
- */
-private void resetSmartValues()
-{
-  //the gyro's angle
-  SmartDashboard.putNumber("Swerve c Gyro Angle", 0);
-  //each swerve module's current angle
-  SmartDashboard.putNumber("Swerve c bl", m_robotContainer.getDriveSubsystem().get_bl().getModuleState().angle.getDegrees());
-  SmartDashboard.putNumber("Swerve c br", m_robotContainer.getDriveSubsystem().get_br().getModuleState().angle.getDegrees());
-  SmartDashboard.putNumber("Swerve c fl", m_robotContainer.getDriveSubsystem().get_fl().getModuleState().angle.getDegrees());
-  SmartDashboard.putNumber("Swerve c fr", m_robotContainer.getDriveSubsystem().get_fr().getModuleState().angle.getDegrees());
-  // the wanted speed
-  SmartDashboard.putNumber("Swerve target velocity bl", 0);
-  SmartDashboard.putNumber("Swerve target velocity br",0);
-  SmartDashboard.putNumber("Swerve target velocity fl", 0);
-  SmartDashboard.putNumber("Swerve target velocity fr", 0);
-  //current distance (aka the distance we moved since last)
-  SmartDashboard.putNumber("Swerve distance bl",0);
-  SmartDashboard.putNumber("Swerve distance br", 0);
-  SmartDashboard.putNumber("Swerve distance fl", 0);
-  SmartDashboard.putNumber("Swerve distance fr", 0);
-  //the current speed
-  SmartDashboard.putNumber("Swerve current velocity bl", 0);
-  SmartDashboard.putNumber("Swerve current velocity br",0);
-  SmartDashboard.putNumber("Swerve current velocity fl",0);
-  SmartDashboard.putNumber("Swerve current velocity fr",0);
-  // wanted swerve angle
-  SmartDashboard.putNumber("Swerve t bl", 0);
-  SmartDashboard.putNumber("Swerve t br", 0);
-  SmartDashboard.putNumber("Swerve t fl", 0);
-  SmartDashboard.putNumber("Swerve t fr", 0);
+// /**
+//  * resets all of the smart dashboards values
+//  */
+// private void resetSmartValues()
+// {
+//   //the gyro's angle
+//   SmartDashboard.putNumber("Swerve c Gyro Angle", 0);
+//   //each swerve module's current angle
+//   SmartDashboard.putNumber("Swerve c bl", m_robotContainer.getDriveSubsystem().get_bl().getModuleState().angle.getDegrees());
+//   SmartDashboard.putNumber("Swerve c br", m_robotContainer.getDriveSubsystem().get_br().getModuleState().angle.getDegrees());
+//   SmartDashboard.putNumber("Swerve c fl", m_robotContainer.getDriveSubsystem().get_fl().getModuleState().angle.getDegrees());
+//   SmartDashboard.putNumber("Swerve c fr", m_robotContainer.getDriveSubsystem().get_fr().getModuleState().angle.getDegrees());
+//   // the wanted speed
+//   SmartDashboard.putNumber("Swerve target velocity bl", 0);
+//   SmartDashboard.putNumber("Swerve target velocity br",0);
+//   SmartDashboard.putNumber("Swerve target velocity fl", 0);
+//   SmartDashboard.putNumber("Swerve target velocity fr", 0);
+//   //current distance (aka the distance we moved since last)
+//   SmartDashboard.putNumber("Swerve distance bl",0);
+//   SmartDashboard.putNumber("Swerve distance br", 0);
+//   SmartDashboard.putNumber("Swerve distance fl", 0);
+//   SmartDashboard.putNumber("Swerve distance fr", 0);
+//   //the current speed
+//   SmartDashboard.putNumber("Swerve current velocity bl", 0);
+//   SmartDashboard.putNumber("Swerve current velocity br",0);
+//   SmartDashboard.putNumber("Swerve current velocity fl",0);
+//   SmartDashboard.putNumber("Swerve current velocity fr",0);
+//   // wanted swerve angle
+//   SmartDashboard.putNumber("Swerve t bl", 0);
+//   SmartDashboard.putNumber("Swerve t br", 0);
+//   SmartDashboard.putNumber("Swerve t fl", 0);
+//   SmartDashboard.putNumber("Swerve t fr", 0);
 
-}
+// }
 
   private void addPIDConstantsToShuffleboardDrive(ShuffleboardTab tab, String name) {
     tab.add(name + " kS", PID.Drive.kS);
@@ -185,18 +185,18 @@ private void resetSmartValues()
     // and running subsystem periodic() methods. This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    updateCurrentAngle();
-    updateTargetAngle();
-    updateCurrentGyroAngle();
-    updateCurrentVelocity();
-    updateTargetVelocity();
-    updateCurrentDistance();
+    // updateCurrentAngle();
+    // updateTargetAngle();
+    // updateCurrentGyroAngle();
+    // updateCurrentVelocity();
+    // updateTargetVelocity();
+    // updateCurrentDistance();
 
     //moves how fast the motor goes through joystick
     m_prototypeMotorLead.set(m_protoStick.getY());
     // Update Shuffleboard data here if needed
 
-    m_field.setRobotPose(m_robotContainer.getDriveSubsystem().getOdometry().getPoseMeters());
+    // m_field.setRobotPose(m_robotContainer.getDriveSubsystem().getOdometry().getPoseMeters());
   }
 
 

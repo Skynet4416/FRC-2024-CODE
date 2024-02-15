@@ -33,9 +33,9 @@ public class RobotContainer {
   // ? https://www.chiefdelphi.com/t/why-do-many-teams-put-a-m-in-front-of-many-variable-names/377126
   // ? this is why i put m_(variable name)
   // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem m_driveSubsystem;
-  // private final ClimberSubsystem m_ClimberSubsystem;
-  // private final IntakeSubsystem m_IntakeSubsystem;
+  // private final DriveSubsystem m_driveSubsystem;
+  private final ClimberSubsystem m_ClimberSubsystem;
+  private final IntakeSubsystem m_IntakeSubsystem;
   private final OI oi;
   // private final Auto auto;
   // private final SendableChooser<Command> autoChooser;
@@ -46,12 +46,12 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    this.m_driveSubsystem = new DriveSubsystem();
-    // this.m_ClimberSubsystem = new ClimberSubsystem();
-    // this.m_IntakeSubsystem = new IntakeSubsystem();
+    // this.m_driveSubsystem = new DriveSubsystem();
+    this.m_ClimberSubsystem = new ClimberSubsystem();
+    this.m_IntakeSubsystem = new IntakeSubsystem();
     this.oi = new OI();
     configureBindings();
-    m_driveSubsystem.setAllModulesToZero();
+    // m_driveSubsystem.setAllModulesToZero();
     // this.auto = new Auto(m_driveSubsystem);
     // this.autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -61,9 +61,9 @@ public class RobotContainer {
     //  SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
-  public DriveSubsystem getDriveSubsystem(){
-    return m_driveSubsystem;
-  }
+  // public DriveSubsystem getDriveSubsystem(){
+  //   return m_driveSubsystem;
+  // }
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -75,15 +75,15 @@ public class RobotContainer {
    */
   private void configureBindings() 
   {  
-      // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
-      m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX, oi.xboxController::getLeftY, oi.xboxController::getRightX));
+      // // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
+      // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX, oi.xboxController::getLeftY, oi.xboxController::getRightX));
       
-      // //if the a button is pressed, the climb will extend. once it's not, the climb will retract.
-      // oi.commandXboxController.a().onTrue(new OpenTelescopCommand(m_ClimberSubsystem));
-      // oi.commandXboxController.a().onFalse(new CloseTelescopCommand(m_ClimberSubsystem));
+      //if the a button is pressed, the climb will extend. once it's not, the climb will retract.
+      oi.commandXboxController.a().onTrue(new OpenTelescopCommand(m_ClimberSubsystem));
+      oi.commandXboxController.a().onFalse(new CloseTelescopCommand(m_ClimberSubsystem));
 
-      // //if the b button on the xbox is pressed the climbcommand will activate
-      // oi.commandXboxController.b().onTrue(new IntakeSpinUp(m_IntakeSubsystem, false));
+      //if the b button on the xbox is pressed the climbcommand will activate
+      oi.commandXboxController.b().onTrue(new IntakeSpinUp(m_IntakeSubsystem, false));
   }
 
   // public Command getAutonomousCommand()

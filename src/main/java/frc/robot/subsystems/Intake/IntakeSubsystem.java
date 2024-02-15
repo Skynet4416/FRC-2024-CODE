@@ -31,4 +31,12 @@ public class IntakeSubsystem extends SubsystemBase
         m_motor_left.setVoltage(voltage);
         m_motor_right.setVoltage(voltage);
     }
+    public CANSparkMax getMotorRight()
+    {
+        return this.m_motor_right;
+    }
+    public CANSparkMax getMotorLeft()
+    {
+        return this.m_motor_left;
+    }
 }

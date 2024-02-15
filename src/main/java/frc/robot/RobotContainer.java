@@ -12,13 +12,16 @@ import frc.robot.subsystems.Climber.ClimberSubsystem;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.revrobotics.REVPhysicsSim;
 
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Intake.*;
+import frc.robot.Constants.Intake;
 import frc.robot.commands.Climb.CloseTelescopCommand;
 import frc.robot.commands.Climb.OpenTelescopCommand;
 import frc.robot.commands.Drive.DriveCommand;
@@ -64,6 +67,10 @@ public class RobotContainer {
   // public DriveSubsystem getDriveSubsystem(){
   //   return m_driveSubsystem;
   // }
+
+  public IntakeSubsystem getIntakeSubsystem(){
+    return m_IntakeSubsystem;
+  }
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -83,9 +90,12 @@ public class RobotContainer {
       oi.commandXboxController.a().onFalse(new CloseTelescopCommand(m_ClimberSubsystem));
 
       //if the b button on the xbox is pressed the climbcommand will activate
-      oi.commandXboxController.b().onTrue(new IntakeSpinUp(m_IntakeSubsystem, false));
+      if (Robot.isSimulation())
+        oi.commandXboxController.b().onTrue(new IntakeSpinUpSim(m_IntakeSubsystem, false));
+        
+      else
+        oi.commandXboxController.b().onTrue(new IntakeSpinUp(m_IntakeSubsystem, false));
   }
-
   // public Command getAutonomousCommand()
   // {
   //   //this is for auto-based autonomous, we relay more on paths   

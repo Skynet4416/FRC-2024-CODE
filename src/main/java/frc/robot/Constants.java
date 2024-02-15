@@ -29,8 +29,8 @@ import com.pathplanner.lib.path.*;
 public final class Constants {
     public static class Arm{
         public static class Motors{
-            public static final int kLeftMotorID = 0;
-            public static final int kRightMotorID = 0;
+            public static final int kLeftMotorID = 99;
+            public static final int kRightMotorID = 98;
             }
 
         public static class Stats{ 
@@ -40,8 +40,8 @@ public final class Constants {
             public static final double speakerAngle = 10;
         }
         public static class Encoders{
-            public static final int kLeftEncoderID = 0;
-            public static final int kRightEncoderID = 0;
+            public static final int kLeftEncoderID = 97;
+            public static final int kRightEncoderID = 96;
         }
         public static class Pid {
         public static final double kP = 0;
@@ -154,13 +154,13 @@ public final class Constants {
         public static class Motors
         {
             //also the id if there is only one motor
-            public static final int kUpperMotorLeftID = 0;
-            public static final int kUpperMotorRightID = 0;
+            public static final int kUpperMotorLeftID = 76;
+            public static final int kUpperMotorRightID = 94;
         } 
         public static class Stats
         {
             //todo: set the speed needed
-            public static final double kIntakeSpeed = 0.0;
+            public static final double kIntakeSpeed = 0.5;
         }  
     }
     public static class Shooter 
@@ -194,8 +194,8 @@ public final class Constants {
         }
         public static class Motors 
         {
-            public static final int kRightHookMotorID = 0;
-            public static final int kLeftHookMotorID = 0;
+            public static final int kRightHookMotorID = 93;
+            public static final int kLeftHookMotorID = 92;
         }
 
         public static class Stats {
@@ -377,7 +377,7 @@ public final class Constants {
     {
         public static final int kJoystickPort = 0;
         //todo: change to actual id
-        public static final int leadProtoMotorID = 0;
-        public static final int followProtoMotorID = 0;    
+        public static final int leadProtoMotorID = 91;
+        public static final int followProtoMotorID = 90;    
     }
 }

@@ -349,7 +349,12 @@ public final class Constants {
         }
         public static boolean enable =true;
         public static PoseStrategy poseStrategy;
-
+        
+        public static class AprilTags
+        {
+            public static final int aprilTagIDRed = 4;
+            public static final int aprilTagIDBlue = 7;
+        }
     }
 
     public static class Autonomous

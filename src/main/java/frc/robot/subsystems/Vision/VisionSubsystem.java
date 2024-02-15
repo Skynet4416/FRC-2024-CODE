@@ -87,8 +87,10 @@ public class VisionSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (aprilTagHasTarget()) {
+             var result = photonCamera.getLatestResult();
+            PhotonTrackedTarget target = result.getBestTarget();
             for (VisionObserver observer : observers) {
-                observer.addVisionMeasurement(getEstimatedGlobalPose(observer.getCurrentPosition()));
+                observer.addVisionMeasurement(getEstimatedGlobalPose(observer.getCurrentPosition()), target);
             }
         }
         else

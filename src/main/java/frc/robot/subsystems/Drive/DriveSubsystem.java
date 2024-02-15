@@ -6,6 +6,7 @@ package frc.robot.subsystems.Drive;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.kauailabs.navx.AHRSProtocol;
 import com.kauailabs.navx.frc.AHRS;
@@ -264,7 +265,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
       * overrides the addVisionMeasurement method from the implemented VisionObserver
       */
      @Override
-     public void addVisionMeasurement(EstimatedRobotPose pos) 
+     public void addVisionMeasurement(EstimatedRobotPose pos, PhotonTrackedTarget aprilTag)
      {
           m_poseEstimator.addVisionMeasurement(pos.estimatedPose.toPose2d(), pos.timestampSeconds);
      }

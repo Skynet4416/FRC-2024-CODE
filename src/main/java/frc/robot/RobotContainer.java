@@ -22,14 +22,14 @@ import frc.robot.commands.Intake.*;
 import frc.robot.commands.Climb.CloseTelescopCommand;
 import frc.robot.commands.Climb.OpenTelescopCommand;
 import frc.robot.commands.Drive.DriveCommand;
-
+import frc.robot.InRangeObserver;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer implements InRangeObserver{
   // ? https://www.chiefdelphi.com/t/why-do-many-teams-put-a-m-in-front-of-many-variable-names/377126
   // ? this is why i put m_(variable name)
   // The robot's subsystems and commands are defined here...
@@ -97,6 +97,11 @@ public class RobotContainer {
   //     //   return AutoBuilder.followPath(path);
   // }
 
+  @Override
+  public void inRange(Boolean inRange)
+  {
+
+  }
   // i think the first getAutonomousCommand lets the driver choose the auto (correct me if i'm wrong) so that's why it stays, but the other one is also here if it's more convinient 
   //  public Command getAutonomousCommand() 
   //   {

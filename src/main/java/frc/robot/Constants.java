@@ -258,7 +258,8 @@ public final class Constants {
             public static final double kMaxAngularVelocityRadiansPerSecond = kMaxVelocityMetersPerSecond /
             Math.hypot(kTrackWidthMeters / 2.0, kWheelbaseMeters / 2.0);
 
-            public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics( // TODO needs to be configured with diffrent constants that has the modules position relative to the middle of the robot
+            public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics( 
+            // TODO needs to be configured with diffrent constants that has the modules position relative to the middle of the robot
             new Translation2d(kTrackWidthMeters / 2.0, kWheelbaseMeters / 2.0), // ++
             new Translation2d(kTrackWidthMeters / 2.0, -kWheelbaseMeters / 2.0), // +-
             new Translation2d(-kTrackWidthMeters / 2.0, kWheelbaseMeters / 2.0), // -+
@@ -328,6 +329,14 @@ public final class Constants {
     {
         public static class Stats
         {
+            public static class Range
+            {
+                //todo: measure and put the actual numbers
+                public static final double kSmallestDistanceCM = 0.0;
+                public static final double kBiggestDistanceCM = 0.0;
+                public static final double kSmallestAngleDeg = 0.0;
+                public static final double kBiggestAngleDeg = 0.0;
+            }
             public static final String cameraName = "Aizen";
             public static final Translation3d robotMiddleToCamera = new Translation3d(0, 0, 0);
             public static final Rotation3d angleCamera = new Rotation3d(0, 0, 0);
@@ -376,13 +385,5 @@ public final class Constants {
                  Drive.Stats.kDriveBaseRadius, //Distance from robot center to furthest module.
                  new ReplanningConfig() // Default path replanning config. See the API for the options here
          ); 
-    }
-    
-    public static class Prototype 
-    {
-        public static final int kJoystickPort = 0;
-        //todo: change to actual id
-        public static final int leadProtoMotorID = 0;
-        public static final int followProtoMotorID = 0;    
     }
 }

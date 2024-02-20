@@ -24,24 +24,43 @@ public class VisionObserverCentral implements VisionObserver
 
     @Override
      public void hasNoTags()
-     { }
+     { 
+        inRange.inRange(false);
+     }
 
     @Override
     public Pose2d getCurrentPosition()
     {
         return m_currentPose;
     }
-    
+
+    /**
+     * not to be confused with the member inRange or the function inRange() within the interface InRangeObserver, this function checks if the april tag is within the required range (as in it checks the distance of the april tag and it's angle).
+     * @param aprilTag - the April tag that has already been identified as one that represents the speaker 
+     * @return whether or not the april tag is in the range
+     */
+    private boolean checksIfInRange(PhotonTrackedTarget aprilTag)
+    {
+        double distance = VisionSubsystem.getDistanceInCM(aprilTag);
+        return (aprilTag.getYaw()>Vision.Stats.Range.kSmallestAngleDeg && aprilTag.getYaw()<Vision.Stats.Range.kBiggestAngleDeg && 
+                distance > Vision.Stats.Range.kSmallestDistanceCM && distance<Vision.Stats.Range.kBiggestDistanceCM);
+    }
+
+    /**
+     *  checks if the target is in the right range (depandened on the distance of the bot from it and the yaw of the target compared to it), if it fulfills the criteria it should send inRange with true, else with false
+     */
      @Override
      public void addVisionMeasurement(EstimatedRobotPose estimatedRobotPose, PhotonTrackedTarget aprilTag)
      {
-        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red && aprilTag.getFiducialId()==Vision.AprilTags.aprilTagIDRed)
+        if((DriverStation.getAlliance().get() == DriverStation.Alliance.Blue && aprilTag.getFiducialId()==Vision.AprilTags.aprilTagIDBlue) ||
+           (DriverStation.getAlliance().get() == DriverStation.Alliance.Red && aprilTag.getFiducialId()==Vision.AprilTags.aprilTagIDRed))
         {
-            
+            inRange.inRange(checksIfInRange(aprilTag));
+            //send to dashboard april tag id and yad and pitch
         }
-        else if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue && aprilTag.getFiducialId()==Vision.AprilTags.aprilTagIDBlue)
+        else
         {
-            
+            inRange.inRange(false);
         }
-     }
+    }
 }

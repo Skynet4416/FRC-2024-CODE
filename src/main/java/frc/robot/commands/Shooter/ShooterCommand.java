@@ -1,13 +1,13 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.Intake;
+import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.Shooter.ShooterSubsystem;
 
-public class Shooter extends Command{
+public class ShooterCommand extends Command{
     private final ShooterSubsystem m_shooter;
 
-    public Shooter(ShooterSubsystem shooter)
+    public ShooterCommand(ShooterSubsystem shooter)
     {
         this.m_shooter = shooter;
         addRequirements(shooter);
@@ -20,7 +20,7 @@ public class Shooter extends Command{
     @Override
     public void execute() 
     {
-        this.m_shooter.SetSpeed(Intake.Stats.kIntakeSpeed);
+        this.m_shooter.SetSpeed(Shooter.Stats.kIShooterSpeed);
     }
 
     // Called once the command ends or is interrupted.

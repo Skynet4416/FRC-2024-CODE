@@ -16,6 +16,8 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import com.ctre.phoenix6.controls.StaticBrake;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -49,16 +51,25 @@ public class VisionSubsystem extends SubsystemBase {
         return false;
     }
 
+    public PhotonTrackedTarget getTarget()
+    {
+        var result = photonCamera.getLatestResult();
+        return result.getBestTarget();
+    }
+
     /**
      * gets the distance from the closest (best) april tag 
      * @return
      */
-    public double getDistanceInCM()
+    public static double getDistanceInCM(PhotonTrackedTarget target)
     {
-        var result = photonCamera.getLatestResult();
-        PhotonTrackedTarget target = result.getBestTarget();
         double angle = target.getPitch();
-        return Math.tan(angle)*(Vision.Stats.targetHeightInCM-Vision.Stats.CameraHeightInCM);
+        if (angle==0)
+        {
+            return Double.NaN;
+        }
+        //send to dashboard the distance
+        return (Vision.Stats.targetHeightInCM-Vision.Stats.CameraHeightInCM)/Math.tan(angle);
     }
 
     public double getAprilTagYaw()

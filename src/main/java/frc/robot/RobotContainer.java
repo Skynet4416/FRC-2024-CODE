@@ -6,8 +6,11 @@ package frc.robot;
 
 import frc.robot.subsystems.Drive.DriveSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.Shooter.ShooterSubsystem;
 import frc.robot.subsystems.Auto;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
+
+import java.util.function.BooleanSupplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -19,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Intake.*;
+import frc.robot.commands.Shooter.ShooterCommand;
 import frc.robot.commands.Climb.CloseTelescopCommand;
 import frc.robot.commands.Climb.OpenTelescopCommand;
 import frc.robot.commands.Drive.DriveCommand;
@@ -34,31 +38,33 @@ public class RobotContainer implements InRangeObserver{
   // ? this is why i put m_(variable name)
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_driveSubsystem;
-  // private final ClimberSubsystem m_ClimberSubsystem;
-  // private final IntakeSubsystem m_IntakeSubsystem;
+  private final ClimberSubsystem m_ClimberSubsystem;
+  private final IntakeSubsystem m_IntakeSubsystem;
+  private final ShooterSubsystem m_ShooterSubsystem;
   private final OI oi;
-  // private final Auto auto;
-  // private final SendableChooser<Command> autoChooser;
+  private final Auto auto;
+  private final SendableChooser<Command> autoChooser;
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  // // Replace with CommandPS4Controller or CommandJoystick if needed
   // private final CommandXboxController m_driverController =
   //     new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     this.m_driveSubsystem = new DriveSubsystem();
-    // this.m_ClimberSubsystem = new ClimberSubsystem();
-    // this.m_IntakeSubsystem = new IntakeSubsystem();
+    this.m_ClimberSubsystem = new ClimberSubsystem();
+    this.m_IntakeSubsystem = new IntakeSubsystem();
+    this.m_ShooterSubsystem = new ShooterSubsystem();
     this.oi = new OI();
     configureBindings();
     m_driveSubsystem.setAllModulesToZero();
-    // this.auto = new Auto(m_driveSubsystem);
-    // this.autoChooser = AutoBuilder.buildAutoChooser();
+    this.auto = new Auto(m_driveSubsystem);
+    this.autoChooser = AutoBuilder.buildAutoChooser();
 
-    // //change to shuffleBoard later if you want
-    // // Another option that allows you to specify the default auto by its name
-    // // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-    //  SmartDashboard.putData("Auto Chooser", autoChooser);
+    //change to shuffleBoard later if you want
+    // Another option that allows you to specify the default auto by its name
+    // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   public DriveSubsystem getDriveSubsystem(){
@@ -78,29 +84,43 @@ public class RobotContainer implements InRangeObserver{
       // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
       m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX, oi.xboxController::getLeftY, oi.xboxController::getRightX));
       
-      // //if the a button is pressed, the climb will extend. once it's not, the climb will retract.
-      // oi.commandXboxController.a().onTrue(new OpenTelescopCommand(m_ClimberSubsystem));
-      // oi.commandXboxController.a().onFalse(new CloseTelescopCommand(m_ClimberSubsystem));
+      //if the a button is pressed, the climb will extend. once it's not, the climb will retract.
+      oi.commandXboxController.a().onTrue(new OpenTelescopCommand(m_ClimberSubsystem));
+      oi.commandXboxController.a().onFalse(new CloseTelescopCommand(m_ClimberSubsystem));
 
-      // //if the b button on the xbox is pressed the climbcommand will activate
-      // oi.commandXboxController.b().onTrue(new IntakeSpinUp(m_IntakeSubsystem, false));
+      //if the x button is pressed the shooter will shoot (if the target is in range)
+      oi.commandXboxController.x().and(inRangeSupplier).onTrue(new ShooterCommand(m_ShooterSubsystem));
+
+      //if the b button on the xbox is pressed the climbcommand will activate
+      oi.commandXboxController.b().onTrue(new IntakeSpinUp(m_IntakeSubsystem, false));
   }
 
-  // public Command getAutonomousCommand()
-  // {
-  //   //this is for auto-based autonomous, we relay more on paths   
-  //   return autoChooser.getSelected();
-  //     // // Load the path you want to follow using its name in the GUI
-  //     //   PathPlannerPath path = PathPlannerPath.fromPathFile("path 1");
+  public Command getAutonomousCommand()
+  {
+    //this is for auto-based autonomous, we relay more on paths   
+    return autoChooser.getSelected();
+      // // Load the path you want to follow using its name in the GUI
+      //   PathPlannerPath path = PathPlannerPath.fromPathFile("path 1");
 
-  //     //   // Create a path following command using AutoBuilder. This will also trigger event markers.
-  //     //   return AutoBuilder.followPath(path);
-  // }
+      //   // Create a path following command using AutoBuilder. This will also trigger event markers.
+      //   return AutoBuilder.followPath(path);
+  }
 
+  class InRangeSupplier implements BooleanSupplier {
+      @Override
+      public boolean getAsBoolean() {
+        return b;
+      }
+  }
+
+  InRangeSupplier inRangeSupplier = new InRangeSupplier();
+
+  private boolean b = false;
   @Override
   public void inRange(Boolean inRange)
   {
-
+    b = inRange;
+      //todo: gets if the variable is true or false and determines what the button that activates the arm does
   }
   // i think the first getAutonomousCommand lets the driver choose the auto (correct me if i'm wrong) so that's why it stays, but the other one is also here if it's more convinient 
   //  public Command getAutonomousCommand() 

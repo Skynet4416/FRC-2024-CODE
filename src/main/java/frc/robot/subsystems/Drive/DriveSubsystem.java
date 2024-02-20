@@ -28,9 +28,7 @@ import frc.robot.subsystems.Drive.Swerve.*;
 import frc.robot.subsystems.Vision.VisionObserver;
 
 public class DriveSubsystem extends SubsystemBase implements VisionObserver {
-     // TODO
      // https://github.com/CrossTheRoadElec/Phoenix6-Examples/tree/main/java/SwerveWithPathPlanner
-     // TODO
      // https://github.com/CrossTheRoadElec/SwerveDriveExample/blob/main/src/main/java/frc/robot/CTRSwerve/CTRSwerveModule.java
      private final SwerveModule m_frontLeftModule;
      private final SwerveModule m_frontRightModule;
@@ -104,7 +102,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
 
           m_swerveSpeeds = new ChassisSpeeds(0, 0, 0);
 
-          m_currentPose = m_odometry.getPoseMeters(); // TODO needs to take the position from vision
+          m_currentPose = m_odometry.getPoseMeters(); //todo needs to take the position from vision
           m_pidController = new PIDController(Drive.PID.kP, Drive.PID.kI, Drive.PID.kD);
           m_pidController.enableContinuousInput(0, 360);
           m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(),

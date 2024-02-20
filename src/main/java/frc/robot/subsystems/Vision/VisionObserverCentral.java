@@ -8,6 +8,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
+import frc.robot.CurrentAprilTagObserver;
 import frc.robot.InRangeObserver;
 import frc.robot.Constants.Vision;
 
@@ -15,6 +16,7 @@ public class VisionObserverCentral implements VisionObserver
 {
     private Pose2d m_currentPose;
     private InRangeObserver inRange;
+    private CurrentAprilTagObserver currentAprilTag;
     
     public VisionObserverCentral(Pose2d m_currentPose, InRangeObserver inRange) 
     {
@@ -56,7 +58,8 @@ public class VisionObserverCentral implements VisionObserver
            (DriverStation.getAlliance().get() == DriverStation.Alliance.Red && aprilTag.getFiducialId()==Vision.AprilTags.aprilTagIDRed))
         {
             inRange.inRange(checksIfInRange(aprilTag));
-            //send to dashboard april tag id and yad and pitch
+            currentAprilTag.updateAprilTag(aprilTag);
+            //send to dashboard april tag id and yaw and pitch
         }
         else
         {

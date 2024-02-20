@@ -5,10 +5,10 @@ import frc.robot.Constants.Arm;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 
 public class AmpPlace extends Command{
-    private final ArmSubsystem ArmSubsystem;
+    private final ArmSubsystem m_ArmSubsystem;
     public AmpPlace(ArmSubsystem ArmSubsystem)
     {
-        this.ArmSubsystem = ArmSubsystem;
+        this.m_ArmSubsystem = ArmSubsystem;
         addRequirements(ArmSubsystem);
     }
     // Called when the command is initially scheduled.
@@ -22,7 +22,7 @@ public class AmpPlace extends Command{
     @Override
     public void execute() 
     {
-        ArmSubsystem.SetAngle(Arm.Stats.ampAngle);
+        m_ArmSubsystem.SetAngle(Arm.Stats.ampAngle);
     }
 
     // Called once the command ends or is interrupted.

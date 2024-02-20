@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AllRobot;
 import frc.robot.Constants.Climber;
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -73,5 +74,10 @@ public class ClimberSubsystem extends SubsystemBase {
         m_leftMotor.getPIDController().setReference(0,ControlType.kPosition);
         m_rightMotor.getPIDController().setReference(0,ControlType.kPosition);
         this.m_isOpen = false;
+    }
+
+    public void init() {
+        m_leftMotor.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
+        m_rightMotor.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
     }
 }

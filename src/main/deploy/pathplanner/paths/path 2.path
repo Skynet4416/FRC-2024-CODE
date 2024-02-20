@@ -49,15 +49,33 @@
   "eventMarkers": [
     {
       "name": "throw note",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "sequential",
         "data": {
           "commands": [
             {
-              "type": "wait",
+              "type": "named",
               "data": {
-                "waitTime": 2.0
+                "name": "SpeakerClose"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakePushNote"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "ShooterCommand"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "DrivePlace"
               }
             }
           ]
@@ -70,7 +88,37 @@
       "command": {
         "type": "parallel",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "FloorIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeSpinUp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "return to drive mode",
+      "waypointRelativePos": 1.15,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "DrivePlace"
+              }
+            }
+          ]
         }
       }
     }

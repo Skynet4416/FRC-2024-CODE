@@ -2,8 +2,12 @@ package frc.robot.subsystems.Intake;
 
 import java.util.Optional;
 import frc.robot.Robot;
+import frc.robot.Constants.AllRobot;
+import frc.robot.Constants.Climber;
 import frc.robot.Constants.Intake;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel;
@@ -21,6 +25,12 @@ public class IntakeSubsystem extends SubsystemBase
 
     //does this subsystem need configuration? probably? maybe?
 
+    public void pushNote()
+    {
+         m_motor_left.getPIDController().setReference(Intake.Stats.kPushingNodeInRounds,ControlType.kPosition);
+         m_motor_right.getPIDController().setReference(Intake.Stats.kPushingNodeInRounds*-1,ControlType.kPosition);
+    }
+
     public void SetSpeed(double speed)
     {
         m_motor_left.set(speed);
@@ -30,5 +40,10 @@ public class IntakeSubsystem extends SubsystemBase
     {
         m_motor_left.setVoltage(voltage);
         m_motor_right.setVoltage(voltage);
+    }
+
+    public void init() {
+        m_motor_left.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
+        m_motor_right.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
     }
 }

@@ -1,11 +1,13 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.Arm;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 
-public class FloorIntake extends Command {
-    private final ArmSubsystem m_ArmSubsystem;
-    public FloorIntake(ArmSubsystem ArmSubsystem)
+public class DrivePlace extends Command {
+    private ArmSubsystem m_ArmSubsystem;
+
+    public DrivePlace(ArmSubsystem ArmSubsystem)
     {
         this.m_ArmSubsystem = ArmSubsystem;
         addRequirements(ArmSubsystem);
@@ -21,7 +23,7 @@ public class FloorIntake extends Command {
     @Override
     public void execute() 
     {
-        m_ArmSubsystem.SetAngle(0.0);
+        m_ArmSubsystem.SetAngle(Arm.Stats.driveAngle);
     }
 
     // Called once the command ends or is interrupted.
@@ -34,4 +36,5 @@ public class FloorIntake extends Command {
     {
         return true;
     }
+    
 }

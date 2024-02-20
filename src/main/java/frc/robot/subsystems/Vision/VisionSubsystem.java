@@ -5,7 +5,6 @@
 package frc.robot.subsystems.Vision;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,9 +28,9 @@ import frc.robot.Constants.Vision;
 public class VisionSubsystem extends SubsystemBase {
     private final PhotonCamera photonCamera;
     private final PhotonPoseEstimator photonPoseEstimator;
-    private final ArrayList<VisionObserver> observers;
+    private final List<VisionObserver> observers;
 
-    public VisionSubsystem(ArrayList<VisionObserver> observers) {
+    public VisionSubsystem(List<VisionObserver> observers) {
         AprilTagFieldLayout layout = null;
         try {
             layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);

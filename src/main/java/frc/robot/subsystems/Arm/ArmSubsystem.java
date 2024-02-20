@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.AllRobot;
 import frc.robot.Constants.Arm;
 public class ArmSubsystem extends SubsystemBase {
     /** Creates a new ExampleSubsystem. */
@@ -39,6 +40,8 @@ public class ArmSubsystem extends SubsystemBase {
         //in this the external encoder sets the left motor encoder
         double actual = (m_left_encoder.getAbsolutePosition() - Arm.Stats.encoderOffset)*Arm.Stats.gearRatio;
         m_Arm_Encoder.setPosition(actual);
+        m_motor_left.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
+        m_motor_right.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
     }
     /**
      * 

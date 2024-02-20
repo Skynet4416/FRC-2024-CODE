@@ -87,9 +87,15 @@
         "data": {
           "commands": [
             {
-              "type": "wait",
+              "type": "named",
               "data": {
-                "waitTime": 2.0
+                "name": "AmpAngle"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "PlaceInAmp"
               }
             }
           ]
@@ -102,7 +108,20 @@
       "command": {
         "type": "parallel",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "FloorIntake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeSpinUp"
+              }
+            }
+          ]
         }
       }
     },
@@ -114,9 +133,49 @@
         "data": {
           "commands": [
             {
-              "type": "wait",
+              "type": "named",
               "data": {
-                "waitTime": 2.0
+                "name": "AmpAngle"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "PlaceInAmp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "move to drive mode",
+      "waypointRelativePos": 1.3,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "DrivePlace"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "move to drive mode 2",
+      "waypointRelativePos": 2.5,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "DrivePlace"
               }
             }
           ]

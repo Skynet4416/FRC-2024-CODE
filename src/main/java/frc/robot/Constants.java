@@ -38,6 +38,7 @@ public final class Constants {
             public static final double gearRatio = 1/25.0;
             public static final double ampAngle = 110;
             public static final double speakerAngle = 10;
+            public static final double driveAngle = 40;
         }
         public static class Encoders{
             public static final int kLeftEncoderID = 0;
@@ -159,8 +160,9 @@ public final class Constants {
         } 
         public static class Stats
         {
-            //todo: set the speed needed
+            //todo: set the speed needed, and everything in constants honestly
             public static final double kIntakeSpeed = 0.0;
+            public static final double kPushingNodeInRounds = 1;
         }  
     }
     public static class Shooter 
@@ -175,6 +177,7 @@ public final class Constants {
         {
             //todo: set the speed needed
             public static final double kIShooterSpeed = 0.0;
+            public static final double kPutInAmpSpeed = 0.0;
         }
         public static class PID
         {
@@ -385,5 +388,10 @@ public final class Constants {
                  Drive.Stats.kDriveBaseRadius, //Distance from robot center to furthest module.
                  new ReplanningConfig() // Default path replanning config. See the API for the options here
          ); 
+    }
+
+    public static class AllRobot
+    {
+        public static final int kAllMotorsLimitInAmpr = 5;
     }
 }

@@ -16,6 +16,9 @@ import frc.robot.subsystems.Drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -25,7 +28,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot implements CurrentAprilTagObserver{
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -71,6 +74,22 @@ public class Robot extends TimedRobot {
     
     m_prototypeMotorFollow.follow(m_prototypeMotorLead,false);
     m_protoStick = new Joystick(kJoystickPort);
+
+    resetSmartValues();
+  }
+
+  private void updateInRange()
+  {
+    SmartDashboard.putBoolean("is the robot in range for shooting: ", m_robotContainer.getInRange().getAsBoolean());
+  }
+
+  @Override
+  public void updateAprilTag(PhotonTrackedTarget aprilTag) 
+  {
+      SmartDashboard.putNumber("the id of the best target apriltag: ", aprilTag.getFiducialId());
+      SmartDashboard.putNumber("the yaw of the best target apriltag: ", aprilTag.getYaw());
+      SmartDashboard.putNumber("the pitch of the best target apriltag: ", aprilTag.getPitch());
+      SmartDashboard.putNumber("the distance of the best target apriltag from the robot in cm: ", m_robotContainer.getVisionSubsystem().getDistanceInCM(aprilTag));
   }
 
   private void updateCurrentGyroAngle() {
@@ -191,6 +210,8 @@ private void resetSmartValues()
     updateCurrentVelocity();
     updateTargetVelocity();
     updateCurrentDistance();
+    updateInRange();
+    updateAprilTag(null);
 
     //moves how fast the motor goes through joystick
     m_prototypeMotorLead.set(m_protoStick.getY());

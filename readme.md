@@ -2,7 +2,7 @@
 
 <h3>Versions:</h3>
 <ul>
-    <li><b>WPILib:</b> 2024.1.1</li>
+    <li><b>WPILib:</b> 2024.2.1</li>
     <li><b>RoboRIO Image:</b> 2024 v2.1 </li>
     <li><u><b>Vendors:</b></u></li>
     <ul>

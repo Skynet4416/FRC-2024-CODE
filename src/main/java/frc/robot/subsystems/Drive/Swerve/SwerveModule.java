@@ -40,6 +40,7 @@ public class SwerveModule extends SubsystemBase {
     private SwerveModuleState m_moduleState; // current state of the module without steer offset
     private SwerveModuleState m_targetState;
     private double m_moduleOffset;
+    private boolean m_isReversed;
 
     private double m_targetRotorVelocity = 0;
 
@@ -55,7 +56,8 @@ public class SwerveModule extends SubsystemBase {
      * @param moduleOffsetInDegrees
      *                              The Offset of the module (Relative to the robot)
      */
-    public SwerveModule(int driveMotorCANID, int steerMotorCANID, int steerEncoderCANID, double moduleOffsetInDegrees) {
+    public SwerveModule(int driveMotorCANID, int steerMotorCANID, int steerEncoderCANID, double moduleOffsetInDegrees,
+            boolean isReversed) {
         this.m_driveMotor = new CANSparkFlex(driveMotorCANID, CANSparkLowLevel.MotorType.kBrushless);
         this.m_steerMotor = new TalonFX(steerMotorCANID);
         this.m_steerEncoder = new CANcoder(steerEncoderCANID);
@@ -64,6 +66,8 @@ public class SwerveModule extends SubsystemBase {
         this.m_moduleState = new SwerveModuleState(0, Rotation2d.fromDegrees(0));
 
         this.m_moduleOffset = moduleOffsetInDegrees;
+        this.m_isReversed = isReversed;
+
         configMotors(steerEncoderCANID);
         setBreak();
     }
@@ -124,6 +128,7 @@ public class SwerveModule extends SubsystemBase {
         this.m_driveMotor.getPIDController().setD(Swerve.PID.Drive.kD);
         this.m_driveMotor.getPIDController().setP(Swerve.PID.Drive.kP);
         this.m_driveMotor.getPIDController().setI(Swerve.PID.Drive.kI);
+        this.m_driveMotor.setInverted(m_isReversed);
 
         // current theory is that sparkFlex doesn't need configs. but that just a
         // theory.

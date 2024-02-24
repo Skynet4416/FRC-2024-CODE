@@ -42,9 +42,9 @@ public class ArmSubsystem extends SubsystemBase {
         m_motor_right.follow(m_motor_left, true);
     }
 
-    public void setVoltage(double leftVoltage, double rightVoltage) {
+    public void setVoltage(double voltage) {
         // No need to set right, as it follows left.
-        m_motor_left.setVoltage(leftVoltage);
+        m_motor_left.setVoltage(voltage);
     }
 
     public void SetAngle(double TargetAngle) {
@@ -58,7 +58,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void execute() {
         double voltage = pidController.calculate(getAngle());
-        setVoltage(voltage, -voltage);
+        setVoltage(voltage);
     }
 
     @Override

@@ -31,6 +31,6 @@ public class ArmCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        armSubsystem.setVoltage(0, 0);
+        armSubsystem.setVoltage(0);
     }
 }

@@ -23,32 +23,30 @@ import frc.robot.Constants.Arm;
 public class ArmSubsystem extends SubsystemBase {
     /** Creates a new ExampleSubsystem. */
     private final CANSparkMax m_motor_left, m_motor_right;
-    private final DutyCycleEncoder m_left_encoder;
+    private final DutyCycleEncoder m_encoder;
 
     private PIDController pidController = new PIDController(Arm.Pid.kP, Arm.Pid.kD, Arm.Pid.kI);
 
     public ArmSubsystem() {
         m_motor_left = new CANSparkMax(Arm.Motors.kLeftMotorID, MotorType.kBrushless);
         m_motor_right = new CANSparkMax(Arm.Motors.kRightMotorID, MotorType.kBrushless);
-        DigitalInput Left_encoder_input = new DigitalInput(Arm.Encoders.kLeftEncoderID);
-        init();
-        m_motor_right.follow(m_motor_left);
-        // the left encoder is not the encoder of the left motor but an external
-        // encoder. the arm encoder is the encoder of the left motor.
-        m_left_encoder = new DutyCycleEncoder(Left_encoder_input);
-    }
+        m_motor_left.restoreFactoryDefaults();
+        m_motor_right.restoreFactoryDefaults();
 
-    public void init() {
+        m_encoder = new DutyCycleEncoder(Arm.Encoders.kLeftEncoderID);
+
         // in this the external encoder sets the left motor encoder
         m_motor_left.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         m_motor_right.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         m_motor_left.setIdleMode(IdleMode.kBrake);
         m_motor_right.setIdleMode(IdleMode.kBrake);
+
+        m_motor_right.follow(m_motor_left, true);
     }
 
     public void setVoltage(double leftVoltage, double rightVoltage) {
+        // No need to set right, as it follows left.
         m_motor_left.setVoltage(leftVoltage);
-        m_motor_right.setVoltage(rightVoltage);
     }
 
     /**
@@ -63,7 +61,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getAngle() {
-        return m_left_encoder.getAbsolutePosition() - Arm.Stats.encoderOffset;
+        return m_encoder.getAbsolutePosition() - Arm.Stats.encoderOffset;
     }
 
     public void execute() {

@@ -110,6 +110,7 @@ public class RobotContainer {
         m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX,
                 oi.xboxController::getLeftY, oi.xboxController::getRightX));
 
+        oi.commandXboxController.y().whileTrue(new IntakeReverseCommand(m_IntakeSubsystem));
         oi.commandXboxController.x().whileTrue(new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
         // if the a button is pressed, the climb will extend. once it's not, the climb
         // will retract.
@@ -123,10 +124,6 @@ public class RobotContainer {
 
         // //if the b button is pressed the shooter puts a note in amp
         // oi.commandXboxController.b().onTrue(new PlaceInAmp(m_ShooterSubsystem));
-
-        // //if y is pressed then the intake goes in reverse
-        // oi.commandXboxController.y().onTrue(new IntakeSpinUp(m_IntakeSubsystem,
-        // true));
 
         // //if the x button is pressed the shooter will shoot (if the target is in
         // range)

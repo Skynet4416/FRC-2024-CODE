@@ -16,7 +16,7 @@ public class IntakeReverseCommand extends Command {
 
     @Override
     public void initialize() {
-        intakeSubsystem.setSpeed(-Intake.Stats.kIntakeSpeed);
+        intakeSubsystem.setSpeed(Intake.Stats.kIntakeReverseSpeed);
     }
 
     @Override

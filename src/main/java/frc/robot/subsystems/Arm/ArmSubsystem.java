@@ -21,7 +21,6 @@ import frc.robot.Constants.AllRobot;
 import frc.robot.Constants.Arm;
 
 public class ArmSubsystem extends SubsystemBase {
-    /** Creates a new ExampleSubsystem. */
     private final CANSparkMax m_motor_left, m_motor_right;
     private final DutyCycleEncoder m_encoder;
 

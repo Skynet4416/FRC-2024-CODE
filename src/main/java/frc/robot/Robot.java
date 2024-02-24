@@ -80,7 +80,6 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver{
 
   private void updateInRange()
   {
-    SmartDashboard.putBoolean("is the robot in range for shooting: ", m_robotContainer.getInRange().getAsBoolean());
   }
 
   @Override
@@ -89,7 +88,6 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver{
       SmartDashboard.putNumber("the id of the best target apriltag: ", aprilTag.getFiducialId());
       SmartDashboard.putNumber("the yaw of the best target apriltag: ", aprilTag.getYaw());
       SmartDashboard.putNumber("the pitch of the best target apriltag: ", aprilTag.getPitch());
-      SmartDashboard.putNumber("the distance of the best target apriltag from the robot in cm: ", m_robotContainer.getVisionSubsystem().getDistanceInCM(aprilTag));
   }
 
   private void updateCurrentGyroAngle() {

@@ -2,30 +2,44 @@ package frc.robot.subsystems.Shooter;
 
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
 
-public class ShooterSubsystem extends SubsystemBase 
-{
-    private final CANSparkMax m_motor_left,m_motor_right;
-    private final PIDController m_Shooter_Pid;
+public class ShooterSubsystem extends SubsystemBase {
+    private final CANSparkMax m_motor_left, m_motor_right;
+    private final SparkPIDController m_left_pid;
+    private final SparkPIDController m_right_pid;
 
-    public ShooterSubsystem()
-    {
-        this.m_motor_left = new CANSparkMax(Shooter.Motors.ShooterMotorLeftID,CANSparkLowLevel.MotorType.kBrushless);
-        this.m_motor_right = new CANSparkMax(Shooter.Motors.ShooterMotorRightID,CANSparkLowLevel.MotorType.kBrushless);
-        this.m_Shooter_Pid = new PIDController(Shooter.PID.kP,Shooter.PID.kI,Shooter.PID.kD);
+    public ShooterSubsystem() {
+
+        this.m_motor_left = new CANSparkMax(Shooter.Motors.ShooterMotorLeftID, CANSparkLowLevel.MotorType.kBrushless);
+        this.m_motor_right = new CANSparkMax(Shooter.Motors.ShooterMotorRightID, CANSparkLowLevel.MotorType.kBrushless);
+        m_motor_left.restoreFactoryDefaults();
+        m_motor_right.restoreFactoryDefaults();
+        this.m_left_pid = m_motor_left.getPIDController();
+        this.m_right_pid = m_motor_right.getPIDController();
+
+        m_left_pid.setP(Shooter.PID.kP);
+        m_left_pid.setI(Shooter.PID.kI);
+        m_left_pid.setD(Shooter.PID.kD);
+
+        m_right_pid.setP(Shooter.PID.kP);
+        m_right_pid.setI(Shooter.PID.kI);
+        m_right_pid.setD(Shooter.PID.kD);
     }
-    public void SetSpeed(double speed)
-    {
-        m_motor_left.set(m_Shooter_Pid.calculate(m_motor_right.getAppliedOutput(),speed));
-        m_motor_right.set(m_Shooter_Pid.calculate(m_motor_right.getAppliedOutput(),speed*-1));
+
+    public void SetRPM(double speed) {
+        m_left_pid.setReference(speed, ControlType.kVelocity);
+        m_right_pid.setReference(-speed, ControlType.kVelocity);
+
     }
-        public void setVoltage(double voltage)
-    {
-        m_motor_right.setVoltage(voltage);
+
+    public void setVoltage(double voltage) {
+        m_motor_right.setVoltage(-voltage);
         m_motor_left.setVoltage(voltage);
     }
 }

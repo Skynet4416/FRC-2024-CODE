@@ -1,7 +1,6 @@
 // https://github.com/FRCTeam2910/2022CompetitionRobot/blob/master/src/main/java/org/frcteam2910/c2022/subsystems/ClimberSubsystem.java
 package frc.robot.subsystems.Climber;
 
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -32,7 +31,9 @@ public class ClimberSubsystem extends SubsystemBase {
 
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Climber");
         // shuffleboardTab.addNumber("Height", () -> {return getCurrentHeight();});
-        shuffleboardTab.addBoolean("is open?", () -> {return m_isOpen;});
+        shuffleboardTab.addBoolean("is open?", () -> {
+            return m_isOpen;
+        });
 
         setNeutralMode(IdleMode.kBrake);
 
@@ -45,39 +46,50 @@ public class ClimberSubsystem extends SubsystemBase {
 
         m_leftMotor.enableVoltageCompensation(12);
         m_rightMotor.enableVoltageCompensation(12);
-        m_leftMotor.setInverted(false);
-        m_rightMotor.setInverted(true);
+        // m_leftMotor.setInverted(false);
+        // m_rightMotor.setInverted(true);
 
     }
 
-    public void setNeutralMode(IdleMode idleMode) 
-    {
+    public void setNeutralMode(IdleMode idleMode) {
         m_leftMotor.setIdleMode(idleMode);
         m_rightMotor.setIdleMode(idleMode);
     }
 
-
-    public boolean isOpen() 
-    {
+    public boolean isOpen() {
         return m_isOpen;
     }
 
-    public void extendTelescope()
-    {
-        m_leftMotor.getPIDController().setReference(Climber.Stats.kExtensionTurnsInRounds,ControlType.kPosition);
-        m_rightMotor.getPIDController().setReference(Climber.Stats.kExtensionTurnsInRounds,ControlType.kPosition);
+    public void extendTelescope() {
+        m_leftMotor.getPIDController().setReference(Climber.Stats.kExtensionTurnsInRounds, ControlType.kPosition);
+        m_rightMotor.getPIDController().setReference(-Climber.Stats.kExtensionTurnsInRounds, ControlType.kPosition);
         this.m_isOpen = true;
     }
 
-     public void retractTelescope()
-    {
-        m_leftMotor.getPIDController().setReference(0,ControlType.kPosition);
-        m_rightMotor.getPIDController().setReference(0,ControlType.kPosition);
+    public void retractTelescope() {
+        m_leftMotor.getPIDController().setReference(Climber.Stats.kRetractInRounds, ControlType.kPosition);
+        m_rightMotor.getPIDController().setReference(Climber.Stats.kRetractInRounds, ControlType.kPosition);
         this.m_isOpen = false;
+    }
+
+    public boolean isExtended() {
+        return Math.abs(m_leftMotor.getEncoder().getPosition()
+                - Climber.Stats.kExtensionTurnsInRounds) < Climber.Stats.kThreashold;
+    }
+
+    public boolean isRetracted() {
+        return Math.abs(m_leftMotor.getEncoder().getPosition()
+                - Climber.Stats.kRetractInRounds) < Climber.Stats.kThreashold;
     }
 
     public void init() {
         m_leftMotor.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         m_rightMotor.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
+    }
+
+    public void setVoltage(double voltage) {
+        m_leftMotor.setVoltage(voltage);
+        m_rightMotor.setVoltage(voltage);
+
     }
 }

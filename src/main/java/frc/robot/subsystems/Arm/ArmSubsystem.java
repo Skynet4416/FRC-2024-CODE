@@ -35,7 +35,6 @@ public class ArmSubsystem extends SubsystemBase {
 
         m_encoder = new DutyCycleEncoder(Arm.Encoders.kLeftEncoderID);
 
-        // in this the external encoder sets the left motor encoder
         m_motor_left.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         m_motor_right.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         m_motor_left.setIdleMode(IdleMode.kBrake);

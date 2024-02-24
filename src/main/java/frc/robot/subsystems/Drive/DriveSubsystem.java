@@ -67,22 +67,22 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
                     Drive.Motors.kFrontLeftDriveFalconCANID,
                     Drive.Motors.kFrontLeftSteerFalconCANID,
                     Drive.Encoders.kFrontLeftSteerEncoderCANID,
-                    Drive.Stats.kFrontLeftModuleOffsetInDegrees);
+                    Drive.Stats.kFrontLeftModuleOffsetInDegrees, false);
           this.m_frontRightModule = new SwerveModule(
                     Drive.Motors.kFrontRightDriveFalconCANID,
                     Drive.Motors.kFrontRightSteerFalconCANID,
                     Drive.Encoders.kFrontRightSteerEncoderCANID,
-                    Drive.Stats.kFrontRightModuleOffsetInDegrees);
+                    Drive.Stats.kFrontRightModuleOffsetInDegrees, true);
           this.m_backLeftModule = new SwerveModule(
                     Drive.Motors.kBackLeftDriveFalconCANID,
                     Drive.Motors.kBackLeftSteerFalconCANID,
                     Drive.Encoders.kBackLeftSteerEncoderCANID,
-                    Drive.Stats.kBackLeftModuleOffsetInDegrees);
+                    Drive.Stats.kBackLeftModuleOffsetInDegrees, false);
           this.m_backRightModule = new SwerveModule(
                     Drive.Motors.kBackRightDriveFalconCANID,
                     Drive.Motors.kBackRightSteerFalconCANID,
                     Drive.Encoders.kBackRightSteerEncoderCANID,
-                    Drive.Stats.kBackRightModuleOffsetInDegrees);
+                    Drive.Stats.kBackRightModuleOffsetInDegrees, true);
 
           m_navX = new AHRS();
 

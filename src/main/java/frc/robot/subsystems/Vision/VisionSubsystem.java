@@ -38,7 +38,8 @@ public class VisionSubsystem extends SubsystemBase {
             System.out.println("cant load layout");
         }
         this.observers = observers;
-        photonPoseEstimator = new PhotonPoseEstimator(layout, Constants.Vision.poseStrategy, Constants.Vision.Stats.transformCamera);
+        photonPoseEstimator = new PhotonPoseEstimator(layout, Constants.Vision.poseStrategy,
+                Constants.Vision.Stats.transformCamera);
         photonCamera = new PhotonCamera(Constants.Vision.Stats.cameraName);
     }
 
@@ -50,29 +51,26 @@ public class VisionSubsystem extends SubsystemBase {
         return false;
     }
 
-    public PhotonTrackedTarget getTarget()
-    {
+    public PhotonTrackedTarget getTarget() {
         var result = photonCamera.getLatestResult();
         return result.getBestTarget();
     }
 
     /**
-     * gets the distance from the closest (best) april tag 
+     * gets the distance from the closest (best) april tag
+     * 
      * @return
      */
-    public static double getDistanceInCM(PhotonTrackedTarget target)
-    {
+    public static double getDistanceInCM(PhotonTrackedTarget target) {
         double angle = target.getPitch();
-        if (angle==0)
-        {
+        if (angle == 0) {
             return Double.NaN;
         }
-        //send to dashboard the distance
-        return (Vision.Stats.targetHeightInCM-Vision.Stats.CameraHeightInCM)/Math.tan(angle);
+        // send to dashboard the distance
+        return (Vision.Stats.targetHeightInCM - Vision.Stats.CameraHeightInCM) / Math.tan(angle);
     }
 
-    public double getAprilTagYaw()
-    {
+    public double getAprilTagYaw() {
         var result = photonCamera.getLatestResult();
         PhotonTrackedTarget target = result.getBestTarget();
         return target.getYaw();
@@ -84,9 +82,8 @@ public class VisionSubsystem extends SubsystemBase {
             Optional<EstimatedRobotPose> pos = photonPoseEstimator.update();
             if (pos.isPresent()) {
                 return pos.get();
-            } 
-            else {
-                //todo: change to shuffleboard/smart dashboard message
+            } else {
+                // todo: change to shuffleboard/smart dashboard message
                 System.out.println("CAMERA DISCONNECTED!!!!");
             }
         }
@@ -97,21 +94,17 @@ public class VisionSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (aprilTagHasTarget()) {
-             var result = photonCamera.getLatestResult();
+            var result = photonCamera.getLatestResult();
             PhotonTrackedTarget target = result.getBestTarget();
             for (VisionObserver observer : observers) {
                 observer.addVisionMeasurement(getEstimatedGlobalPose(observer.getCurrentPosition()), target);
             }
-        }
-        else
-        {
-            for (VisionObserver observer : observers)
-            {
-                //other interface function meaning: we have no tags
+        } else {
+            for (VisionObserver observer : observers) {
+                // other interface function meaning: we have no tags
                 observer.hasNoTags();
             }
         }
     }
-
 
 }

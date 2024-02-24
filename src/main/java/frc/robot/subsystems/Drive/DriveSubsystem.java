@@ -102,7 +102,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
 
           m_swerveSpeeds = new ChassisSpeeds(0, 0, 0);
 
-          m_currentPose = m_odometry.getPoseMeters(); //todo needs to take the position from vision
+          m_currentPose = m_odometry.getPoseMeters(); // todo needs to take the position from vision
           m_pidController = new PIDController(Drive.PID.kP, Drive.PID.kI, Drive.PID.kD);
           m_pidController.enableContinuousInput(0, 360);
           m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(),
@@ -263,14 +263,14 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
       * overrides the addVisionMeasurement method from the implemented VisionObserver
       */
      @Override
-     public void addVisionMeasurement(EstimatedRobotPose pos, PhotonTrackedTarget aprilTag)
-     {
+     public void addVisionMeasurement(EstimatedRobotPose pos, PhotonTrackedTarget aprilTag) {
           m_poseEstimator.addVisionMeasurement(pos.estimatedPose.toPose2d(), pos.timestampSeconds);
      }
 
      @Override
-     public void hasNoTags()
-     { }
+     public void hasNoTags() {
+     }
+
      /**
       * overrides the getCurrentPosition method from the implemented VisionObserver
       */

@@ -46,7 +46,7 @@ public class RobotContainer {
   // https://www.chiefdelphi.com/t/why-do-many-teams-put-a-m-in-front-of-many-variable-names/377126
   // ? this is why i put m_(variable name)
   // The robot's subsystems and commands are defined here...
-  private final VisionSubsystem m_VisionSubsystem;
+  // private final VisionSubsystem m_VisionSubsystem;
   private final DriveSubsystem m_driveSubsystem;
   // private final ClimberSubsystem m_ClimberSubsystem;
   private final IntakeSubsystem m_IntakeSubsystem;
@@ -69,7 +69,7 @@ public class RobotContainer {
     this.m_IntakeSubsystem = new IntakeSubsystem();
     this.m_ShooterSubsystem = new ShooterSubsystem();
     this.m_ArmSubsystem = new ArmSubsystem();
-    this.m_VisionSubsystem = new VisionSubsystem(null);
+    // this.m_VisionSubsystem = new VisionSubsystem(null);
     this.oi = new OI();
     configureBindings();
     m_driveSubsystem.setAllModulesToZero();
@@ -81,12 +81,11 @@ public class RobotContainer {
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
-
-  public VisionSubsystem getVisionSubsystem() {
-    return m_VisionSubsystem;
-  }
-
-  public DriveSubsystem getDriveSubsystem() {
+  // public VisionSubsystem getVisionSubsystem()
+  // {
+  //   return m_VisionSubsystem;
+  // }
+  public DriveSubsystem getDriveSubsystem(){
     return m_driveSubsystem;
   }
 
@@ -104,44 +103,32 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
-    // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
-    // oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
-    m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX,
-        oi.xboxController::getLeftY, oi.xboxController::getRightX));
+  private void configureBindings() 
+  {  
+      // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
+      m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX, oi.xboxController::getLeftY, oi.xboxController::getRightX));
 
-    // if the a button is pressed, the climb will extend. once it's not, the climb
-    // will retract.
-    // oi.commandXboxController.a().whileTrue(new
-    // OpenClimbCommand(m_ClimberSubsystem));
-    // oi.commandXboxController.a().onFalse(new
-    // CloseClimbCommand(m_ClimberSubsystem));
+      oi.commandXboxController.x().whileTrue(new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
+            //if the a button is pressed, the climb will extend. once it's not, the climb will retract.
+      // oi.commandXboxController.a().whileTrue(new OpenClimbCommand(m_ClimberSubsystem));
+      // oi.commandXboxController.a().onFalse(new CloseClimbCommand(m_ClimberSubsystem));
 
-    // //if the right trigger is pressed the arm moves to the amp angle
-    // oi.commandXboxController.rightTrigger().onTrue(new AmpPlace(m_ArmSubsystem));
+      // //if the right trigger is pressed the arm moves to the amp angle
+      // oi.commandXboxController.rightTrigger().onTrue(new AmpPlace(m_ArmSubsystem));
 
-    // //if the b button is pressed the shooter puts a note in amp
-    // oi.commandXboxController.b().onTrue(new PlaceInAmp(m_ShooterSubsystem));
+      // //if the b button is pressed the shooter puts a note in amp
+      // oi.commandXboxController.b().onTrue(new PlaceInAmp(m_ShooterSubsystem));
+      
+      // //if y is pressed then the intake goes in reverse
+      // oi.commandXboxController.y().onTrue(new IntakeSpinUp(m_IntakeSubsystem, true));
+      
+      // //if the x button is pressed the shooter will shoot (if the target is in range)
+      // oi.commandXboxController.x().and(inRangeSupplier).onTrue(new ShooterCommand(m_ShooterSubsystem));
+      // // //if the vision subsystem doesn't work then uncomment this (human opareted shooting)
+      // // oi.commandXboxController.x().onTrue(new IntakePushNote(m_IntakeSubsystem).alongWith(new SpeakerClose(m_ArmSubsystem)).andThen(new ShooterCommand(m_ShooterSubsystem)));
 
-    // //if y is pressed then the intake goes in reverse
-    // oi.commandXboxController.y().onTrue(new IntakeSpinUp(m_IntakeSubsystem,
-    // true));
-
-    // //if the x button is pressed the shooter will shoot (if the target is in
-    // range)
-    // oi.commandXboxController.x().and(inRangeSupplier).onTrue(new
-    // ShooterCommand(m_ShooterSubsystem));
-    // // //if the vision subsystem doesn't work then uncomment this (human opareted
-    // shooting)
-    // // oi.commandXboxController.x().onTrue(new
-    // IntakePushNote(m_IntakeSubsystem).alongWith(new
-    // SpeakerClose(m_ArmSubsystem)).andThen(new
-    // ShooterCommand(m_ShooterSubsystem)));
-
-    // //if the left trigger on the xbox is pressed the climbcommand will activate
-    // oi.commandXboxController.leftTrigger().onTrue(new
-    // IntakeSpinUp(m_IntakeSubsystem, false).alongWith(new
-    // FloorIntake(m_ArmSubsystem)));
+      // //if the left trigger on the xbox is pressed the climbcommand will activate
+      // oi.commandXboxController.leftTrigger().onTrue(new IntakeSpinUp(m_IntakeSubsystem, false).alongWith(new FloorIntake(m_ArmSubsystem)));
   }
 
   public Command getAutonomousCommand() {

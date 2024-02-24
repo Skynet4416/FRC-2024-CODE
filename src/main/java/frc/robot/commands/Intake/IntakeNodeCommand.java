@@ -18,8 +18,9 @@ public class IntakeNodeCommand extends Command {
 
     @Override
     public void initialize() {
-        intakeSubsystem.SetSpeed(Intake.Stats.kIntakeSpeed);
-        shooterSubsystem.setVoltage(Intake.Stats.kShooterSpeed);
+        // intakeSubsystem.setVoltage(Intake.Stats.kIntakeSpeed * 12);
+        intakeSubsystem.setSpeed(Intake.Stats.kIntakeSpeed);
+        shooterSubsystem.setVoltage(Intake.Stats.kShooterSpeed * 12);
     }
 
     @Override
@@ -29,7 +30,7 @@ public class IntakeNodeCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intakeSubsystem.SetSpeed(0);
+        intakeSubsystem.setSpeed(0);
         shooterSubsystem.setVoltage(0);
     }
 }

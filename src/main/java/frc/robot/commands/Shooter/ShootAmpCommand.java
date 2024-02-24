@@ -22,12 +22,12 @@ public class ShootAmpCommand extends Command {
     @Override
     public void initialize() {
         shooterSubsystem.SetRPM(Shooter.Stats.kPutInAmpSpeed);
-        intakeSubsystem.SetSpeed(Shooter.Stats.kPutInAmpSpeed / 5676);
+        intakeSubsystem.setSpeed(Shooter.Stats.kPutInAmpSpeed / 5676);
         // double speed =
         //
         // ShooterHandler.calcShooterAngleAndRPM(distance.getAsDouble()).getFirst();
         // shooterSubsystem.SetRPM(speed);
-        // intakeSubsystem.SetSpeed(speed / 5676);
+        // intakeSubsystem.setSpeed(speed / 5676);
     }
 
     @Override

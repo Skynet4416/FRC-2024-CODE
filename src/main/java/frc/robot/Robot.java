@@ -39,13 +39,6 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
   private ShuffleboardTab drivePIDTab;
   private ShuffleboardTab steerPIDTab;
 
-  // prototype stuff
-  private static final int kJoystickPort = 0;
-  private Joystick m_protoStick;
-  public static final int leadProtoMotorID = 0;
-  public static final int followProtoMotorID = 1;
-  private CANSparkMax m_prototypeMotorLead;
-  private CANSparkMax m_prototypeMotorFollow;
   private final Field2d m_field = new Field2d();
 
   /**
@@ -239,12 +232,12 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
     updateCurrentGyroAngle();
     updateCurrentVelocity();
     updateTargetVelocity();
-    updateCurrentDistance();
-    updateInRange();
-    updateAprilTag(null);
+    // updateCurrentDistance();
+    // updateInRange();
+    // updateAprilTag(null);
 
     // moves how fast the motor goes through joystick
-    m_prototypeMotorLead.set(m_protoStick.getY());
+    // m_prototypeMotorLead.set(m_protoStick.getY());
     // Update Shuffleboard data here if needed
 
     m_field.setRobotPose(m_robotContainer.getDriveSubsystem().getOdometry().getPoseMeters());

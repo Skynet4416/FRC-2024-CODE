@@ -173,7 +173,7 @@ public final class Constants {
             // todo: set the speed needed, and everything in constants honestly
             public static final double kIntakeSpeed = 0.2;
             public static final double kPushingNodeInRounds = 1;
-            public static final double kShooterSpeed = -0.2;
+            public static final double kShooterSpeed = 0.1;
         }
     }
 
@@ -415,6 +415,6 @@ public final class Constants {
     }
 
     public static class AllRobot {
-        public static final int kAllMotorsLimitInAmpr = 5;
+        public static final int kAllMotorsLimitInAmpr = 30;
     }
 }

@@ -24,12 +24,12 @@ public class ShootSpeakerCommand extends Command {
     @Override
     public void initialize() {
         shooterSubsystem.SetRPM(Shooter.Stats.kIShooterSpeed);
-        intakeSubsystem.SetSpeed(Shooter.Stats.kIShooterSpeed / 5676);
+        intakeSubsystem.setSpeed(Shooter.Stats.kIShooterSpeed / 5676);
         // double speed =
         //
         // ShooterHandler.calcShooterAngleAndRPM(distance.getAsDouble()).getFirst();
         // shooterSubsystem.SetRPM(speed);
-        // intakeSubsystem.SetSpeed(speed / 5676);
+        // intakeSubsystem.setSpeed(speed / 5676);
     }
 
     @Override

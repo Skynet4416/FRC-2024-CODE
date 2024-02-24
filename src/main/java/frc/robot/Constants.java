@@ -32,8 +32,8 @@ import com.pathplanner.lib.path.*;
 public final class Constants {
     public static class Arm {
         public static class Motors {
-            public static final int kLeftMotorID = 0;
-            public static final int kRightMotorID = 0;
+            public static final int kLeftMotorID = 22;
+            public static final int kRightMotorID = 21;
         }
 
         public static class Stats {
@@ -165,8 +165,8 @@ public final class Constants {
     public static class Intake {
         public static class Motors {
             // also the id if there is only one motor
-            public static final int kUpperMotorLeftID = 0;
-            public static final int kUpperMotorRightID = 0;
+            public static final int kUpperMotorLeftID = 31;
+            public static final int kUpperMotorRightID = 34;
         }
 
         public static class Stats {
@@ -179,8 +179,8 @@ public final class Constants {
 
     public static class Shooter {
         public static class Motors {
-            public static final int ShooterMotorLeftID = 69;
-            public static final int ShooterMotorRightID = 69;
+            public static final int ShooterMotorLeftID = 32;
+            public static final int ShooterMotorRightID = 33;
 
         }
 

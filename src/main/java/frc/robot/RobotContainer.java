@@ -8,7 +8,6 @@ import frc.robot.subsystems.Drive.DriveSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Shooter.ShooterSubsystem;
 import frc.robot.subsystems.Vision.VisionObserver;
-import frc.robot.subsystems.Vision.VisionObserverCentral;
 import frc.robot.subsystems.Vision.VisionSubsystem;
 import frc.robot.subsystems.Auto;
 import frc.robot.subsystems.Arm.ArmSubsystem;
@@ -28,14 +27,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Intake.*;
-import frc.robot.commands.Shooter.PlaceInAmp;
-import frc.robot.commands.Shooter.ShooterCommand;
-import frc.robot.commands.Arm.AmpPlace;
-import frc.robot.commands.Arm.DrivePlace;
-import frc.robot.commands.Arm.FloorIntake;
-import frc.robot.commands.Arm.SpeakerClose;
-import frc.robot.commands.Climb.CloseTelescopCommand;
-import frc.robot.commands.Climb.OpenTelescopCommand;
+import frc.robot.commands.Climb.CloseClimbCommand;
+import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
 import frc.robot.InRangeObserver;
 /**
@@ -44,17 +37,16 @@ import frc.robot.InRangeObserver;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer implements InRangeObserver{
+public class RobotContainer {
   // ? https://www.chiefdelphi.com/t/why-do-many-teams-put-a-m-in-front-of-many-variable-names/377126
   // ? this is why i put m_(variable name)
   // The robot's subsystems and commands are defined here...
   private final VisionSubsystem m_VisionSubsystem;
   private final DriveSubsystem m_driveSubsystem;
-  private final ClimberSubsystem m_ClimberSubsystem;
+  // private final ClimberSubsystem m_ClimberSubsystem;
   private final IntakeSubsystem m_IntakeSubsystem;
   private final ShooterSubsystem m_ShooterSubsystem;
   private final ArmSubsystem m_ArmSubsystem;
-  private final VisionObserverCentral m_VisionObserverCentral;
   private final OI oi;
   private final Auto auto;
   private final SendableChooser<Command> autoChooser;
@@ -66,19 +58,17 @@ public class RobotContainer implements InRangeObserver{
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     this.m_driveSubsystem = new DriveSubsystem();
-    this.m_ClimberSubsystem = new ClimberSubsystem();
+    // this.m_ClimberSubsystem = new ClimberSubsystem();
     this.m_IntakeSubsystem = new IntakeSubsystem();
     this.m_ShooterSubsystem = new ShooterSubsystem();
     this.m_ArmSubsystem = new ArmSubsystem();
-    this.m_VisionObserverCentral = new VisionObserverCentral(null, this);
-    new DrivePlace(m_ArmSubsystem);
+    this.m_VisionSubsystem = new VisionSubsystem(null);
     this.oi = new OI();
     configureBindings();
     m_driveSubsystem.setAllModulesToZero();
     this.auto = new Auto(m_driveSubsystem);
     this.autoChooser = AutoBuilder.buildAutoChooser();
 
-    this.m_VisionSubsystem = new VisionSubsystem(List.of(m_driveSubsystem,m_VisionObserverCentral));
 
     //change to shuffleBoard later if you want
     // Another option that allows you to specify the default auto by its name
@@ -107,25 +97,25 @@ public class RobotContainer implements InRangeObserver{
       m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX, oi.xboxController::getLeftY, oi.xboxController::getRightX));
       
       //if the a button is pressed, the climb will extend. once it's not, the climb will retract.
-      oi.commandXboxController.a().onTrue(new OpenTelescopCommand(m_ClimberSubsystem));
-      oi.commandXboxController.a().onFalse(new CloseTelescopCommand(m_ClimberSubsystem));
+      // oi.commandXboxController.a().whileTrue(new OpenClimbCommand(m_ClimberSubsystem));
+      // oi.commandXboxController.a().onFalse(new CloseClimbCommand(m_ClimberSubsystem));
 
-      //if the right trigger is pressed the arm moves to the amp angle
-      oi.commandXboxController.rightTrigger().onTrue(new AmpPlace(m_ArmSubsystem));
+      // //if the right trigger is pressed the arm moves to the amp angle
+      // oi.commandXboxController.rightTrigger().onTrue(new AmpPlace(m_ArmSubsystem));
 
-      //if the b button is pressed the shooter puts a note in amp
-      oi.commandXboxController.b().onTrue(new PlaceInAmp(m_ShooterSubsystem));
+      // //if the b button is pressed the shooter puts a note in amp
+      // oi.commandXboxController.b().onTrue(new PlaceInAmp(m_ShooterSubsystem));
       
-      //if y is pressed then the intake goes in reverse
-      oi.commandXboxController.y().onTrue(new IntakeSpinUp(m_IntakeSubsystem, true));
+      // //if y is pressed then the intake goes in reverse
+      // oi.commandXboxController.y().onTrue(new IntakeSpinUp(m_IntakeSubsystem, true));
       
-      //if the x button is pressed the shooter will shoot (if the target is in range)
-      oi.commandXboxController.x().and(inRangeSupplier).onTrue(new ShooterCommand(m_ShooterSubsystem));
-      // //if the vision subsystem doesn't work then uncomment this (human opareted shooting)
-      // oi.commandXboxController.x().onTrue(new IntakePushNote(m_IntakeSubsystem).alongWith(new SpeakerClose(m_ArmSubsystem)).andThen(new ShooterCommand(m_ShooterSubsystem)));
+      // //if the x button is pressed the shooter will shoot (if the target is in range)
+      // oi.commandXboxController.x().and(inRangeSupplier).onTrue(new ShooterCommand(m_ShooterSubsystem));
+      // // //if the vision subsystem doesn't work then uncomment this (human opareted shooting)
+      // // oi.commandXboxController.x().onTrue(new IntakePushNote(m_IntakeSubsystem).alongWith(new SpeakerClose(m_ArmSubsystem)).andThen(new ShooterCommand(m_ShooterSubsystem)));
 
-      //if the left trigger on the xbox is pressed the climbcommand will activate
-      oi.commandXboxController.leftTrigger().onTrue(new IntakeSpinUp(m_IntakeSubsystem, false).alongWith(new FloorIntake(m_ArmSubsystem)));
+      // //if the left trigger on the xbox is pressed the climbcommand will activate
+      // oi.commandXboxController.leftTrigger().onTrue(new IntakeSpinUp(m_IntakeSubsystem, false).alongWith(new FloorIntake(m_ArmSubsystem)));
   }
 
   public Command getAutonomousCommand()
@@ -154,28 +144,5 @@ public class RobotContainer implements InRangeObserver{
   }
   private boolean b = false;
 
-  /**
-   * this function gets a boolean and sends it to the supplier, it also 
-   * @param inRange - the parameter that the interface gets from VisionObserverCentral
-   */
-  @Override
-  public void inRange(Boolean inRange)
-  {
-    if(inRange==true)
-    {
-      new SpeakerClose(m_ArmSubsystem).alongWith(new IntakePushNote(m_IntakeSubsystem)).alongWith(new ShooterCommand(m_ShooterSubsystem));
-    }
-    b = inRange;
-  }
-  // i think the first getAutonomousCommand lets the driver choose the auto (correct me if i'm wrong) so that's why it stays, but the other one is also here if it's more convinient 
-  //  public Command getAutonomousCommand() 
-  //   {
-  //       return new PathPlannerAuto("path 0 auto");
-  //   }
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
 
 }

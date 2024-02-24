@@ -66,14 +66,14 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver{
     addPIDConstantsToShuffleboardSteer(steerPIDTab, "Steer");
 
     //prepares the prototype testing
-    m_prototypeMotorLead = new CANSparkMax(leadProtoMotorID, MotorType.kBrushless);
-    m_prototypeMotorFollow = new CANSparkMax(followProtoMotorID, MotorType.kBrushless);
+    // m_prototypeMotorLead = new CANSparkMax(leadProtoMotorID, MotorType.kBrushless);
+    // m_prototypeMotorFollow = new CANSparkMax(followProtoMotorID, MotorType.kBrushless);
     
-    m_prototypeMotorLead.restoreFactoryDefaults();
-    m_prototypeMotorFollow.restoreFactoryDefaults();
+    // m_prototypeMotorLead.restoreFactoryDefaults();
+    // m_prototypeMotorFollow.restoreFactoryDefaults();
     
-    m_prototypeMotorFollow.follow(m_prototypeMotorLead,false);
-    m_protoStick = new Joystick(kJoystickPort);
+    // m_prototypeMotorFollow.follow(m_prototypeMotorLead,false);
+    // m_protoStick = new Joystick(kJoystickPort);
 
     resetSmartValues();
   }
@@ -226,8 +226,6 @@ private void resetSmartValues()
   @Override
   public void disabledPeriodic() 
   {
-    ArmSubsystem m_arm = new ArmSubsystem();
-    m_arm.init();
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */

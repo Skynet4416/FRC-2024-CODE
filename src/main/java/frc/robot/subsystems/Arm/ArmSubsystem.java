@@ -51,12 +51,6 @@ public class ArmSubsystem extends SubsystemBase {
         m_motor_right.setVoltage(rightVoltage);
     }
 
-    /**
-     * 
-     * Example command factory method.
-     *
-     * @return a command
-     */
     public void SetAngle(double TargetAngle) {
         pidController.setSetpoint(TargetAngle);
 

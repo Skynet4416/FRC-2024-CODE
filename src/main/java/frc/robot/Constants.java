@@ -37,6 +37,8 @@ public final class Constants {
         }
 
         public static class Stats {
+            public static final double kLimitAngle = 90;
+            //todo put actual angles and then it will do the thing
             public static final double encoderOffset = 0.0;
             public static final double gearRatio = 1 / 25.0;
             public static final double ampAngle = 110;

@@ -27,10 +27,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Intake.*;
+import frc.robot.commands.Shooter.ShootSpeakerCommand;
+import frc.robot.commands.Arm.ArmCommand;
 import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
 import frc.robot.InRangeObserver;
+import frc.robot.Constants.Arm;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -118,8 +121,8 @@ public class RobotContainer {
         // oi.commandXboxController.a().onFalse(new
         // CloseClimbCommand(m_ClimberSubsystem));
 
-        // //if the right trigger is pressed the arm moves to the amp angle
-        // oi.commandXboxController.rightTrigger().onTrue(new AmpPlace(m_ArmSubsystem));
+        //if the right trigger is pressed the arm moves to the amp angle
+        oi.commandXboxController.rightTrigger().onTrue(new ArmCommand(m_ArmSubsystem, Arm.Stats.ampAngle));
 
         // //if the b button is pressed the shooter puts a note in amp
         // oi.commandXboxController.b().onTrue(new PlaceInAmp(m_ShooterSubsystem));
@@ -132,12 +135,11 @@ public class RobotContainer {
         // range)
         // oi.commandXboxController.x().and(inRangeSupplier).onTrue(new
         // ShooterCommand(m_ShooterSubsystem));
-        // // //if the vision subsystem doesn't work then uncomment this (human opareted
-        // shooting)
-        // // oi.commandXboxController.x().onTrue(new
-        // IntakePushNote(m_IntakeSubsystem).alongWith(new
-        // SpeakerClose(m_ArmSubsystem)).andThen(new
-        // ShooterCommand(m_ShooterSubsystem)));
+
+        // //if the vision subsystem doesn't work then uncomment this (human opareted shooting)
+        // oi.commandXboxController.x().onTrue(new
+        // ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)).andThen(new
+        // ShootSpeakerCommand(m_ShooterSubsystem,m_IntakeSubsystem,//distance supplier goes here?)));
 
         // //if the left trigger on the xbox is pressed the climbcommand will activate
         // oi.commandXboxController.leftTrigger().onTrue(new

@@ -6,22 +6,20 @@ import frc.robot.subsystems.Arm.ArmSubsystem;
 
 public class ArmCommand extends Command {
     private ArmSubsystem armSubsystem;
-    private double angle;
 
-    public ArmCommand(ArmSubsystem armSubsystem, double angle) {
+    public ArmCommand(ArmSubsystem armSubsystem) {
         this.armSubsystem = armSubsystem;
-        this.angle = angle;
         addRequirements(armSubsystem);
     }
 
     @Override
     public void initialize() {
-        armSubsystem.SetAngle(angle);
+        armSubsystem.resetAngle();
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(armSubsystem.getAngle() - angle) < Arm.Stats.kThreashold;
+        return false;
     }
 
     @Override

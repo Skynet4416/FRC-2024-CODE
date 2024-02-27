@@ -31,7 +31,7 @@ import frc.robot.commands.Shooter.IntakeVoltageCommand;
 import frc.robot.commands.Shooter.ShootVoltageCommand;
 import frc.robot.commands.Shooter.TestVoltageCommand;
 import frc.robot.commands.Arm.ArmCommand;
-import frc.robot.commands.Arm.HoldCommand;
+import frc.robot.commands.Arm.SetArmAngle;
 import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
@@ -113,7 +113,7 @@ public class RobotContainer {
     private void configureBindings() {
         // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         // oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
-        m_ArmSubsystem.setDefaultCommand(new HoldCommand(m_ArmSubsystem));
+        m_ArmSubsystem.setDefaultCommand(new ArmCommand(m_ArmSubsystem));
 
         // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         // oi.xboxController::getLeftX,
@@ -128,7 +128,7 @@ public class RobotContainer {
         // oi.commandXboxController.b().whileTrue(new
         // TestVoltageCommand(m_IntakeSubsystem,m_ShooterSubsystem,6));
 
-        oi.commandXboxController.a().whileTrue(new ArmCommand(m_ArmSubsystem, 45));
+        oi.commandXboxController.a().onTrue(new SetArmAngle(m_ArmSubsystem, 45));
 
         // if the a button is pressed, the climb will extend. once it's not, the climb
         // will retract.

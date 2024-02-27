@@ -44,7 +44,7 @@ public final class Constants {
             public static final double ampAngle = 110;
             public static final double speakerAngle = 10;
             public static final double driveAngle = 40;
-            public static final double kThreashold = 0;
+            public static final double kThreashold = 1;
             public static final double kIntakeAngle = 0;
             public static final double climbAngle = 0;
 

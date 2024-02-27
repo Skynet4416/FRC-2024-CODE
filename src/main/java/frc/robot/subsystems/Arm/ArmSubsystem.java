@@ -5,26 +5,19 @@
 package frc.robot.subsystems.Arm;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.AllRobot;
 import frc.robot.Constants.Arm;
 
 public class ArmSubsystem extends SubsystemBase {
     private final CANSparkMax m_motor_left, m_motor_right;
     private final DutyCycleEncoder m_encoder;
+    private boolean enabled;
 
     private PIDController pidController = new PIDController(Arm.Pid.kP, Arm.Pid.kD, Arm.Pid.kI);
 
@@ -40,6 +33,8 @@ public class ArmSubsystem extends SubsystemBase {
         pidController.disableContinuousInput();
         // pidController.setTolerance(1);
         this.resetAngle();
+        // FIXME: Add way to disable.
+        this.enabled = true;
 
         // m_motor_left.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         // m_motor_right.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
@@ -88,6 +83,9 @@ public class ArmSubsystem extends SubsystemBase {
         pidController.setP(SmartDashboard.getNumber("Arm kP", 0));
         pidController.setI(SmartDashboard.getNumber("Arm kI", 0));
         pidController.setD(SmartDashboard.getNumber("Arm kD", 0));
+
+        if (this.enabled)
+            this.doPID();
 
         // This method will be called once per scheduler run
         // if (getAngle()>= Arm.Stats.kLimitAngle)

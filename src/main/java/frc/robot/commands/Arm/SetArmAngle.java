@@ -1,6 +1,7 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.Arm;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 
 public class SetArmAngle extends Command {
@@ -11,7 +12,8 @@ public class SetArmAngle extends Command {
         this.armSubsystem = armSubsystem;
         this.angle = angle;
 
-        // This command does NOT require armSubsystem, it only sets its angle.
+        // Requirement so SetArmAngle can end when another begins.
+        addRequirements(this.armSubsystem);
     }
 
     @Override
@@ -21,6 +23,7 @@ public class SetArmAngle extends Command {
 
     @Override
     public boolean isFinished() {
-        return true;
+        // This is mostly for command groups, as there is no end function defined.
+        return Math.abs(this.armSubsystem.getAngle() - this.angle) < Arm.Stats.kThreashold;
     }
 }

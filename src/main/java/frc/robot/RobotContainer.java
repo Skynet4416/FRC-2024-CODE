@@ -74,7 +74,7 @@ public class RobotContainer {
         this.m_IntakeSubsystem = new IntakeSubsystem();
         this.m_ShooterSubsystem = new ShooterSubsystem();
         this.m_ArmSubsystem = new ArmSubsystem();
-        // this.m_VisionSubsystem = new VisionSub   system(null);
+        // this.m_VisionSubsystem = new VisionSubsystem(null);
         this.oi = new OI();
         configureBindings();
         m_driveSubsystem.setAllModulesToZero();
@@ -128,7 +128,7 @@ public class RobotContainer {
         // oi.commandXboxController.b().whileTrue(new
         // TestVoltageCommand(m_IntakeSubsystem,m_ShooterSubsystem,6));
 
-        oi.commandXboxController.a().whileTrue(new ArmCommand(m_ArmSubsystem, 60));
+        oi.commandXboxController.a().whileTrue(new ArmCommand(m_ArmSubsystem, 45));
 
         // if the a button is pressed, the climb will extend. once it's not, the climb
         // will retract.

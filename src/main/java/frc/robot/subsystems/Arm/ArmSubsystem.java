@@ -87,6 +87,10 @@ public class ArmSubsystem extends SubsystemBase {
         pidController.setD(SmartDashboard.getNumber("Arm kD", 0));
 
         // This method will be called once per scheduler run
+        if (getAngle()>= Arm.Stats.kLimitAngle) 
+        {
+            setVoltage(0);   
+        }
     }
 
     @Override

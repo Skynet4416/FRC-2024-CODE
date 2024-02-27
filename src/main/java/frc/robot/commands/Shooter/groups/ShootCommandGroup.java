@@ -2,7 +2,6 @@ package frc.robot.commands.Shooter.groups;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants.Arm;
-import frc.robot.commands.Arm.ArmCommand;
 import frc.robot.commands.Intake.IntakeNodeCommand;
 import frc.robot.commands.Shooter.ShootAmpCommand;
 import frc.robot.subsystems.Arm.ArmSubsystem;

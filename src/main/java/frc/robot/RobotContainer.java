@@ -30,7 +30,6 @@ import frc.robot.commands.Intake.*;
 import frc.robot.commands.Shooter.IntakeVoltageCommand;
 import frc.robot.commands.Shooter.ShootVoltageCommand;
 import frc.robot.commands.Shooter.TestVoltageCommand;
-import frc.robot.commands.Arm.ArmCommand;
 import frc.robot.commands.Arm.SetArmAngle;
 import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
@@ -113,7 +112,6 @@ public class RobotContainer {
     private void configureBindings() {
         // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         // oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
-        m_ArmSubsystem.setDefaultCommand(new ArmCommand(m_ArmSubsystem));
 
         // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         // oi.xboxController::getLeftX,

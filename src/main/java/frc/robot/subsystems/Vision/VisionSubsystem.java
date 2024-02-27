@@ -21,6 +21,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Vision;
@@ -61,13 +62,13 @@ public class VisionSubsystem extends SubsystemBase {
      * 
      * @return
      */
-    public static double getDistanceInCM(PhotonTrackedTarget target) {
+    public static double getDistanceInMeters(PhotonTrackedTarget target) {
         double angle = target.getPitch();
         if (angle == 0) {
             return Double.NaN;
         }
         // send to dashboard the distance
-        return (Vision.Stats.targetHeightInCM - Vision.Stats.CameraHeightInCM) / Math.tan(angle);
+        return ((Vision.Stats.targetHeightInCM - Vision.Stats.CameraHeightInCM) / Math.tan(angle)) / 100;
     }
 
     public double getAprilTagYaw() {

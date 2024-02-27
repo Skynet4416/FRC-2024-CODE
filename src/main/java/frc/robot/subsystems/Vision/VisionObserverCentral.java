@@ -43,7 +43,7 @@ public class VisionObserverCentral implements VisionObserver {
      * @return whether or not the april tag is in the range
      */
     private boolean checksIfInRange(PhotonTrackedTarget aprilTag) {
-        double distance = VisionSubsystem.getDistanceInCM(aprilTag);
+        double distance = VisionSubsystem.getDistanceInMeters(aprilTag);
         return (aprilTag.getYaw() > Vision.Stats.Range.kSmallestAngleDeg
                 && aprilTag.getYaw() < Vision.Stats.Range.kBiggestAngleDeg &&
                 distance > Vision.Stats.Range.kSmallestDistanceCM && distance < Vision.Stats.Range.kBiggestDistanceCM);

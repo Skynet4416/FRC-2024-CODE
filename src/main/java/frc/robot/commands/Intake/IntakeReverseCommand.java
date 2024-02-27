@@ -14,9 +14,9 @@ public class IntakeReverseCommand extends Command {
         addRequirements(intakeSubsystem);
     }
 
-    @Override
+    @Override   
     public void initialize() {
-        intakeSubsystem.setSpeed(Intake.Stats.kIntakeReverseSpeed);
+        intakeSubsystem.setSpeed(1);
     }
 
     @Override

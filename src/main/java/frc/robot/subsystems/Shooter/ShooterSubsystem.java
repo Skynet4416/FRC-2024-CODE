@@ -6,6 +6,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Shooter;
 
@@ -15,7 +16,6 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SparkPIDController m_right_pid;
 
     public ShooterSubsystem() {
-
         this.m_motor_left = new CANSparkMax(Shooter.Motors.ShooterMotorLeftID, CANSparkLowLevel.MotorType.kBrushless);
         this.m_motor_right = new CANSparkMax(Shooter.Motors.ShooterMotorRightID, CANSparkLowLevel.MotorType.kBrushless);
         m_motor_left.restoreFactoryDefaults();
@@ -39,7 +39,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setVoltage(double voltage) {
-        m_motor_right.setVoltage(-voltage);
-        m_motor_left.setVoltage(voltage);
+        m_motor_right.setVoltage(voltage);
+        m_motor_left.setVoltage(-voltage);
+    }
+    @Override
+    public void periodic(){
+         SmartDashboard.putNumber("shooter speed", m_motor_left.getAppliedOutput());
     }
 }

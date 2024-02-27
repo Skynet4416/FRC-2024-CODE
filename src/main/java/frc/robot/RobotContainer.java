@@ -27,6 +27,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Intake.*;
+import frc.robot.commands.Shooter.IntakeVoltageCommand;
+import frc.robot.commands.Shooter.ShootVoltageCommand;
+import frc.robot.commands.Shooter.TestVoltageCommand;
+import frc.robot.commands.Arm.ArmCommand;
+import frc.robot.commands.Arm.HoldCommand;
 import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
@@ -69,7 +74,7 @@ public class RobotContainer {
         this.m_IntakeSubsystem = new IntakeSubsystem();
         this.m_ShooterSubsystem = new ShooterSubsystem();
         this.m_ArmSubsystem = new ArmSubsystem();
-        // this.m_VisionSubsystem = new VisionSubsystem(null);
+        // this.m_VisionSubsystem = new VisionSub   system(null);
         this.oi = new OI();
         configureBindings();
         m_driveSubsystem.setAllModulesToZero();
@@ -107,11 +112,24 @@ public class RobotContainer {
     private void configureBindings() {
         // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         // oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
-        m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem, oi.xboxController::getLeftX,
-                oi.xboxController::getLeftY, oi.xboxController::getRightX));
+        // m_ArmSubsystem.setDefaultCommand(new HoldCommand(m_ArmSubsystem));
 
-        oi.commandXboxController.y().whileTrue(new IntakeReverseCommand(m_IntakeSubsystem));
-        oi.commandXboxController.x().whileTrue(new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
+        // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
+        // oi.xboxController::getLeftX,
+        // oi.xboxController::getLeftY, oi.xboxController::getRightX));
+
+        // oi.commandXboxController.y().whileTrue(new
+        // IntakeReverseCommand(m_IntakeSubsystem));
+        // oi.commandXboxController.x().whileTrue(new
+        // IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
+
+        // oi.commandXboxController.a().whileTrue(new
+        // ShootVoltageCommand(m_ShooterSubsystem, 12));
+        // oi.commandXboxController.b().whileTrue(new
+        // TestVoltageCommand(m_IntakeSubsystem,m_ShooterSubsystem,6));
+
+        oi.commandXboxController.a().whileTrue(new ArmCommand(m_ArmSubsystem, 60));
+
         // if the a button is pressed, the climb will extend. once it's not, the climb
         // will retract.
         // oi.commandXboxController.a().whileTrue(new

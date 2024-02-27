@@ -37,7 +37,7 @@ public final class Constants {
         }
 
         public static class Stats {
-            public static final double encoderOffset = 0.0;
+            public static final double encoderOffset = 226;
             public static final double gearRatio = 1 / 25.0;
             public static final double ampAngle = 110;
             public static final double speakerAngle = 10;
@@ -54,7 +54,7 @@ public final class Constants {
         }
 
         public static class Pid {
-            public static final double kP = 0;
+            public static final double kP = 0.6 ;
             public static final double kI = 0;
             public static final double kD = 0;
         }

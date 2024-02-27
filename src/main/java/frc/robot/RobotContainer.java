@@ -36,6 +36,7 @@ import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
 import frc.robot.InRangeObserver;
+import frc.robot.Constants.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -112,17 +113,16 @@ public class RobotContainer {
     private void configureBindings() {
         // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         // oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
-        // m_ArmSubsystem.setDefaultCommand(new HoldCommand(m_ArmSubsystem));
+        m_ArmSubsystem.setDefaultCommand(new HoldCommand(m_ArmSubsystem));
 
         // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         // oi.xboxController::getLeftX,
         // oi.xboxController::getLeftY, oi.xboxController::getRightX));
 
-        // oi.commandXboxController.y().whileTrue(new
-        // IntakeReverseCommand(m_IntakeSubsystem));
-        // oi.commandXboxController.x().whileTrue(new
-        // IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
-
+        oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
+        oi.commandXboxController.b().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
+        oi.commandXboxController.x().whileTrue(new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
+        oi.commandXboxController.rightBumper().whileTrue(new ShootVoltageCommand(m_ShooterSubsystem, 6));
         // oi.commandXboxController.a().whileTrue(new
         // ShootVoltageCommand(m_ShooterSubsystem, 12));
         // oi.commandXboxController.b().whileTrue(new

@@ -39,7 +39,7 @@ public class ArmSubsystem extends SubsystemBase {
         m_encoder = new DutyCycleEncoder(Arm.Encoders.kLeftEncoderID);
         pidController.disableContinuousInput();
         // pidController.setTolerance(1);
-        pidController.setSetpoint(getAngle());
+        this.setAngleToCurrent();
 
         // m_motor_left.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         // m_motor_right.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
@@ -65,6 +65,10 @@ public class ArmSubsystem extends SubsystemBase {
         pidController.setSetpoint((Arm.Stats.encoderOffset + TargetAngle));
         SmartDashboard.putNumber("arm_setpoint", Arm.Stats.encoderOffset + TargetAngle);
     }
+
+    public void setAngleToCurrent() {
+        pidController.setSetpoint(getAngle());
+    }
     
 
     public double getAngle() {
@@ -87,10 +91,10 @@ public class ArmSubsystem extends SubsystemBase {
         pidController.setD(SmartDashboard.getNumber("Arm kD", 0));
 
         // This method will be called once per scheduler run
-        if (getAngle()>= Arm.Stats.kLimitAngle) 
-        {
-            setVoltage(0);   
-        }
+        // if (getAngle()>= Arm.Stats.kLimitAngle) 
+        // {
+        //     setVoltage(0);   
+        // }
     }
 
     @Override

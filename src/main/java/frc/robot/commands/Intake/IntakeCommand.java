@@ -1,22 +1,22 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.Intake;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
-import frc.robot.subsystems.Shooter.ShooterSubsystem;
 
-public class IntakeReverseCommand extends Command {
+public class IntakeCommand extends Command {
     private IntakeSubsystem intakeSubsystem;
+    private double speed;
 
-    public IntakeReverseCommand(IntakeSubsystem intakeSubsystem) {
+    public IntakeCommand(IntakeSubsystem intakeSubsystem, double speed) {
         this.intakeSubsystem = intakeSubsystem;
+        this.speed = speed;
 
         addRequirements(intakeSubsystem);
     }
 
     @Override   
     public void initialize() {
-        intakeSubsystem.setSpeed(1);
+        intakeSubsystem.setSpeed(this.speed);
     }
 
     @Override

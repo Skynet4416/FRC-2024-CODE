@@ -42,10 +42,6 @@ public class ShooterSubsystem extends SubsystemBase {
         m_motor_right.setVoltage(voltage);
         m_motor_left.setVoltage(-voltage);
     }
-    @Override
-    public void periodic(){
-         SmartDashboard.putNumber("shooter speed", m_motor_left.getAppliedOutput());
-    }
 
     @Override
     public void periodic() {

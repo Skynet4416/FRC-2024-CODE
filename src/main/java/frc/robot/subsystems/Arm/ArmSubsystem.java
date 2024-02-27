@@ -62,17 +62,16 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void SetAngle(double TargetAngle) {
-        pidController.setSetpoint((Arm.Stats.encoderOffset + TargetAngle));
-        SmartDashboard.putNumber("arm_setpoint", Arm.Stats.encoderOffset + TargetAngle);
+        pidController.setSetpoint(TargetAngle);
+        SmartDashboard.putNumber("arm_setpoint", TargetAngle);
     }
 
     public void resetAngle() {
         pidController.setSetpoint(getAngle());
     }
-    
 
     public double getAngle() {
-        return 360 - (m_encoder.getAbsolutePosition() * 360.0);
+        return (360 - (m_encoder.getAbsolutePosition() * 360.0)) - Arm.Stats.encoderOffset;
     }
 
     public void doPID() {
@@ -91,9 +90,9 @@ public class ArmSubsystem extends SubsystemBase {
         pidController.setD(SmartDashboard.getNumber("Arm kD", 0));
 
         // This method will be called once per scheduler run
-        // if (getAngle()>= Arm.Stats.kLimitAngle) 
+        // if (getAngle()>= Arm.Stats.kLimitAngle)
         // {
-        //     setVoltage(0);   
+        // setVoltage(0);
         // }
     }
 

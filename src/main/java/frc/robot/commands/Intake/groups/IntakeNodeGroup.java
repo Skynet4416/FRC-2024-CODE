@@ -13,14 +13,15 @@ public class IntakeNodeGroup extends ParallelCommandGroup {
     IntakeSubsystem intakeSubsystem;
     ShooterSubsystem shooterSubsystem;
 
+    // FIXME: Make group.
     public IntakeNodeGroup(ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem,
             ShooterSubsystem shooterSubsystem) {
         this.armSubsystem = armSubsystem;
         this.intakeSubsystem = intakeSubsystem;
         this.shooterSubsystem = shooterSubsystem;
 
-        addCommands(new IntakeNodeCommand(intakeSubsystem, shooterSubsystem),
-                new ArmCommand(armSubsystem, Arm.Stats.kIntakeAngle));
+        // addCommands(new IntakeNodeCommand(intakeSubsystem, shooterSubsystem),
+        //         new ArmCommand(armSubsystem, Arm.Stats.kIntakeAngle));
 
         addRequirements(armSubsystem, intakeSubsystem, shooterSubsystem);
     }

@@ -75,7 +75,7 @@ public class ArmSubsystem extends SubsystemBase {
         return 360 - (m_encoder.getAbsolutePosition() * 360.0);
     }
 
-    public void execute() {
+    public void doPID() {
         double voltage = pidController.calculate(getAngle());
         setVoltage(voltage);
     }

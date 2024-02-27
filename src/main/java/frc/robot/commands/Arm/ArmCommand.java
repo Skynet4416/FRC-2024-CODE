@@ -24,7 +24,7 @@ public class ArmCommand extends Command {
 
     @Override
     public void execute() {
-        armSubsystem.execute();
+        armSubsystem.doPID();
     }
 
     @Override

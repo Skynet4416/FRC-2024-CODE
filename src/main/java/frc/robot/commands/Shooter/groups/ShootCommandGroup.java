@@ -14,14 +14,15 @@ public class ShootCommandGroup extends ParallelCommandGroup {
     IntakeSubsystem intakeSubsystem;
     ShooterSubsystem shooterSubsystem;
 
+    // FIXME: Make group.
     public ShootCommandGroup(ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem,
             ShooterSubsystem shooterSubsystem) {
         this.armSubsystem = armSubsystem;
         this.intakeSubsystem = intakeSubsystem;
         this.shooterSubsystem = shooterSubsystem;
 
-        addCommands(new ShootAmpCommand(shooterSubsystem, intakeSubsystem, null),
-                new ArmCommand(armSubsystem, Arm.Stats.kIntakeAngle));
+        // addCommands(new ShootAmpCommand(shooterSubsystem, intakeSubsystem, null),
+        //         new ArmCommand(armSubsystem, Arm.Stats.kIntakeAngle));
 
         addRequirements(armSubsystem, intakeSubsystem, shooterSubsystem);
     }

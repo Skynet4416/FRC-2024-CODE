@@ -82,7 +82,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
                     Drive.Motors.kBackRightDriveFalconCANID,
                     Drive.Motors.kBackRightSteerFalconCANID,
                     Drive.Encoders.kBackRightSteerEncoderCANID,
-                    Drive.Stats.kBackRightModuleOffsetInDegrees, true);
+                    Drive.Stats.kBackRightModuleOffsetInDegrees, false);
 
           m_navX = new AHRS();
 

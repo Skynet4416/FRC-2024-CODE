@@ -88,7 +88,7 @@ public final class Constants {
                  * Lower the kP
                  */
 
-                public static final double kP = 0.0005;
+                public static final double kP = 0.0001;
                 /**
                  * Integral tuning - learning
                  */
@@ -117,7 +117,7 @@ public final class Constants {
                 /**
                  * Proportional tuning - error
                  */
-                public static final double kP = 10.5;
+                public static final double kP = 10.0;
                 /**
                  * Integral tuning - learning
                  */
@@ -232,7 +232,7 @@ public final class Constants {
             // the time it takes the telescop to retract at the chosen speed
             public static final long kRetractTimeMS = 0;
             public static final double kThreashold = 0;
-            public static final double kRetractInRounds = 0;
+            public static final double kRetractInRounds = 4;
         }
     }
 
@@ -261,26 +261,38 @@ public final class Constants {
             public static final double kDriveBaseRadius = Math
                     .sqrt(Math.pow(kTrackWidthMeters / 2.0, 2.0) + Math.pow(kWheelbaseMeters / 2.0, 2.0));
 
+                    // FL (0.957764 * 360) - 180
+                    // FR (0.951904 * 360) - 180
+                    // BL (0.055908 * 360) - 180
+                    // BR (0.201172 * 360) - 180
+                    
+
             /**
              * The current degree of the steer mechanism (At what degree does the drive
              * wheel start)
              */
-            public static final double kFrontLeftModuleOffsetInDegrees = -102;
+            public static final double kFrontLeftModuleOffsetInDegrees = (0.459473 * 360) - 180;
             /**
              * The current degree of the steer mechanism (At what degree does the drive
              * wheel start)
              */
-            public static final double kFrontRightModuleOffsetInDegrees = -156;
+            public static final double kFrontRightModuleOffsetInDegrees = (0.957275 * 360) - 180;
             /**
              * The current degree of the steer mechanism (At what degree does the drive
              * wheel start)
              */
-            public static final double kBackLeftModuleOffsetInDegrees = -20;
+            public static final double kBackLeftModuleOffsetInDegrees = (0.566162 * 360) - 180;
             /**
              * The current degree of the steer mechanism (At what degree does the drive
              * wheel start)
              */
-            public static final double kBackRightModuleOffsetInDegrees = 166;
+
+            public static final double kBackRightModuleOffsetInDegrees = (0.194824 * 360) - 180;
+            /*            BL:20.0
+            BR:-166.0
+            FL:102.0
+            FR:156.0 
+            */
 
             public static final double kMaxVelocityMetersPerSecond = 4.17576;
             public static final double kMaxAngularVelocityRadiansPerSecond = kMaxVelocityMetersPerSecond /
@@ -299,22 +311,22 @@ public final class Constants {
 
         // what are these PID's for? like just general?
         public static class PID {
-            public static final double kP = 0.002;
+            public static final double kP = 0.0001;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
         }
 
         public static class Motors {
-            public static final int kFrontLeftDriveFalconCANID = 11;
+            public static final int kFrontLeftDriveFalconCANID = 17;
             public static final int kFrontLeftSteerFalconCANID = 9;
 
-            public static final int kFrontRightDriveFalconCANID = 14;
+            public static final int kFrontRightDriveFalconCANID = 20;
             public static final int kFrontRightSteerFalconCANID = 12;
 
-            public static final int kBackLeftDriveFalconCANID = 20;
+            public static final int kBackLeftDriveFalconCANID = 14;
             public static final int kBackLeftSteerFalconCANID = 18;
 
-            public static final int kBackRightDriveFalconCANID = 17;
+            public static final int kBackRightDriveFalconCANID = 11;
             public static final int kBackRightSteerFalconCANID = 15;
 
         }

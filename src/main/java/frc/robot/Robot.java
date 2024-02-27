@@ -52,7 +52,7 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
         // and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
-
+        
         // Shuffleboard setup
         SwerveDataTab = Shuffleboard.getTab("Swerve Data");
         drivePIDTab = Shuffleboard.getTab("Drive PID");
@@ -76,6 +76,10 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
         // m_protoStick = new Joystick(kJoystickPort);
 
         resetSmartValues();
+        System.out.println("BL:"+m_robotContainer.getDriveSubsystem().get_bl().getTargetState().angle.getDegrees());
+        System.out.println("BR:"+m_robotContainer.getDriveSubsystem().get_br().getTargetState().angle.getDegrees());
+        System.out.println("FL:"+m_robotContainer.getDriveSubsystem().get_fl().getTargetState().angle.getDegrees());
+        System.out.println("FR:"+m_robotContainer.getDriveSubsystem().get_fr().getTargetState().angle.getDegrees());
     }
 
     private void updateInRange() {
@@ -144,6 +148,7 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
     }
 
     private void updateTargetAngle() {
+
         SmartDashboard.putNumber("Swerve t bl",
                 m_robotContainer.getDriveSubsystem().get_bl().getTargetState().angle.getDegrees());
         SmartDashboard.putNumber("Swerve t br",

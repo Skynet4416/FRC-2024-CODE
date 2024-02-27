@@ -277,7 +277,6 @@ public class SwerveModule extends SubsystemBase {
      *              1.0.
      */
     public void setDriveMotor(double speed) {
-
         this.m_driveMotor.set(speed);
     }
 

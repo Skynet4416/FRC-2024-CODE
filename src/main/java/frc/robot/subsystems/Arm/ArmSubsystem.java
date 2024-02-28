@@ -39,7 +39,7 @@ public class ArmSubsystem extends SubsystemBase {
         m_encoder = new DutyCycleEncoder(Arm.Encoders.kLeftEncoderID);
         pidController.disableContinuousInput();
         // pidController.setTolerance(1);
-        this.setAngleToCurrent();
+        this.setAngleToidle();
 
         // m_motor_left.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         // m_motor_right.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);

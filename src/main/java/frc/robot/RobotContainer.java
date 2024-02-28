@@ -124,7 +124,9 @@ public class RobotContainer {
         
 
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
+        //
         oi.commandXboxController.x().whileTrue(new SequentialCommandGroup(new ArmCommand(m_ArmSubsystem,20),new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed)));
+        //the right bumper activates the shooter
         oi.commandXboxController.rightBumper().whileTrue(new ShootVoltageCommand(m_ShooterSubsystem, 10));
         // oi.commandXboxController.a().whileTrue(new
         // ShootVoltageCommand(m_ShooterSubsystem, 12));
@@ -163,10 +165,12 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        // this is for auto-based autonomous, we relay more on paths
-        return autoChooser.getSelected();
+        // // this is for auto-based autonomous, we relay more on paths
+        // return autoChooser.getSelected();
+
+        return auto.followPathCommand("path 0");
         // // Load the path you want to follow using its name in the GUI
-        // PathPlannerPath path = PathPlannerPath.fromPathFile("path 1");
+        // PathPlannerPath path = PathPlannerPath.fromPathFile("path 0");
 
         // // Create a path following command using AutoBuilder. This will also trigger
         // event markers.

@@ -24,6 +24,8 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Intake.*;
@@ -111,25 +113,25 @@ public class RobotContainer {
      * joysticks}.
      */                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
     private void configureBindings() {
-        m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
-        oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
+        // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
+        // oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
         m_ArmSubsystem.setDefaultCommand(new HoldCommand(m_ArmSubsystem));
 
         m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         oi.xboxController::getLeftX,
         oi.xboxController::getLeftY, oi.xboxController::getRightX));
 
+        
+
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
-        oi.commandXboxController.b().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
-        oi.commandXboxController.x().whileTrue(new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
+        oi.commandXboxController.x().whileTrue(new SequentialCommandGroup(new ArmCommand(m_ArmSubsystem,20),new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed)));
         oi.commandXboxController.rightBumper().whileTrue(new ShootVoltageCommand(m_ShooterSubsystem, 10));
         // oi.commandXboxController.a().whileTrue(new
         // ShootVoltageCommand(m_ShooterSubsystem, 12));
         // oi.commandXboxController.b().whileTrue(new
         // TestVoltageCommand(m_IntakeSubsystem,m_ShooterSubsystem,6));
 
-        oi.commandXboxController.a().whileTrue(new ArmCommand(m_ArmSubsystem, 45));
-
+        oi.commandXboxController.a().whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, 10),new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
         // if the a button is pressed, the climb will extend. once it's not, the climb
         // will retract.
         // oi.commandXboxController.a().whileTrue(new

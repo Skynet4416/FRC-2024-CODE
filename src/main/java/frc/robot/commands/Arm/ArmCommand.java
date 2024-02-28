@@ -31,6 +31,7 @@ public class ArmCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        armSubsystem.SetAngle(45);
         armSubsystem.setVoltage(0);
     }
 }

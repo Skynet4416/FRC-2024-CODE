@@ -38,6 +38,7 @@ import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
 import frc.robot.InRangeObserver;
+import frc.robot.Constants.Arm;
 import frc.robot.Constants.Intake;
 
 /**
@@ -98,6 +99,11 @@ public class RobotContainer {
         return m_driveSubsystem;
     }
 
+    public ArmSubsystem getArmSubsystem()
+    {
+        return m_ArmSubsystem;
+    }
+
     /**
      * Use this method to define your trigger->command mappings. Triggers can be
      * created via the
@@ -121,19 +127,18 @@ public class RobotContainer {
         oi.xboxController::getLeftX,
         oi.xboxController::getLeftY, oi.xboxController::getRightX));
 
-        
-
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
+        oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
+        oi.commandXboxController.a().whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));        
+
+        oi.commandXboxController.rightBumper().whileTrue(new ParallelCommandGroup(new ShootVoltageCommand(m_ShooterSubsystem, 10),new ArmCommand(m_ArmSubsystem,Arm.Stats.speakerAngle)));
         //
-        oi.commandXboxController.x().whileTrue(new SequentialCommandGroup(new ArmCommand(m_ArmSubsystem,20),new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed)));
         //the right bumper activates the shooter
-        oi.commandXboxController.rightBumper().whileTrue(new ShootVoltageCommand(m_ShooterSubsystem, 10));
         // oi.commandXboxController.a().whileTrue(new
         // ShootVoltageCommand(m_ShooterSubsystem, 12));
         // oi.commandXboxController.b().whileTrue(new
         // TestVoltageCommand(m_IntakeSubsystem,m_ShooterSubsystem,6));
 
-        oi.commandXboxController.a().whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, 10),new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
         // if the a button is pressed, the climb will extend. once it's not, the climb
         // will retract.
         // oi.commandXboxController.a().whileTrue(new

@@ -14,7 +14,7 @@ public class HoldCommand extends Command {
 
     @Override
     public void initialize() {
-        armSubsystem.setAngleToCurrent();
+        armSubsystem.setAngleToidle();
     }
 
     @Override

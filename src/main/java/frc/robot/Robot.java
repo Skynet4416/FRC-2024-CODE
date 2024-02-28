@@ -147,6 +147,12 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
                 m_robotContainer.getDriveSubsystem().get_fr().getDriveMotor().get() * 60);
     }
 
+    private void updateArmInfo()
+    {
+        SmartDashboard.putNumber("Arm Angle", m_robotContainer.getArmSubsystem().getAngle());
+        System.out.println("the arm's angle: "+m_robotContainer.getArmSubsystem().getAngle());
+    }
+
     private void updateTargetAngle() {
 
         SmartDashboard.putNumber("Swerve t bl",
@@ -236,11 +242,12 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        updateCurrentAngle();
-        updateTargetAngle();
-        updateCurrentGyroAngle();
-        updateCurrentVelocity();
-        updateTargetVelocity();
+        // updateCurrentAngle();
+        // updateTargetAngle();
+        // updateCurrentGyroAngle();
+        // updateCurrentVelocity();
+        // updateTargetVelocity();
+        updateArmInfo();
         // updateCurrentDistance();
         // updateInRange();
         // updateAprilTag(null);

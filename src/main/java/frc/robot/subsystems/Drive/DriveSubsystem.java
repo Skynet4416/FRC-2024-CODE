@@ -82,7 +82,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
                     Drive.Motors.kBackRightDriveFalconCANID,
                     Drive.Motors.kBackRightSteerFalconCANID,
                     Drive.Encoders.kBackRightSteerEncoderCANID,
-                    Drive.Stats.kBackRightModuleOffsetInDegrees, true);
+                    Drive.Stats.kBackRightModuleOffsetInDegrees, false);
 
           m_navX = new AHRS();
 
@@ -108,7 +108,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
           m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(),
                     m_modulePositions, m_currentPose);
           m_lastPose = m_poseEstimator.getEstimatedPosition();
-          m_navXoffset = (double) m_navX.getCompassHeading();
+          m_navXoffset = (double) m_navX.getCompassHeading()-90;
           m_targetAngle = 0.0;
 
      }

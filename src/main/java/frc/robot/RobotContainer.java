@@ -24,6 +24,8 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Intake.*;
@@ -35,6 +37,7 @@ import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
 import frc.robot.InRangeObserver;
+import frc.robot.Constants.Arm;
 import frc.robot.Constants.Intake;
 
 /**
@@ -70,11 +73,14 @@ public class RobotContainer {
      */
     public RobotContainer() {
         this.m_driveSubsystem = new DriveSubsystem();
-        // this.m_ClimberSubsystem = new ClimberSubsystem();
         this.m_IntakeSubsystem = new IntakeSubsystem();
         this.m_ShooterSubsystem = new ShooterSubsystem();
         this.m_ArmSubsystem = new ArmSubsystem();
+
+        // Disabled subsystems.
+        // this.m_ClimberSubsystem = new ClimberSubsystem();
         // this.m_VisionSubsystem = new VisionSubsystem(null);
+        
         this.oi = new OI();
         configureBindings();
         m_driveSubsystem.setAllModulesToZero();
@@ -87,12 +93,17 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
-    // public VisionSubsystem getVisionSubsystem()
-    // {
-    // return m_VisionSubsystem;
+    // Vision is out.
+    // public VisionSubsystem getVisionSubsystem() {
+    //     return m_VisionSubsystem;
     // }
+
     public DriveSubsystem getDriveSubsystem() {
         return m_driveSubsystem;
+    }
+
+    public ArmSubsystem getArmSubsystem() {
+        return m_ArmSubsystem;
     }
 
     /**
@@ -113,20 +124,25 @@ public class RobotContainer {
         // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         // oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
 
-        // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
-        // oi.xboxController::getLeftX,
-        // oi.xboxController::getLeftY, oi.xboxController::getRightX));
+        m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
+                oi.xboxController::getLeftX,
+                oi.xboxController::getLeftY, oi.xboxController::getRightX));
 
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
-        oi.commandXboxController.b().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
-        oi.commandXboxController.x().whileTrue(new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
-        oi.commandXboxController.rightBumper().whileTrue(new ShootVoltageCommand(m_ShooterSubsystem, 6));
+        oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
+        oi.commandXboxController.a()
+                .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
+                        new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
+
+        oi.commandXboxController.rightBumper()
+                .whileTrue(new ParallelCommandGroup(new ShootVoltageCommand(m_ShooterSubsystem, 10),
+                        new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
+        //
+        // the right bumper activates the shooter
         // oi.commandXboxController.a().whileTrue(new
         // ShootVoltageCommand(m_ShooterSubsystem, 12));
         // oi.commandXboxController.b().whileTrue(new
         // TestVoltageCommand(m_IntakeSubsystem,m_ShooterSubsystem,6));
-
-        oi.commandXboxController.a().onTrue(new SetArmAngle(m_ArmSubsystem, 45));
 
         // if the a button is pressed, the climb will extend. once it's not, the climb
         // will retract.
@@ -159,10 +175,12 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        // this is for auto-based autonomous, we relay more on paths
-        return autoChooser.getSelected();
+        // // this is for auto-based autonomous, we relay more on paths
+        // return autoChooser.getSelected();
+
+        return auto.followPathCommand("path 0");
         // // Load the path you want to follow using its name in the GUI
-        // PathPlannerPath path = PathPlannerPath.fromPathFile("path 1");
+        // PathPlannerPath path = PathPlannerPath.fromPathFile("path 0");
 
         // // Create a path following command using AutoBuilder. This will also trigger
         // event markers.

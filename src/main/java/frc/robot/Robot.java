@@ -52,7 +52,7 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
         // and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
-
+        
         // Shuffleboard setup
         SwerveDataTab = Shuffleboard.getTab("Swerve Data");
         drivePIDTab = Shuffleboard.getTab("Drive PID");
@@ -76,6 +76,10 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
         // m_protoStick = new Joystick(kJoystickPort);
 
         resetSmartValues();
+        System.out.println("BL:"+m_robotContainer.getDriveSubsystem().get_bl().getTargetState().angle.getDegrees());
+        System.out.println("BR:"+m_robotContainer.getDriveSubsystem().get_br().getTargetState().angle.getDegrees());
+        System.out.println("FL:"+m_robotContainer.getDriveSubsystem().get_fl().getTargetState().angle.getDegrees());
+        System.out.println("FR:"+m_robotContainer.getDriveSubsystem().get_fr().getTargetState().angle.getDegrees());
     }
 
     private void updateInRange() {
@@ -143,7 +147,14 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
                 m_robotContainer.getDriveSubsystem().get_fr().getDriveMotor().get() * 60);
     }
 
+    private void updateArmInfo()
+    {
+        SmartDashboard.putNumber("Arm Angle", m_robotContainer.getArmSubsystem().getAngle());
+        System.out.println("the arm's angle: "+m_robotContainer.getArmSubsystem().getAngle());
+    }
+
     private void updateTargetAngle() {
+
         SmartDashboard.putNumber("Swerve t bl",
                 m_robotContainer.getDriveSubsystem().get_bl().getTargetState().angle.getDegrees());
         SmartDashboard.putNumber("Swerve t br",
@@ -231,11 +242,12 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        updateCurrentAngle();
-        updateTargetAngle();
-        updateCurrentGyroAngle();
-        updateCurrentVelocity();
-        updateTargetVelocity();
+        // updateCurrentAngle();
+        // updateTargetAngle();
+        // updateCurrentGyroAngle();
+        // updateCurrentVelocity();
+        // updateTargetVelocity();
+        updateArmInfo();
         // updateCurrentDistance();
         // updateInRange();
         // updateAprilTag(null);
@@ -262,7 +274,7 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
      */
     @Override
     public void autonomousInit() {
-        // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         // // schedule the autonomous command (example)
         // if (m_autonomousCommand != null) {
         // m_autonomousCommand.schedule();

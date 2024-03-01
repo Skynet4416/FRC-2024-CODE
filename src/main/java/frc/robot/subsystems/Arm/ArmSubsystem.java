@@ -32,9 +32,13 @@ public class ArmSubsystem extends SubsystemBase {
         m_encoder = new DutyCycleEncoder(Arm.Encoders.kLeftEncoderID);
         pidController.disableContinuousInput();
         // pidController.setTolerance(1);
+<<<<<<< HEAD
         this.resetAngle();
         // FIXME: Add way to disable.
         this.enabled = true;
+=======
+        this.setAngleToidle();
+>>>>>>> c2dde606f39d238f08e89c68dab923a67c7eb347
 
         // m_motor_left.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         // m_motor_right.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
@@ -65,8 +69,13 @@ public class ArmSubsystem extends SubsystemBase {
         pidController.setSetpoint(getAngle());
     }
 
+    public void setAngleToidle() {
+        pidController.setSetpoint(45);
+    }
+    
+
     public double getAngle() {
-        return (360 - (m_encoder.getAbsolutePosition() * 360.0)) - Arm.Stats.encoderOffset;
+        return 360 - (m_encoder.getAbsolutePosition() * 360.0)-Arm.Stats.encoderOffset;
     }
 
     public void doPID() {

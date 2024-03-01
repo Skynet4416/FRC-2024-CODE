@@ -130,13 +130,13 @@ public class RobotContainer {
 
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
         oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
-        oi.commandXboxController.a()
-                .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
-                        new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
+        // oi.commandXboxController.a()
+        //         .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
+        //                 new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
 
-        oi.commandXboxController.rightBumper()
-                .whileTrue(new ParallelCommandGroup(new ShootVoltageCommand(m_ShooterSubsystem, 10),
-                        new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
+        // oi.commandXboxController.rightBumper()
+        //         .whileTrue(new ParallelCommandGroup(new ShootVoltageCommand(m_ShooterSubsystem, 10),
+        //                 new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
         //
         // the right bumper activates the shooter
         // oi.commandXboxController.a().whileTrue(new

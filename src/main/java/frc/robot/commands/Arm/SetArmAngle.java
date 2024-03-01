@@ -18,7 +18,7 @@ public class SetArmAngle extends Command {
 
     @Override
     public void initialize() {
-        this.armSubsystem.SetAngle(this.angle);
+        this.armSubsystem.setAngle(this.angle);
     }
 
     @Override

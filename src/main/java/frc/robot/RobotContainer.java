@@ -33,6 +33,7 @@ import frc.robot.commands.Shooter.IntakeVoltageCommand;
 import frc.robot.commands.Shooter.ShootVoltageCommand;
 import frc.robot.commands.Shooter.TestVoltageCommand;
 import frc.robot.commands.Arm.ArmAngleCommand;
+import frc.robot.commands.Arm.ArmStaticVoltageCommand;
 import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
@@ -130,7 +131,8 @@ public class RobotContainer {
 
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
         oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
-        // oi.commandXboxController.b().whileTrue(new Ste)
+        oi.commandXboxController.b().onTrue(new ArmStaticVoltageCommand(m_ArmSubsystem, 0));
+        oi.commandXboxController.a().onTrue(new ArmAngleCommand(m_ArmSubsystem, 45));
         // oi.commandXboxController.a()
         //         .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
         //                 new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));

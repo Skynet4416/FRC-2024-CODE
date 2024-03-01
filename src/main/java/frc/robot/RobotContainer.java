@@ -130,10 +130,11 @@ public class RobotContainer {
                 oi.xboxController::getLeftY, oi.xboxController::getRightX));
 
         oi.commandXboxController.x().whileTrue(new ParallelCommandGroup(
+                new ArmAngleCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
                 new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed),
                 new ShootVoltageCommand(m_ShooterSubsystem, Intake.Stats.kShooterSpeed)));
-
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
+
         oi.commandXboxController.b().onTrue(new ArmStaticVoltageCommand(m_ArmSubsystem, 0));
         oi.commandXboxController.a().onTrue(new ArmAngleCommand(m_ArmSubsystem, 45));
         // oi.commandXboxController.a()

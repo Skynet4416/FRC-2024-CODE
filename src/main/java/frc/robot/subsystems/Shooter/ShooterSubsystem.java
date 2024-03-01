@@ -2,6 +2,7 @@ package frc.robot.subsystems.Shooter;
 
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 
@@ -12,12 +13,14 @@ import frc.robot.Constants.Shooter;
 
 public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkMax m_motor_left, m_motor_right;
+    private final RelativeEncoder m_encoder;
     private final SparkPIDController m_left_pid;
     private final SparkPIDController m_right_pid;
 
     public ShooterSubsystem() {
         this.m_motor_left = new CANSparkMax(Shooter.Motors.ShooterMotorLeftID, CANSparkLowLevel.MotorType.kBrushless);
         this.m_motor_right = new CANSparkMax(Shooter.Motors.ShooterMotorRightID, CANSparkLowLevel.MotorType.kBrushless);
+        this.m_encoder = this.m_motor_left.getEncoder();
         m_motor_left.restoreFactoryDefaults();
         m_motor_right.restoreFactoryDefaults();
         this.m_left_pid = m_motor_left.getPIDController();
@@ -35,7 +38,12 @@ public class ShooterSubsystem extends SubsystemBase {
     public void SetRPM(double speed) {
         m_left_pid.setReference(speed, ControlType.kVelocity);
         m_right_pid.setReference(-speed, ControlType.kVelocity);
+    }
 
+    // TODO: Make sure this returns positive RPM and not negative, otherwise switch
+    // encoder to right or reverse output.
+    public double getRPM() {
+        return m_encoder.getVelocity();
     }
 
     public void setVoltage(double voltage) {

@@ -24,14 +24,14 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Intake.*;
-import frc.robot.commands.Shooter.IntakeVoltageCommand;
+import frc.robot.commands.Shooter.ShootRPMCommand;
 import frc.robot.commands.Shooter.ShootVoltageCommand;
-import frc.robot.commands.Shooter.TestVoltageCommand;
 import frc.robot.commands.Arm.ArmAngleCommand;
 import frc.robot.commands.Arm.ArmStaticVoltageCommand;
 import frc.robot.commands.Climb.CloseClimbCommand;
@@ -40,6 +40,7 @@ import frc.robot.commands.Drive.DriveCommand;
 import frc.robot.InRangeObserver;
 import frc.robot.Constants.Arm;
 import frc.robot.Constants.Intake;
+import frc.robot.Constants.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -137,14 +138,18 @@ public class RobotContainer {
 
         oi.commandXboxController.b().onTrue(new ArmStaticVoltageCommand(m_ArmSubsystem, 0));
         oi.commandXboxController.a().onTrue(new ArmAngleCommand(m_ArmSubsystem, 45));
-        // oi.commandXboxController.a()
-        //         .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
-        //                 new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
 
-        // oi.commandXboxController.rightBumper()
-        //         .whileTrue(new ParallelCommandGroup(new ShootVoltageCommand(m_ShooterSubsystem, 10),
-        //                 new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
-        //
+        // Turn arm and spin shooter, and activate intake when it reaches appropriate speed.
+        // TODO: Dynamic shooter speed.
+        oi.commandXboxController.rightBumper().whileTrue(
+                new ParallelCommandGroup(
+                        new ArmAngleCommand(m_ArmSubsystem, Arm.Stats.speakerAngle),
+                        new ShootRPMCommand(m_ShooterSubsystem, Shooter.Stats.kIShooterSpeed),
+                        new ConditionalCommand(
+                                new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed),
+                                new IntakeCommand(m_IntakeSubsystem, 0),
+                                () -> m_ShooterSubsystem.getRPM() >= Shooter.Stats.kIShooterSpeed)));
+
         // the right bumper activates the shooter
         // oi.commandXboxController.a().whileTrue(new
         // ShootVoltageCommand(m_ShooterSubsystem, 12));

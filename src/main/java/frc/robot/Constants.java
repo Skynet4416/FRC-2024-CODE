@@ -190,7 +190,7 @@ public final class Constants {
         }
 
         public static class Stats {
-            // todo: set the speed needed
+            // TODO: Set best shooter RPM.
             public static final double kIShooterSpeed = 0.0;
             public static final double kPutInAmpSpeed = 0.0;
         }

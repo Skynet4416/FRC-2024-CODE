@@ -17,7 +17,8 @@ import frc.robot.Constants.Arm;
 public class ArmSubsystem extends SubsystemBase {
     private final CANSparkMax m_motor_left, m_motor_right;
     private final DutyCycleEncoder m_encoder;
-    private boolean pidEnabled;
+
+    public boolean pidEnabled;
 
     private PIDController pidController = new PIDController(Arm.Pid.kP, Arm.Pid.kD, Arm.Pid.kI);
 
@@ -33,8 +34,9 @@ public class ArmSubsystem extends SubsystemBase {
         pidController.disableContinuousInput();
         // pidController.setTolerance(1);
 
+        this.pidEnabled = false;
         this.resetAngle();
-        this.setStaticVoltage(0);
+        this.setVoltage(0);
 
         // m_motor_left.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         // m_motor_right.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
@@ -50,17 +52,9 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     /*
-     * Set arm motor voltage and disable PID.
-     */
-    public void setStaticVoltage(double voltage) {
-        this.pidEnabled = false;
-        this.setVoltage(voltage);
-    }
-
-    /*
      * Set motor voltage.
      */
-    private void setVoltage(double voltage) {
+    public void setVoltage(double voltage) {
         // voltage = MathUtil.clamp(voltage, -12, 12);
         SmartDashboard.putNumber("arm_wanted_voltage", voltage);
         m_motor_left.setVoltage(-voltage);
@@ -71,8 +65,6 @@ public class ArmSubsystem extends SubsystemBase {
      * Set arm angle (PID setpoint) and enable PID.
      */
     public void setAngle(double TargetAngle) {
-        this.pidEnabled = true;
-
         pidController.setSetpoint(TargetAngle);
         SmartDashboard.putNumber("arm_setpoint", TargetAngle);
     }

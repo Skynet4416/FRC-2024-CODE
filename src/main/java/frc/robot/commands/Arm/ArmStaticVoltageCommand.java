@@ -17,7 +17,8 @@ public class ArmStaticVoltageCommand extends Command {
 
     @Override
     public void initialize() {
-        this.armSubsystem.setStaticVoltage(this.voltage);
+        this.armSubsystem.pidEnabled = false;
+        this.armSubsystem.setVoltage(this.voltage);
     }
 
     @Override

@@ -18,6 +18,7 @@ public class ArmAngleCommand extends Command {
 
     @Override
     public void initialize() {
+        this.armSubsystem.pidEnabled = true;
         this.armSubsystem.setAngle(this.angle);
     }
 

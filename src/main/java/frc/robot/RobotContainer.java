@@ -139,16 +139,19 @@ public class RobotContainer {
         oi.commandXboxController.b().onTrue(new ArmStaticVoltageCommand(m_ArmSubsystem, 0));
         oi.commandXboxController.a().onTrue(new ArmAngleCommand(m_ArmSubsystem, 45));
 
-        // Turn arm and spin shooter, and activate intake when it reaches appropriate speed.
+        // Turn arm and spin shooter, and activate intake when it reaches appropriate
+        // speed.
         // TODO: Dynamic shooter speed.
+        ArmAngleCommand armShooterAngleCommand = new ArmAngleCommand(m_ArmSubsystem, Arm.Stats.speakerAngle);
         oi.commandXboxController.rightBumper().whileTrue(
                 new ParallelCommandGroup(
-                        new ArmAngleCommand(m_ArmSubsystem, Arm.Stats.speakerAngle),
+                        armShooterAngleCommand,
                         new ShootRPMCommand(m_ShooterSubsystem, Shooter.Stats.kIShooterSpeed),
                         new ConditionalCommand(
                                 new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed),
                                 new IntakeCommand(m_IntakeSubsystem, 0),
-                                () -> m_ShooterSubsystem.getRPM() >= Shooter.Stats.kIShooterSpeed)));
+                                () -> armShooterAngleCommand.isFinished()
+                                        && m_ShooterSubsystem.getRPM() >= Shooter.Stats.kIShooterSpeed)));
 
         // the right bumper activates the shooter
         // oi.commandXboxController.a().whileTrue(new

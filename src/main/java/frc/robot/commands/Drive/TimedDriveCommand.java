@@ -47,6 +47,8 @@ public class TimedDriveCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        m_driveSubsystem.setModules(0, 0, 0);
+        this.m_timer.stop();
+        this.m_timer.reset();
+        this.m_driveSubsystem.setModules(0, 0, 0);
     }
 }

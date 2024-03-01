@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.Drive;
 import frc.robot.Constants.Swerve.PID;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Drive.DriveSubsystem;
@@ -93,19 +94,19 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
     }
 
     private void updateCurrentGyroAngle() {
-        SmartDashboard.putNumber("Swerve c Gyro Angle",
+        SmartDashboard.putNumber("swerve current angle Gyro Angle",
                 m_robotContainer.getDriveSubsystem().getGyroAngleInRotation2d().getDegrees());
     }
 
     private void updateCurrentAngle() {
-        SmartDashboard.putNumber("Swerve c bl",
-                m_robotContainer.getDriveSubsystem().get_bl().getModuleState().angle.getDegrees());
-        SmartDashboard.putNumber("Swerve c br",
-                m_robotContainer.getDriveSubsystem().get_br().getModuleState().angle.getDegrees());
-        SmartDashboard.putNumber("Swerve c fl",
-                m_robotContainer.getDriveSubsystem().get_fl().getModuleState().angle.getDegrees());
-        SmartDashboard.putNumber("Swerve c fr",
-                m_robotContainer.getDriveSubsystem().get_fr().getModuleState().angle.getDegrees());
+        SmartDashboard.putNumber("swerve current angle bl",
+                m_robotContainer.getDriveSubsystem().get_bl().getSteerAngle().getDegrees());
+        SmartDashboard.putNumber("swerve current angle br",
+                m_robotContainer.getDriveSubsystem().get_br().getSteerAngle().getDegrees());
+        SmartDashboard.putNumber("swerve current angle fl",
+                m_robotContainer.getDriveSubsystem().get_fl().getSteerAngle().getDegrees());
+        SmartDashboard.putNumber("swerve current angle fr",
+                m_robotContainer.getDriveSubsystem().get_fr().getSteerAngle().getDegrees());
 
     }
 
@@ -138,30 +139,30 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
         // percents. (the percent is in primitive double and not Double so i hope it
         // doesn't change too much)
         SmartDashboard.putNumber("Swerve current velocity bl",
-                m_robotContainer.getDriveSubsystem().get_bl().getDriveMotor().get() * 60);
+                m_robotContainer.getDriveSubsystem().get_bl().getDriveMotor().getEncoder().getVelocity());
         SmartDashboard.putNumber("Swerve current velocity br",
-                m_robotContainer.getDriveSubsystem().get_br().getDriveMotor().get() * 60);
+                m_robotContainer.getDriveSubsystem().get_br().getDriveMotor().getEncoder().getVelocity());
         SmartDashboard.putNumber("Swerve current velocity fl",
-                m_robotContainer.getDriveSubsystem().get_fl().getDriveMotor().get() * 60);
+                m_robotContainer.getDriveSubsystem().get_fl().getDriveMotor().getEncoder().getVelocity());
         SmartDashboard.putNumber("Swerve current velocity fr",
-                m_robotContainer.getDriveSubsystem().get_fr().getDriveMotor().get() * 60);
+                m_robotContainer.getDriveSubsystem().get_fr().getDriveMotor().getEncoder().getVelocity());
     }
 
     private void updateArmInfo()
     {
         SmartDashboard.putNumber("Arm Angle", m_robotContainer.getArmSubsystem().getAngle());
-        System.out.println("the arm's angle: "+m_robotContainer.getArmSubsystem().getAngle());
+        // System.out.println("the arm's angle: "+m_robotContainer.getArmSubsystem().getAngle());
     }
 
     private void updateTargetAngle() {
 
-        SmartDashboard.putNumber("Swerve t bl",
+        SmartDashboard.putNumber("swerve target angle bl",
                 m_robotContainer.getDriveSubsystem().get_bl().getTargetState().angle.getDegrees());
-        SmartDashboard.putNumber("Swerve t br",
+        SmartDashboard.putNumber("swerve target angle br",
                 m_robotContainer.getDriveSubsystem().get_br().getTargetState().angle.getDegrees());
-        SmartDashboard.putNumber("Swerve t fl",
+        SmartDashboard.putNumber("swerve target angle fl",
                 m_robotContainer.getDriveSubsystem().get_fl().getTargetState().angle.getDegrees());
-        SmartDashboard.putNumber("Swerve t fr",
+        SmartDashboard.putNumber("swerve target angle fr",
                 m_robotContainer.getDriveSubsystem().get_fr().getTargetState().angle.getDegrees());
 
     }
@@ -171,16 +172,16 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
      */
     private void resetSmartValues() {
         // the gyro's angle
-        SmartDashboard.putNumber("Swerve c Gyro Angle", 0);
+        SmartDashboard.putNumber("swerve current angle Gyro Angle", 0);
         // each swerve module's current angle
-        SmartDashboard.putNumber("Swerve c bl",
-                m_robotContainer.getDriveSubsystem().get_bl().getModuleState().angle.getDegrees());
-        SmartDashboard.putNumber("Swerve c br",
-                m_robotContainer.getDriveSubsystem().get_br().getModuleState().angle.getDegrees());
-        SmartDashboard.putNumber("Swerve c fl",
-                m_robotContainer.getDriveSubsystem().get_fl().getModuleState().angle.getDegrees());
-        SmartDashboard.putNumber("Swerve c fr",
-                m_robotContainer.getDriveSubsystem().get_fr().getModuleState().angle.getDegrees());
+        // SmartDashboard.putNumber("swerve current angle bl",
+        //         m_robotContainer.getDriveSubsystem().get_bl().getSteerAngle().getDegrees());
+        // SmartDashboard.putNumber("swerve current angle br",
+        //         m_robotContainer.getDriveSubsystem().get_br().getSteerAngle().getDegrees());
+        // SmartDashboard.putNumber("swerve current angle fl",
+        //         m_robotContainer.getDriveSubsystem().get_fl().getSteerAngle().getDegrees());
+        // SmartDashboard.putNumber("swerve current angle fr",
+        //         m_robotContainer.getDriveSubsystem().get_fr().getSteerAngle().getDegrees());
         // the wanted speed
         SmartDashboard.putNumber("Swerve target velocity bl", 0);
         SmartDashboard.putNumber("Swerve target velocity br", 0);
@@ -197,10 +198,10 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
         SmartDashboard.putNumber("Swerve current velocity fl", 0);
         SmartDashboard.putNumber("Swerve current velocity fr", 0);
         // wanted swerve angle
-        SmartDashboard.putNumber("Swerve t bl", 0);
-        SmartDashboard.putNumber("Swerve t br", 0);
-        SmartDashboard.putNumber("Swerve t fl", 0);
-        SmartDashboard.putNumber("Swerve t fr", 0);
+        SmartDashboard.putNumber("swerve target angle bl", 0);
+        SmartDashboard.putNumber("swerve target angle br", 0);
+        SmartDashboard.putNumber("swerve target angle fl", 0);
+        SmartDashboard.putNumber("swerve target angle fr", 0);
 
     }
 
@@ -242,11 +243,11 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        // updateCurrentAngle();
-        // updateTargetAngle();
-        // updateCurrentGyroAngle();
-        // updateCurrentVelocity();
-        // updateTargetVelocity();
+        updateCurrentAngle();
+        updateTargetAngle();
+        updateCurrentGyroAngle();
+        updateCurrentVelocity();
+        updateTargetVelocity();
         updateArmInfo();
         // updateCurrentDistance();
         // updateInRange();

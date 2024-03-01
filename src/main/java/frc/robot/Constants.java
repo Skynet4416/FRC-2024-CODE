@@ -87,12 +87,13 @@ public final class Constants {
                  * Proportional tuning - error
                  * Lower the kP
                  */
-
-                public static final double kP = 0.0001;
+                // FIXME: Reenable drive.
+                public static final double kP = 0.00035;
                 /**
+                 * 
                  * Integral tuning - learning
                  */
-                public static final double kI = 0.0;
+                public static final double kI = 0.000002;
                 /**
                  * Derivative tuning - overshoot
                  */
@@ -121,7 +122,7 @@ public final class Constants {
                 /**
                  * Integral tuning - learning
                  */
-                public static final double kI = 0.0;
+                public static final double kI = 1.0;
                 /**
                  * Derivative tuning - overshoot
                  */
@@ -294,8 +295,10 @@ public final class Constants {
             FL:102.0
             FR:156.0 
             */
-
-            public static final double kMaxVelocityMetersPerSecond = 4.17576;
+            public static final double kMaxDriveAccelRPM = 9000;
+            public static final double kDriveEfficiency = 0.8;
+            public static final double kMaxDriveMotorRPM = 6784.0;
+            public static final double kMaxVelocityMetersPerSecond = (kMaxDriveMotorRPM*kDriveEfficiency)*0.319/60/ Swerve.Stats.kRotorToSensorRatioDrive;
             public static final double kMaxAngularVelocityRadiansPerSecond = kMaxVelocityMetersPerSecond /
                     Math.hypot(kTrackWidthMeters / 2.0, kWheelbaseMeters / 2.0);
 
@@ -312,7 +315,7 @@ public final class Constants {
 
         // what are these PID's for? like just general?
         public static class PID {
-            public static final double kP = 0.0001;
+            public static final double kP = 0.0005;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
         }
@@ -350,7 +353,7 @@ public final class Constants {
 
     public static class OI {
         public static final int kXboxControllerPort = 0;
-        public static final double kXboxcontrollerDrift = 0.0;
+        public static final double kXboxcontrollerDrift = 0.1;
     }
 
     public static class Field {

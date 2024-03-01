@@ -26,6 +26,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
+import frc.robot.Constants.Drive;
 import frc.robot.Constants.Swerve;
 
 public class SwerveModule extends SubsystemBase {
@@ -88,8 +89,8 @@ public class SwerveModule extends SubsystemBase {
         CurrentLimitsConfigs statorConfigs = new CurrentLimitsConfigs()
                 .withStatorCurrentLimitEnable(true)
                 .withSupplyCurrentLimitEnable(true)
-                .withStatorCurrentLimit(35)
-                .withSupplyCurrentLimit(35);
+                .withStatorCurrentLimit(40)
+                .withSupplyCurrentLimit(40);
 
         FeedbackConfigs steerFeedbackConfigs = new FeedbackConfigs()
                 .withFeedbackSensorSource(FeedbackSensorSourceValue.RemoteCANcoder)
@@ -125,10 +126,13 @@ public class SwerveModule extends SubsystemBase {
 
         this.m_driveMotor.restoreFactoryDefaults();
 
-        this.m_driveMotor.getPIDController().setD(Swerve.PID.Drive.kD);
         this.m_driveMotor.getPIDController().setP(Swerve.PID.Drive.kP);
         this.m_driveMotor.getPIDController().setI(Swerve.PID.Drive.kI);
+        this.m_driveMotor.getPIDController().setD(Swerve.PID.Drive.kD);
         this.m_driveMotor.setInverted(m_isReversed);
+
+        this.m_driveMotor.getPIDController().setSmartMotionMaxVelocity(Drive.Stats.kMaxDriveMotorRPM*Drive.Stats.kDriveEfficiency, 0);
+        this.m_driveMotor.getPIDController().setSmartMotionMaxAccel(Drive.Stats.kMaxDriveAccelRPM,0);
 
         // current theory is that sparkFlex doesn't need configs. but that just a
         // theory.
@@ -160,7 +164,7 @@ public class SwerveModule extends SubsystemBase {
      */
     public void setModuleVelocity(double target_velocity) {
         this.m_targetRotorVelocity = mpsToRps(target_velocity) * 60 * Swerve.Stats.kRotorToSensorRatioDrive;
-        this.m_driveMotor.getPIDController().setReference(m_targetRotorVelocity, ControlType.kVelocity);
+        this.m_driveMotor.getPIDController().setReference(m_targetRotorVelocity, ControlType.kSmartVelocity);
     }
 
     /**
@@ -180,8 +184,8 @@ public class SwerveModule extends SubsystemBase {
      *              The state of the Module (Affects both the Drive and Steer Motor)
      */
     public void setModuleState(SwerveModuleState state) {
-        state = SwerveModuleState.optimize(state,
-                Rotation2d.fromDegrees(getSteerAngle().getDegrees() - m_moduleOffset));
+        // state = SwerveModuleState.optimize(state,
+        //         Rotation2d.fromDegrees(this.getSteerAngle().getDegrees()));
         m_targetState = state;
         setModuleVelocity(state.speedMetersPerSecond);
         this.m_steerMotor
@@ -291,8 +295,9 @@ public class SwerveModule extends SubsystemBase {
 
     @Override
     public void periodic() { // todo logs needed - ShuffleBoard
+        // System.out.println(this.m_moduleState.angle);
         this.m_moduleState.angle = Rotation2d
-                .fromDegrees(this.m_steerEncoder.getAbsolutePosition().getValueAsDouble() / 360);
+                .fromDegrees(this.m_steerEncoder.getAbsolutePosition().getValue() * 360 - m_moduleOffset);
         // the function get() returns the speed in percentages, this is kinda ugly but
         // it might work
         this.m_moduleState.speedMetersPerSecond = rpmToMps((Double) this.m_driveMotor.get() * 60);

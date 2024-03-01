@@ -74,11 +74,14 @@ public class RobotContainer {
      */
     public RobotContainer() {
         this.m_driveSubsystem = new DriveSubsystem();
-        // this.m_ClimberSubsystem = new ClimberSubsystem();
         this.m_IntakeSubsystem = new IntakeSubsystem();
         this.m_ShooterSubsystem = new ShooterSubsystem();
         this.m_ArmSubsystem = new ArmSubsystem();
+
+        // Disabled subsystems.
+        // this.m_ClimberSubsystem = new ClimberSubsystem();
         // this.m_VisionSubsystem = new VisionSubsystem(null);
+        
         this.oi = new OI();
         configureBindings();
         m_driveSubsystem.setAllModulesToZero();
@@ -91,16 +94,16 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
-    // public VisionSubsystem getVisionSubsystem()
-    // {
-    // return m_VisionSubsystem;
+    // Vision is out.
+    // public VisionSubsystem getVisionSubsystem() {
+    //     return m_VisionSubsystem;
     // }
+
     public DriveSubsystem getDriveSubsystem() {
         return m_driveSubsystem;
     }
 
-    public ArmSubsystem getArmSubsystem()
-    {
+    public ArmSubsystem getArmSubsystem() {
         return m_ArmSubsystem;
     }
 
@@ -117,23 +120,27 @@ public class RobotContainer {
      * PS4} controllers or
      * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
      * joysticks}.
-     */                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+     */
     private void configureBindings() {
         // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         // oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
         m_ArmSubsystem.setDefaultCommand(new HoldCommand(m_ArmSubsystem));
 
         m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
-        oi.xboxController::getLeftX,
-        oi.xboxController::getLeftY, oi.xboxController::getRightX));
+                oi.xboxController::getLeftX,
+                oi.xboxController::getLeftY, oi.xboxController::getRightX));
 
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
         oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
-        oi.commandXboxController.a().whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));        
+        oi.commandXboxController.a()
+                .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
+                        new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
 
-        oi.commandXboxController.rightBumper().whileTrue(new ParallelCommandGroup(new ShootVoltageCommand(m_ShooterSubsystem, 10),new ArmCommand(m_ArmSubsystem,Arm.Stats.speakerAngle)));
+        oi.commandXboxController.rightBumper()
+                .whileTrue(new ParallelCommandGroup(new ShootVoltageCommand(m_ShooterSubsystem, 10),
+                        new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
         //
-        //the right bumper activates the shooter
+        // the right bumper activates the shooter
         // oi.commandXboxController.a().whileTrue(new
         // ShootVoltageCommand(m_ShooterSubsystem, 12));
         // oi.commandXboxController.b().whileTrue(new

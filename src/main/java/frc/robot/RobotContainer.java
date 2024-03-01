@@ -37,6 +37,7 @@ import frc.robot.commands.Arm.HoldCommand;
 import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
+import frc.robot.commands.Drive.TimedDriveCommand;
 import frc.robot.InRangeObserver;
 import frc.robot.Constants.Arm;
 import frc.robot.Constants.Intake;
@@ -81,7 +82,7 @@ public class RobotContainer {
         // Disabled subsystems.
         // this.m_ClimberSubsystem = new ClimberSubsystem();
         // this.m_VisionSubsystem = new VisionSubsystem(null);
-        
+
         this.oi = new OI();
         configureBindings();
         m_driveSubsystem.setAllModulesToZero();
@@ -96,7 +97,7 @@ public class RobotContainer {
 
     // Vision is out.
     // public VisionSubsystem getVisionSubsystem() {
-    //     return m_VisionSubsystem;
+    // return m_VisionSubsystem
     // }
 
     public DriveSubsystem getDriveSubsystem() {
@@ -177,16 +178,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        // // this is for auto-based autonomous, we relay more on paths
-        // return autoChooser.getSelected();
-
-        return auto.followPathCommand("path 0");
-        // // Load the path you want to follow using its name in the GUI
-        // PathPlannerPath path = PathPlannerPath.fromPathFile("path 0");
-
-        // // Create a path following command using AutoBuilder. This will also trigger
-        // event markers.
-        // return AutoBuilder.followPath(path);
+        // Simplest possible command.
+        return new TimedDriveCommand(m_driveSubsystem, 0, 0.1, 0, 3);
     }
 
     class InRangeSupplier implements BooleanSupplier {

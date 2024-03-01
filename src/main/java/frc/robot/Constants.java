@@ -58,7 +58,7 @@ public final class Constants {
         public static class Pid {
             public static final double kP = 0.1;
             public static final double kI = 0;
-            public static final double kD = 0;
+            public static final double kD = 0.1;
         }
 
     }
@@ -87,8 +87,8 @@ public final class Constants {
                  * Proportional tuning - error
                  * Lower the kP
                  */
-
-                public static final double kP = 0.0001;
+                // FIXME: Reenable drive.
+                public static final double kP = 0.0000;
                 /**
                  * Integral tuning - learning
                  */
@@ -121,7 +121,7 @@ public final class Constants {
                 /**
                  * Integral tuning - learning
                  */
-                public static final double kI = 0.0;
+                public static final double kI = 1.0;
                 /**
                  * Derivative tuning - overshoot
                  */
@@ -350,7 +350,7 @@ public final class Constants {
 
     public static class OI {
         public static final int kXboxControllerPort = 0;
-        public static final double kXboxcontrollerDrift = 0.0;
+        public static final double kXboxcontrollerDrift = 0.1;
     }
 
     public static class Field {

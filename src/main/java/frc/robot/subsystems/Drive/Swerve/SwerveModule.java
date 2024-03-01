@@ -88,8 +88,8 @@ public class SwerveModule extends SubsystemBase {
         CurrentLimitsConfigs statorConfigs = new CurrentLimitsConfigs()
                 .withStatorCurrentLimitEnable(true)
                 .withSupplyCurrentLimitEnable(true)
-                .withStatorCurrentLimit(35)
-                .withSupplyCurrentLimit(35);
+                .withStatorCurrentLimit(40)
+                .withSupplyCurrentLimit(40);
 
         FeedbackConfigs steerFeedbackConfigs = new FeedbackConfigs()
                 .withFeedbackSensorSource(FeedbackSensorSourceValue.RemoteCANcoder)
@@ -291,8 +291,9 @@ public class SwerveModule extends SubsystemBase {
 
     @Override
     public void periodic() { // todo logs needed - ShuffleBoard
-        this.m_moduleState.angle = Rotation2d
-                .fromDegrees(this.m_steerEncoder.getAbsolutePosition().getValueAsDouble() / 360);
+        // this.m_moduleState.angle = Rotation2d
+        //         .fromDegrees(this.m_steerEncoder.getAbsolutePosition().getValueAsDouble() / 360);
+        this.m_moduleState.angle = Rotation2d.fromDegrees(getSteerAngle().getDegrees() - m_moduleOffset);
         // the function get() returns the speed in percentages, this is kinda ugly but
         // it might work
         this.m_moduleState.speedMetersPerSecond = rpmToMps((Double) this.m_driveMotor.get() * 60);

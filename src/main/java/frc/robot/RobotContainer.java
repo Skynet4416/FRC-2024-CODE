@@ -81,7 +81,7 @@ public class RobotContainer {
         // Disabled subsystems.
         // this.m_ClimberSubsystem = new ClimberSubsystem();
         // this.m_VisionSubsystem = new VisionSubsystem(null);
-        
+
         this.oi = new OI();
         configureBindings();
         m_driveSubsystem.setAllModulesToZero();
@@ -96,7 +96,7 @@ public class RobotContainer {
 
     // Vision is out.
     // public VisionSubsystem getVisionSubsystem() {
-    //     return m_VisionSubsystem;
+    // return m_VisionSubsystem;
     // }
 
     public DriveSubsystem getDriveSubsystem() {
@@ -129,8 +129,11 @@ public class RobotContainer {
                 oi.xboxController::getLeftX,
                 oi.xboxController::getLeftY, oi.xboxController::getRightX));
 
+        oi.commandXboxController.x().whileTrue(new ParallelCommandGroup(
+                new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed),
+                new ShootVoltageCommand(m_ShooterSubsystem, Intake.Stats.kShooterSpeed)));
+
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
-        oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
         oi.commandXboxController.b().onTrue(new ArmStaticVoltageCommand(m_ArmSubsystem, 0));
         oi.commandXboxController.a().onTrue(new ArmAngleCommand(m_ArmSubsystem, 45));
         // oi.commandXboxController.a()

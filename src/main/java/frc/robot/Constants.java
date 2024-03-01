@@ -93,7 +93,7 @@ public final class Constants {
                  * 
                  * Integral tuning - learning
                  */
-                public static final double kI = 0.000001;
+                public static final double kI = 0.000002;
                 /**
                  * Derivative tuning - overshoot
                  */
@@ -295,7 +295,7 @@ public final class Constants {
             FL:102.0
             FR:156.0 
             */
-            public static final double kMaxDriveAccelRPM = 6000;
+            public static final double kMaxDriveAccelRPM = 9000;
             public static final double kDriveEfficiency = 0.8;
             public static final double kMaxDriveMotorRPM = 6784.0;
             public static final double kMaxVelocityMetersPerSecond = (kMaxDriveMotorRPM*kDriveEfficiency)*0.319/60/ Swerve.Stats.kRotorToSensorRatioDrive;

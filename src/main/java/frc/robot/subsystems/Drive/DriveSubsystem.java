@@ -19,8 +19,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Constants.Drive;
@@ -108,8 +110,11 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
           m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(),
                     m_modulePositions, m_currentPose);
           m_lastPose = m_poseEstimator.getEstimatedPosition();
-          m_navXoffset = (double) m_navX.getCompassHeading()-90;
+          m_navXoffset = (double) - 90;
           m_targetAngle = 0.0;
+
+          SmartDashboard.putNumber("Turn To angle I", Drive.PID.kI);
+          SmartDashboard.putNumber("Turn To angle P", Drive.PID.kP);
 
      }
 
@@ -211,20 +216,20 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
       */
      public void setModules(double xVelocityMps, double yVelocityMps, double rotationVelocityRps) {
           // TODO oriented to object on field
-          // m_targetAngle += Units.radiansToDegrees(rotationVelocityRps ) * 0.02;
           double xVelocityMpsFieldOriented = getVelocityFieldOriented_X(xVelocityMps, yVelocityMps);
           double yVelocityMpsFieldOriented = getVelocityFieldOriented_Y(xVelocityMps, yVelocityMps);
 
+          boolean correctAngle = true;
+          if (correctAngle) {
+               m_targetAngle += Units.radiansToDegrees(rotationVelocityRps) * 0.02;
+               this.m_swerveSpeeds = new ChassisSpeeds(-xVelocityMpsFieldOriented, -yVelocityMpsFieldOriented,
+                         -m_pidController.calculate(this.getGyroAngleInRotation2d().getDegrees()));
+               m_pidController.setSetpoint(m_targetAngle);
+          } else {
+               this.m_swerveSpeeds = new ChassisSpeeds(-xVelocityMpsFieldOriented, -yVelocityMpsFieldOriented,
+                         -rotationVelocityRps * 1.2);
+          }
           // m_targetAngle = getGyroAngleInRotation2d().getDegrees();
-          this.m_swerveSpeeds = new ChassisSpeeds(-xVelocityMpsFieldOriented, -yVelocityMpsFieldOriented,
-                    -rotationVelocityRps * 1.2);
-
-          // important! this is the pid controller that will be turned off during teleop
-          // but on during auto
-          // this.m_swerveSpeeds = new ChassisSpeeds(-xVelocityMpsFieldOriented,
-          // -yVelocityMpsFieldOriented,
-          // -m_pidController.calculate(this.getGyroAngleInRotation2d().getDegrees()));
-          // m_pidController.setSetpoint(m_targetAngle);
 
           SwerveModuleState[] target_states = Drive.Stats.kinematics.toSwerveModuleStates(this.m_swerveSpeeds);
           setModulesStates(target_states);
@@ -291,6 +296,11 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
                     new SwerveModulePosition(m_backRightModule.getDriveDistance(), m_backRightModule.getSteerAngle())
           };
 
+          m_pidController.setP(SmartDashboard.getNumber("Turn To angle P", Drive.PID.kP));
+          m_pidController.setI(SmartDashboard.getNumber("Turn To angle I", Drive.PID.kI));
+
+
+          SmartDashboard.putNumber("absolute compass headeing", m_navX.getCompassHeading());
           // m_frontLeftModule.setModuleState(states[0]);
           // m_frontRightModule.setModuleState(states[1]);
           // m_backLeftModule.setModuleState(states[2]);

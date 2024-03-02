@@ -37,7 +37,6 @@ import frc.robot.commands.Arm.HoldCommand;
 import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
-import frc.robot.commands.Drive.TimedDriveCommand;
 import frc.robot.InRangeObserver;
 import frc.robot.Constants.Arm;
 import frc.robot.Constants.Intake;
@@ -179,7 +178,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         // Simplest possible command.
-        return new TimedDriveCommand(m_driveSubsystem, 0, 0.1, 0, 3);
+        return new DriveCommand(m_driveSubsystem, () -> 0.0, () -> 0.1, () -> 0.0).withTimeout(3.0);
     }
 
     class InRangeSupplier implements BooleanSupplier {

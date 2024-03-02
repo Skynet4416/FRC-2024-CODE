@@ -37,6 +37,7 @@ import frc.robot.commands.Arm.HoldCommand;
 import frc.robot.commands.Climb.CloseClimbCommand;
 import frc.robot.commands.Climb.OpenClimbCommand;
 import frc.robot.commands.Drive.DriveCommand;
+import frc.robot.commands.Drive.ResetGyroCommand;
 import frc.robot.InRangeObserver;
 import frc.robot.Constants.Arm;
 import frc.robot.Constants.Intake;
@@ -129,6 +130,8 @@ public class RobotContainer {
         m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
                 oi.xboxController::getLeftX,
                 oi.xboxController::getLeftY, oi.xboxController::getRightX));
+        oi.xboxController.leftBumper().onTrue(new ResetGyroCommand(m_driveSubsystem));
+
 
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
         oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
@@ -139,7 +142,15 @@ public class RobotContainer {
         // oi.commandXboxController.rightBumper()
         //         .whileTrue(new ParallelCommandGroup(new ShootVoltageCommand(m_ShooterSubsystem, 10),
         //                 new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
-        //
+        oi.xboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
+        oi.xboxController.a()
+                .whileTrue(new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
+
+        oi.xboxController.rightBumper()
+                .whileTrue(new ShootVoltageCommand(m_ShooterSubsystem, 10));
+        
+
+                        
         // the right bumper activates the shooter
         // oi.commandXboxController.a().whileTrue(new
         // ShootVoltageCommand(m_ShooterSubsystem, 12));

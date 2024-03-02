@@ -34,7 +34,7 @@ public class DriveCommand extends Command {
      * Eliminates the drift from the joystick input
      */
     public double correctJoystickDrift(final double input) {
-        return (Math.abs(input) > Constants.OI.kXboxcontrollerDrift) ? input : 0;
+        return Math.max(0,Math.abs(input) - Constants.OI.kXboxcontrollerDrift) * Math.signum(input);
     }
 
     @Override

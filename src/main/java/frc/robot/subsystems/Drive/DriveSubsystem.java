@@ -37,7 +37,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
      private final SwerveModule m_backLeftModule;
      private final SwerveModule m_backRightModule;
      private final AHRS m_navX;
-     private final double m_navXoffset;
+     private double m_navXoffset;
      private SwerveModulePosition[] m_modulePositions;
      private final SwerveDriveOdometry m_odometry;
      private final PIDController m_pidController;
@@ -64,6 +64,10 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
           return m_backRightModule;
      }
 
+     public void resetGyroOffset() {   
+          m_navXoffset = (double) m_navX.getCompassHeading();
+     }
+
      public DriveSubsystem() {
           this.m_frontLeftModule = new SwerveModule(
                     Drive.Motors.kFrontLeftDriveFalconCANID,
@@ -87,6 +91,8 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
                     Drive.Stats.kBackRightModuleOffsetInDegrees, false);
 
           m_navX = new AHRS();
+          m_navXoffset = (double) m_navX.getCompassHeading();
+
 
           m_modulePositions = new SwerveModulePosition[] {
                     new SwerveModulePosition(m_frontLeftModule.getVelocityMetersPerSecond(),
@@ -110,7 +116,6 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
           m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(),
                     m_modulePositions, m_currentPose);
           m_lastPose = m_poseEstimator.getEstimatedPosition();
-          m_navXoffset = (double) - 90;
           m_targetAngle = 0.0;
 
           SmartDashboard.putNumber("Turn To angle I", Drive.PID.kI);
@@ -220,14 +225,18 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
           double yVelocityMpsFieldOriented = getVelocityFieldOriented_Y(xVelocityMps, yVelocityMps);
 
           boolean correctAngle = true;
-          if (correctAngle) {
-               m_targetAngle += Units.radiansToDegrees(rotationVelocityRps) * 0.02;
-               this.m_swerveSpeeds = new ChassisSpeeds(-xVelocityMpsFieldOriented, -yVelocityMpsFieldOriented,
-                         -m_pidController.calculate(this.getGyroAngleInRotation2d().getDegrees()));
-               m_pidController.setSetpoint(m_targetAngle);
+          if(Math.abs(xVelocityMps) > 0 || Math.abs(yVelocityMps) > 0 || Math.abs(rotationVelocityRps) > 0){
+               if (correctAngle) {
+                    m_targetAngle += Units.radiansToDegrees(rotationVelocityRps)*1.5;
+                    this.m_swerveSpeeds = new ChassisSpeeds(xVelocityMpsFieldOriented, yVelocityMpsFieldOriented,
+                              Math.abs(this.getGyroAngleInRotation2d().getDegrees() - m_targetAngle) > Drive.PID.kThreshold ? -m_pidController.calculate(this.getGyroAngleInRotation2d().getDegrees()) : 0);
+                    m_pidController.setSetpoint(m_targetAngle-90);
+               } else {
+                    this.m_swerveSpeeds = new ChassisSpeeds(xVelocityMpsFieldOriented, yVelocityMpsFieldOriented,
+                              -rotationVelocityRps * 1.2);
+               }
           } else {
-               this.m_swerveSpeeds = new ChassisSpeeds(-xVelocityMpsFieldOriented, -yVelocityMpsFieldOriented,
-                         -rotationVelocityRps * 1.2);
+               this.m_swerveSpeeds = new ChassisSpeeds(0, 0, 0);
           }
           // m_targetAngle = getGyroAngleInRotation2d().getDegrees();
 
@@ -247,6 +256,10 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
                     Rotation2d.fromDegrees(-Drive.Stats.kBackRightModuleOffsetInDegrees));
 
           setModulesStates(zeroStates);
+     }
+
+     public double getTargetAngleInDegrees() {
+          return m_targetAngle;
      }
 
      /**

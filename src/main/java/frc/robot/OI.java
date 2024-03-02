@@ -18,7 +18,7 @@ public class OI {
         // pressed) is through the CommandXboxController. iiwii
         public final CommandXboxController commandXboxController = new CommandXboxController(
                         frc.robot.Constants.OI.kXboxControllerPort);
-        public final XboxController xboxController = new XboxController(frc.robot.Constants.OI.kXboxControllerPort+1);
+        public final CommandXboxController xboxController = new CommandXboxController(frc.robot.Constants.OI.kXboxControllerPort+1);
 
         // public final JoystickButton A = new JoystickButton(xboxController, XboxController.Button.kA.value);
         // public final JoystickButton B = new JoystickButton(xboxController,

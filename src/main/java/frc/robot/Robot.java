@@ -96,6 +96,8 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
     private void updateCurrentGyroAngle() {
         SmartDashboard.putNumber("swerve current angle Gyro Angle",
                 m_robotContainer.getDriveSubsystem().getGyroAngleInRotation2d().getDegrees());
+        SmartDashboard.putNumber("swerve target angle Gyro Angle",
+                m_robotContainer.getDriveSubsystem().getTargetAngleInDegrees());
     }
 
     private void updateCurrentAngle() {
@@ -173,6 +175,7 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
     private void resetSmartValues() {
         // the gyro's angle
         SmartDashboard.putNumber("swerve current angle Gyro Angle", 0);
+        SmartDashboard.putNumber("swerve target angle Gyro Angle", 0);
         // each swerve module's current angle
         // SmartDashboard.putNumber("swerve current angle bl",
         //         m_robotContainer.getDriveSubsystem().get_bl().getSteerAngle().getDegrees());

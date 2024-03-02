@@ -317,6 +317,7 @@ public final class Constants {
             public static final double kP = 0.0005;
             public static final double kI = 0.0;
             public static final double kD = 0.0;
+            public static final double kThreshold = 5; 
         }
 
         public static class Motors {
@@ -352,7 +353,7 @@ public final class Constants {
 
     public static class OI {
         public static final int kXboxControllerPort = 0;
-        public static final double kXboxcontrollerDrift = 0.1;
+        public static final double kXboxcontrollerDrift = 0.25;
     }
 
     public static class Field {

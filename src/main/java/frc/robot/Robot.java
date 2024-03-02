@@ -95,7 +95,7 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
 
     private void updateCurrentGyroAngle() {
         SmartDashboard.putNumber("swerve current angle Gyro Angle",
-                m_robotContainer.getDriveSubsystem().getGyroAngleInRotation2d().getDegrees());
+                m_robotContainer.getDriveSubsystem().getHeadingRotation2d().getDegrees());
     }
 
     private void updateCurrentAngle() {

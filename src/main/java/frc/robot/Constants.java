@@ -241,8 +241,6 @@ public final class Constants {
     public static class Drive {
 
         public static class Stats {
-            public static final double fieldHeadingOffset = 0;
-
             /**
              * Distance between the center of the right wheels to the center of the left
              * wheels (Meters)

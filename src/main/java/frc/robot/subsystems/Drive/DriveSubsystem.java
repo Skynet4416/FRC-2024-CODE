@@ -37,7 +37,6 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
      private final SwerveModule m_backLeftModule;
      private final SwerveModule m_backRightModule;
      private final AHRS m_navX;
-     private final double m_navXoffset;
      private SwerveModulePosition[] m_modulePositions;
      private final SwerveDriveOdometry m_odometry;
      private final PIDController m_pidController;
@@ -87,6 +86,10 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
                     Drive.Stats.kBackRightModuleOffsetInDegrees, false);
 
           m_navX = new AHRS();
+          while (m_navX.isCalibrating()) {
+               System.out.println("navX still calibrating...");
+          }
+          m_navX.zeroYaw();
 
           m_modulePositions = new SwerveModulePosition[] {
                     new SwerveModulePosition(m_frontLeftModule.getVelocityMetersPerSecond(),
@@ -99,7 +102,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
                               m_backRightModule.getSteerAngle())
           };
 
-          m_odometry = new SwerveDriveOdometry(Drive.Stats.kinematics, Rotation2d.fromDegrees(getHeading()),
+          m_odometry = new SwerveDriveOdometry(Drive.Stats.kinematics, this.getHeadingRotation2d(),
                     m_modulePositions);
 
           m_swerveSpeeds = new ChassisSpeeds(0, 0, 0);
@@ -107,10 +110,9 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
           m_currentPose = m_odometry.getPoseMeters(); // todo needs to take the position from vision
           m_pidController = new PIDController(Drive.PID.kP, Drive.PID.kI, Drive.PID.kD);
           m_pidController.enableContinuousInput(0, 360);
-          m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(),
+          m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getHeadingRotation2d(),
                     m_modulePositions, m_currentPose);
           m_lastPose = m_poseEstimator.getEstimatedPosition();
-          m_navXoffset = (double) - 90;
           m_targetAngle = 0.0;
 
           SmartDashboard.putNumber("Turn To angle I", Drive.PID.kI);
@@ -183,7 +185,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
       *                        The target Y velocity (Meters Per Second)
       */
      public double getVelocityFieldOriented_X(double targetVelocityX, double targetVelocityY) {
-          double offsetAngle = getGyroAngleInRotation2d().getDegrees() - Drive.Stats.fieldHeadingOffset;
+          double offsetAngle = getHeadingRotation2d().getDegrees();
           double corrected_velocity = targetVelocityX * Math.cos(Math.toRadians(offsetAngle))
                     - targetVelocityY * Math.sin(Math.toRadians(offsetAngle));
           return corrected_velocity;
@@ -198,7 +200,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
       *                        The target Y velocity (Meters Per Second)
       */
      public double getVelocityFieldOriented_Y(double targetVelocityX, double targetVelocityY) {
-          double offsetAngle = getGyroAngleInRotation2d().getDegrees() - Drive.Stats.fieldHeadingOffset;
+          double offsetAngle = getHeadingRotation2d().getDegrees();
           double corrected_velocity = targetVelocityX * Math.sin(Math.toRadians(offsetAngle))
                     + targetVelocityY * Math.cos(Math.toRadians(offsetAngle));
           return corrected_velocity;
@@ -223,7 +225,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
           if (correctAngle) {
                m_targetAngle += Units.radiansToDegrees(rotationVelocityRps) * 0.02;
                this.m_swerveSpeeds = new ChassisSpeeds(-xVelocityMpsFieldOriented, -yVelocityMpsFieldOriented,
-                         -m_pidController.calculate(this.getGyroAngleInRotation2d().getDegrees()));
+                         -m_pidController.calculate(this.getHeadingRotation2d().getDegrees()));
                m_pidController.setSetpoint(m_targetAngle);
           } else {
                this.m_swerveSpeeds = new ChassisSpeeds(-xVelocityMpsFieldOriented, -yVelocityMpsFieldOriented,
@@ -252,16 +254,17 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
      /**
       * gets the angle of the navx
       */
-     public Rotation2d getGyroAngleInRotation2d() {
+     public Rotation2d getHeadingRotation2d() {
           return Rotation2d.fromDegrees(getHeading());
      }
 
+     /*
+      * Returns navX relative heading.
+      */
      public double getHeading() {
-          double angleWithOffset = (double) m_navX.getFusedHeading() + m_navXoffset;
-          // Bigger than 360: angleWithOffset - 360
-          // Smaller than 0: angleWithOffset + 360
-          return (angleWithOffset > 360) ? angleWithOffset - 360
-                    : (angleWithOffset < 0) ? angleWithOffset + 360 : angleWithOffset;
+          // Add 180 so its 0 to 360.
+          // TODO: remove addition if not needed.
+          return (double) m_navX.getYaw() + 180.0;
      }
 
      /**
@@ -286,7 +289,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
 
      @Override
      public void periodic() {
-          m_poseEstimator.update(getGyroAngleInRotation2d(), m_modulePositions);
+          m_poseEstimator.update(getHeadingRotation2d(), m_modulePositions);
           field2d.setRobotPose(getCurrentPosition());
 
           m_modulePositions = new SwerveModulePosition[] {
@@ -299,8 +302,9 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
           m_pidController.setP(SmartDashboard.getNumber("Turn To angle P", Drive.PID.kP));
           m_pidController.setI(SmartDashboard.getNumber("Turn To angle I", Drive.PID.kI));
 
-
-          SmartDashboard.putNumber("absolute compass headeing", m_navX.getCompassHeading());
+          // SmartDashboard.putNumber("absolute compass headeing",
+          // m_navX.getCompassHeading());
+          SmartDashboard.putNumber("Relative heading", this.getHeading());
           // m_frontLeftModule.setModuleState(states[0]);
           // m_frontRightModule.setModuleState(states[1]);
           // m_backLeftModule.setModuleState(states[2]);

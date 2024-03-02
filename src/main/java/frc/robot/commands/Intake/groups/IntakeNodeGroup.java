@@ -2,7 +2,6 @@ package frc.robot.commands.Intake.groups;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants.Arm;
-import frc.robot.commands.Arm.ArmCommand;
 import frc.robot.commands.Intake.IntakeNodeCommand;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
@@ -13,14 +12,15 @@ public class IntakeNodeGroup extends ParallelCommandGroup {
     IntakeSubsystem intakeSubsystem;
     ShooterSubsystem shooterSubsystem;
 
+    // FIXME: Make group.
     public IntakeNodeGroup(ArmSubsystem armSubsystem, IntakeSubsystem intakeSubsystem,
             ShooterSubsystem shooterSubsystem) {
         this.armSubsystem = armSubsystem;
         this.intakeSubsystem = intakeSubsystem;
         this.shooterSubsystem = shooterSubsystem;
 
-        addCommands(new IntakeNodeCommand(intakeSubsystem, shooterSubsystem),
-                new ArmCommand(armSubsystem, Arm.Stats.kIntakeAngle));
+        // addCommands(new IntakeNodeCommand(intakeSubsystem, shooterSubsystem),
+        //         new ArmCommand(armSubsystem, Arm.Stats.kIntakeAngle));
 
         addRequirements(armSubsystem, intakeSubsystem, shooterSubsystem);
     }

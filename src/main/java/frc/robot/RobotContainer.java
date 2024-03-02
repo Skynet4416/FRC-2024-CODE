@@ -26,10 +26,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Intake.*;
 import frc.robot.commands.Shooter.IntakeVoltageCommand;
+import frc.robot.commands.Shooter.ShootSmartRPMCommand;
 import frc.robot.commands.Shooter.ShootVoltageCommand;
 import frc.robot.commands.Shooter.TestVoltageCommand;
 import frc.robot.commands.Arm.ArmCommand;
@@ -130,8 +132,6 @@ public class RobotContainer {
         m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
                 oi.xboxController::getLeftX,
                 oi.xboxController::getLeftY, oi.xboxController::getRightX));
-        oi.xboxController.leftBumper().onTrue(new ResetGyroCommand(m_driveSubsystem));
-
 
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
         oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
@@ -146,9 +146,10 @@ public class RobotContainer {
         oi.xboxController.a()
                 .whileTrue(new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
 
+                
         oi.xboxController.rightBumper()
-                .whileTrue(new ShootVoltageCommand(m_ShooterSubsystem, 10));
-        
+                .whileTrue(new ParallelCommandGroup(new SequentialCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 100)),
+                        new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
 
                         
         // the right bumper activates the shooter
@@ -187,18 +188,18 @@ public class RobotContainer {
         // FloorIntake(m_ArmSubsystem)));
     }
 
-    public Command getAutonomousCommand() {
-        // // this is for auto-based autonomous, we relay more on paths
-        // return autoChooser.getSelected();
+    // public Command getAutonomousCommand() {
+    //     // // this is for auto-based autonomous, we relay more on paths
+    //     // return autoChooser.getSelected();
 
-        return auto.followPathCommand("path 0");
-        // // Load the path you want to follow using its name in the GUI
-        // PathPlannerPath path = PathPlannerPath.fromPathFile("path 0");
+    //     return auto.followPathCommand("path 0");
+    //     // // Load the path you want to follow using its name in the GUI
+    //     // PathPlannerPath path = PathPlannerPath.fromPathFile("path 0");
 
-        // // Create a path following command using AutoBuilder. This will also trigger
-        // event markers.
-        // return AutoBuilder.followPath(path);
-    }
+    //     // // Create a path following command using AutoBuilder. This will also trigger
+    //     // event markers.
+    //     // return AutoBuilder.followPath(path);
+    // }
 
     class InRangeSupplier implements BooleanSupplier {
         @Override

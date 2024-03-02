@@ -65,7 +65,9 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
      }
 
      public void resetGyroOffset() {   
-          m_navXoffset = (double) m_navX.getCompassHeading();
+          // TODO: FIX (DOESN'T WORK)
+          m_navXoffset = -getHeading();
+          System.out.println("OFFSET IS " + m_navXoffset);
      }
 
      public DriveSubsystem() {

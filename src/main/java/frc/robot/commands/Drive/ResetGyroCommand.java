@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class ResetGyroCommand extends Command {
     private final DriveSubsystem m_driveSubsystem;
     private double start_time;
+    private boolean finished;
 
     /**
      * Creates a new ExampleCommand.
@@ -27,24 +28,26 @@ public class ResetGyroCommand extends Command {
     @Override
     public void initialize() {
         start_time = Timer.getFPGATimestamp();
+        finished = false;
     }
 
     @Override
     public void execute() {
-        
+        if(Timer.getFPGATimestamp() - start_time >= 1.0 ){
+            System.out.println("AWWA");
+            m_driveSubsystem.resetGyroOffset();
+                end(false);
+        }
     }
 
     @Override
     public void end(boolean interrupted) {
-        if(interrupted){
-            if(Timer.getFPGATimestamp() - start_time >= 1.0 )
-                m_driveSubsystem.resetGyroOffset();
-        }
+        finished = true;
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return finished;
     }
 }

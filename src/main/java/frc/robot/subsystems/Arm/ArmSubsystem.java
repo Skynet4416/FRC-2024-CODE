@@ -71,7 +71,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void setAngleToidle() {
-        pidController.setSetpoint(45);
+        pidController.setSetpoint(30);
     }
     
 

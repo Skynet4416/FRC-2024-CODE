@@ -41,7 +41,7 @@ public class Auto implements Subsystem {
                 }, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 (ChassisSpeeds speeds) -> {
                     m_drive.setModules(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond,
-                            speeds.omegaRadiansPerSecond);
+                            speeds.omegaRadiansPerSecond,0.0);
                 }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 Autonomous.kHolonomicPathFollowerConfig,
                 () -> {
@@ -79,7 +79,7 @@ public class Auto implements Subsystem {
                 }, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 (ChassisSpeeds speeds) -> {
                     m_drive.setModules(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond,
-                            speeds.omegaRadiansPerSecond);
+                            speeds.omegaRadiansPerSecond,0.0);
                 }, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 Autonomous.kHolonomicPathFollowerConfig,
                 () -> {

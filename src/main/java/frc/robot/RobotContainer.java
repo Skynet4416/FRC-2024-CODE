@@ -24,6 +24,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -127,14 +128,14 @@ public class RobotContainer {
     private void configureBindings() {
         // m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
         // oi.joystickLeft::getX, oi.joystickLeft::getY, oi.joystickRight::getX));
-        // m_ArmSubsystem.setDefaultCommand(new HoldCommand(m_ArmSubsystem));
+        m_ArmSubsystem.setDefaultCommand(new HoldCommand(m_ArmSubsystem));
 
         m_driveSubsystem.setDefaultCommand(new DriveCommand(m_driveSubsystem,
                 oi.xboxController::getLeftX,
-                oi.xboxController::getLeftY, oi.xboxController::getRightX));
+                oi.xboxController::getLeftY,
+                oi.xboxController::getRightX,
+                oi.xboxController::getLeftTriggerAxis));
 
-        oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
-        oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
         // oi.commandXboxController.a()
         //         .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
         //                 new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
@@ -142,14 +143,19 @@ public class RobotContainer {
         // oi.commandXboxController.rightBumper()
         //         .whileTrue(new ParallelCommandGroup(new ShootVoltageCommand(m_ShooterSubsystem, 10),
         //                 new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
-        oi.xboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
-        oi.xboxController.a()
-                .whileTrue(new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem));
+        
+        oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
+        oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
+        oi.commandXboxController.a()
+            .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
+                new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
 
-                
-        oi.xboxController.rightBumper()
-                .whileTrue(new ParallelCommandGroup(new SequentialCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 100)),
-                        new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
+        oi.commandXboxController.rightBumper()
+            .whileTrue(new ParallelCommandGroup(new SequentialCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 100)),
+                new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
+
+        oi.commandXboxController.leftBumper()
+            .whileTrue(new ArmCommand(m_ArmSubsystem, Arm.Stats.ampAngle));
 
                         
         // the right bumper activates the shooter
@@ -188,18 +194,18 @@ public class RobotContainer {
         // FloorIntake(m_ArmSubsystem)));
     }
 
-    // public Command getAutonomousCommand() {
-    //     // // this is for auto-based autonomous, we relay more on paths
-    //     // return autoChooser.getSelected();
+    public Command getAutonomousCommand() {
+        // // this is for auto-based autonomous, we relay more on paths
+        // return autoChooser.getSelected();
+        return new InstantCommand();
+        // return auto.followPathCommand("path 0");
+        // // Load the path you want to follow using its name in the GUI
+        // PathPlannerPath path = PathPlannerPath.fromPathFile("path 0");
 
-    //     return auto.followPathCommand("path 0");
-    //     // // Load the path you want to follow using its name in the GUI
-    //     // PathPlannerPath path = PathPlannerPath.fromPathFile("path 0");
-
-    //     // // Create a path following command using AutoBuilder. This will also trigger
-    //     // event markers.
-    //     // return AutoBuilder.followPath(path);
-    // }
+        // // Create a path following command using AutoBuilder. This will also trigger
+        // event markers.
+        // return AutoBuilder.followPath(path);
+    }
 
     class InRangeSupplier implements BooleanSupplier {
         @Override

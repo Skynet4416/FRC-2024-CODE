@@ -41,7 +41,7 @@ public final class Constants {
             //todo put actual angles and then it will do the thing
             public static final double encoderOffset = 225;
             public static final double gearRatio = 1 / 25.0;
-            public static final double ampAngle = 110;
+            public static final double ampAngle = 70;
             public static final double speakerAngle = 10;
             public static final double driveAngle = 40;
             public static final double kThreashold = 0;

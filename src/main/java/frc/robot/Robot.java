@@ -278,11 +278,11 @@ public class Robot extends TimedRobot implements CurrentAprilTagObserver {
      */
     @Override
     public void autonomousInit() {
-        // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-        // // schedule the autonomous command (example)
-        // if (m_autonomousCommand != null) {
-        // m_autonomousCommand.schedule();
-        // }
+        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        // schedule the autonomous command (example)
+        if (m_autonomousCommand != null) {
+        m_autonomousCommand.schedule();
+        }
     }
 
     /** This function is called periodically during autonomous. */

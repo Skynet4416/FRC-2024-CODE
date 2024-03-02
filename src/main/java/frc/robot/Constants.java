@@ -87,7 +87,6 @@ public final class Constants {
                  * Proportional tuning - error
                  * Lower the kP
                  */
-                // FIXME: Reenable drive.
                 public static final double kP = 0.00035;
                 /**
                  * 

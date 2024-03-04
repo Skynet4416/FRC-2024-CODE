@@ -193,18 +193,14 @@ public class RobotContainer {
         // IntakeSpinUp(m_IntakeSubsystem, false).alongWith(new
         // FloorIntake(m_ArmSubsystem)));
     }
+    
 
     public Command getAutonomousCommand() {
-        // // this is for auto-based autonomous, we relay more on paths
-        // return autoChooser.getSelected();
-        return new InstantCommand();
-        // return auto.followPathCommand("path 0");
-        // // Load the path you want to follow using its name in the GUI
-        // PathPlannerPath path = PathPlannerPath.fromPathFile("path 0");
+        // return new InstantCommand(); // NO AUTO
+        // return new DriveCommand(m_driveSubsystem, 0.15, 0.0, 0.0);
+        return new SequentialCommandGroup(new HoldCommand(m_ArmSubsystem).withTimeout(3),new ParallelCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 4500),
+                new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle),new SequentialCommandGroup(new WaitCommand(1.5), new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed))).withTimeout(5)) ;
 
-        // // Create a path following command using AutoBuilder. This will also trigger
-        // event markers.
-        // return AutoBuilder.followPath(path);
     }
 
     class InRangeSupplier implements BooleanSupplier {

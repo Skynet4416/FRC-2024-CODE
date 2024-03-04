@@ -14,6 +14,7 @@ public class DriveCommand extends Command {
     private final DoubleSupplier m_xDoubleSupplier;
     private final DoubleSupplier m_yDoubleSupplier;
     private final DoubleSupplier m_rotationDoubleSupplier;
+    private boolean m_isConstantSpeed;
     private DoubleSupplier m_speedmodSupplier;
 
     /**
@@ -27,6 +28,7 @@ public class DriveCommand extends Command {
         this.m_xDoubleSupplier = xValue;
         this.m_yDoubleSupplier = yValue;
         this.m_rotationDoubleSupplier = rotationValue;
+        this.m_isConstantSpeed = false;
 
         addRequirements(driveSubsystem);
     }
@@ -43,6 +45,19 @@ public class DriveCommand extends Command {
         this.m_yDoubleSupplier = yValue;
         this.m_rotationDoubleSupplier = rotationValue;
         this.m_speedmodSupplier = speedmodValue;
+        this.m_isConstantSpeed = false;
+
+        addRequirements(driveSubsystem);
+    }
+
+    public DriveCommand(DriveSubsystem driveSubsystem, double xValue, double yValue,
+            Double rotationValue) {
+        this.m_driveSubsystem = driveSubsystem;
+        this.m_xDoubleSupplier = () -> xValue;
+        this.m_yDoubleSupplier = () -> yValue;
+        this.m_rotationDoubleSupplier = () -> rotationValue;
+        this.m_speedmodSupplier = () -> 0.0;
+        this.m_isConstantSpeed = true;
 
         addRequirements(driveSubsystem);
     }

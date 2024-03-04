@@ -353,7 +353,7 @@ public final class Constants {
 
     public static class OI {
         public static final int kXboxControllerPort = 0;
-        public static final double kXboxcontrollerDrift = 0.25;
+        public static final double kXboxcontrollerDrift = 0.1;
     }
 
     public static class Field {

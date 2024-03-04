@@ -42,7 +42,7 @@ public final class Constants {
             public static final double encoderOffset = 225;
             public static final double gearRatio = 1 / 25.0;
             public static final double ampAngle = 70;
-            public static final double speakerAngle = 10;
+            public static final double speakerAngle = 5;
             public static final double driveAngle = 40;
             public static final double kThreashold = 0;
             public static final double kIntakeAngle = 5;
@@ -196,7 +196,7 @@ public final class Constants {
 
         public static class PID {
             public static final double kP = 0.1;
-            public static final double kI = 0;
+            public static final double kI = 0.000;
             public static final double kD = 0;
         }
     }

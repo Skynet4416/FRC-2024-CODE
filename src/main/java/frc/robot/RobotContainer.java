@@ -151,7 +151,7 @@ public class RobotContainer {
                 new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
 
         oi.commandXboxController.rightBumper()
-            .whileTrue(new ParallelCommandGroup(new SequentialCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 100)),
+            .whileTrue(new ParallelCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 4500),
                 new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
 
         oi.commandXboxController.leftBumper()

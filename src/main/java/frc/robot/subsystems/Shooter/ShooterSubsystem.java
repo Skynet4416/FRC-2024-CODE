@@ -32,9 +32,6 @@ public class ShooterSubsystem extends SubsystemBase {
         m_right_pid.setP(Shooter.PID.kP);
         m_right_pid.setI(Shooter.PID.kI);
         m_right_pid.setD(Shooter.PID.kD);
-        m_right_pid.setSmartMotionMaxVelocity(5000, 0);
-        m_right_pid.setSmartMotionMaxAccel(1, 0);
-
     }
 
     public void SetRPM(double speed) {
@@ -49,8 +46,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double rpm) {
-        m_motor_right.getPIDController().setReference(rpm, ControlType.kSmartVelocity);
-        m_motor_left.getPIDController().setReference(-rpm, ControlType.kSmartVelocity);
+        m_motor_right.getPIDController().setReference(rpm, ControlType.kVelocity);
+        m_motor_left.getPIDController().setReference(-rpm, ControlType.kVelocity);
     }
 
     @Override

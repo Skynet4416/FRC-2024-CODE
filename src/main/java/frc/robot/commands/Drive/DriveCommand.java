@@ -45,22 +45,10 @@ public class DriveCommand extends Command {
         this.m_yDoubleSupplier = yValue;
         this.m_rotationDoubleSupplier = rotationValue;
         this.m_speedmodSupplier = speedmodValue;
-        this.m_isConstantSpeed = false;
-
+        
         addRequirements(driveSubsystem);
     }
 
-    public DriveCommand(DriveSubsystem driveSubsystem, double xValue, double yValue,
-            Double rotationValue) {
-        this.m_driveSubsystem = driveSubsystem;
-        this.m_xDoubleSupplier = () -> xValue;
-        this.m_yDoubleSupplier = () -> yValue;
-        this.m_rotationDoubleSupplier = () -> rotationValue;
-        this.m_speedmodSupplier = () -> 0.0;
-        this.m_isConstantSpeed = true;
-
-        addRequirements(driveSubsystem);
-    }
 
     /**
      * Eliminates the drift from the joystick input

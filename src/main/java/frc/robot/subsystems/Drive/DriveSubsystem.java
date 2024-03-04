@@ -224,8 +224,8 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
      public void setModules(double xVelocityMps, double yVelocityMps, double rotationVelocityRps, double speedMode) {
           // TODO oriented to object on field
           final double slowFactor = 4;
-          double speedDivisor = 1 * (1-speedMode) + slowFactor*speedMode;
-          
+          double speedDivisor = 1 * (1-speedMode) + slowFactor * speedMode;
+                    
           xVelocityMps /= speedDivisor;
           yVelocityMps /= speedDivisor;
           rotationVelocityRps /= speedDivisor;

@@ -157,6 +157,8 @@ public class RobotContainer {
         oi.commandXboxController.leftBumper()
             .whileTrue(new ArmCommand(m_ArmSubsystem, Arm.Stats.ampAngle));
 
+        oi.commandXboxController.b().whileTrue(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle));
+
                         
         // the right bumper activates the shooter
         // oi.commandXboxController.a().whileTrue(new
@@ -193,12 +195,12 @@ public class RobotContainer {
         // IntakeSpinUp(m_IntakeSubsystem, false).alongWith(new
         // FloorIntake(m_ArmSubsystem)));
     }
-    
+
 
     public Command getAutonomousCommand() {
         // return new InstantCommand(); // NO AUTO
         // return new DriveCommand(m_driveSubsystem, 0.15, 0.0, 0.0);
-        return new SequentialCommandGroup(new HoldCommand(m_ArmSubsystem).withTimeout(3),new ParallelCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 4500),
+        return new SequentialCommandGroup(new ArmCommand(m_ArmSubsystem,60).withTimeout(3),new ParallelCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 4500),
                 new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle),new SequentialCommandGroup(new WaitCommand(1.5), new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed))).withTimeout(5)) ;
 
     }

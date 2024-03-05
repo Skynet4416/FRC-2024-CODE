@@ -134,6 +134,8 @@ public class SwerveModule extends SubsystemBase {
         this.m_driveMotor.getPIDController().setSmartMotionMaxVelocity(Drive.Stats.kMaxDriveMotorRPM*Drive.Stats.kDriveEfficiency, 0);
         this.m_driveMotor.getPIDController().setSmartMotionMaxAccel(Drive.Stats.kMaxDriveAccelRPM,0);
 
+        this.m_driveMotor.setSmartCurrentLimit(50);
+        
         // current theory is that sparkFlex doesn't need configs. but that just a
         // theory.
         // this.m_driveMotor.config();

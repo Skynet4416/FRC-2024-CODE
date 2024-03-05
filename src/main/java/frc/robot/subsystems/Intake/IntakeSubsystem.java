@@ -21,7 +21,11 @@ public class IntakeSubsystem extends SubsystemBase {
         this.m_motor_left = new CANSparkMax(Intake.Motors.kUpperMotorLeftID, CANSparkLowLevel.MotorType.kBrushless);
         this.m_motor_right = new CANSparkMax(Intake.Motors.kUpperMotorRightID, CANSparkLowLevel.MotorType.kBrushless);
         m_motor_left.restoreFactoryDefaults();
+        // m_motor_left.setSmartCurrentLimit(25);
+
         m_motor_right.restoreFactoryDefaults();
+        // m_motor_right.setSmartCurrentLimit(25);
+
         // m_motor_left.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
         // m_motor_right.setSmartCurrentLimit(AllRobot.kAllMotorsLimitInAmpr);
     }

@@ -118,7 +118,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
           m_poseEstimator = new SwerveDrivePoseEstimator(Drive.Stats.kinematics, getGyroAngleInRotation2d(),
                     m_modulePositions, m_currentPose);
           m_lastPose = m_poseEstimator.getEstimatedPosition();
-          m_targetAngle = 0.0;
+          m_targetAngle = 90;
 
           SmartDashboard.putNumber("Turn To angle I", Drive.PID.kI);
           SmartDashboard.putNumber("Turn To angle P", Drive.PID.kP);
@@ -223,7 +223,7 @@ public class DriveSubsystem extends SubsystemBase implements VisionObserver {
       */
      public void setModules(double xVelocityMps, double yVelocityMps, double rotationVelocityRps, double speedMode) {
           // TODO oriented to object on field
-          final double slowFactor = 4;
+          final double slowFactor = 8;
           double speedDivisor = 1 * (1-speedMode) + slowFactor * speedMode;
                     
           xVelocityMps /= speedDivisor;

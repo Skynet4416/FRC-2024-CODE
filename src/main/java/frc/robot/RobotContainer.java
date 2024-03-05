@@ -85,7 +85,7 @@ public class RobotContainer {
         // Disabled subsystems.
         // this.m_ClimberSubsystem = new ClimberSubsystem();
         // this.m_VisionSubsystem = new VisionSubsystem(null);
-        
+
         this.oi = new OI();
         configureBindings();
         m_driveSubsystem.setAllModulesToZero();
@@ -100,7 +100,7 @@ public class RobotContainer {
 
     // Vision is out.
     // public VisionSubsystem getVisionSubsystem() {
-    //     return m_VisionSubsystem;
+    // return m_VisionSubsystem;
     // }
 
     public DriveSubsystem getDriveSubsystem() {
@@ -137,29 +137,30 @@ public class RobotContainer {
                 oi.xboxController::getLeftTriggerAxis));
 
         // oi.commandXboxController.a()
-        //         .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
-        //                 new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
+        // .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem,
+        // Arm.Stats.kIntakeAngle),
+        // new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
 
         // oi.commandXboxController.rightBumper()
-        //         .whileTrue(new ParallelCommandGroup(new ShootVoltageCommand(m_ShooterSubsystem, 10),
-        //                 new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
-        
+        // .whileTrue(new ParallelCommandGroup(new
+        // ShootVoltageCommand(m_ShooterSubsystem, 10),
+        // new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
+
         oi.commandXboxController.y().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeReverseSpeed));
         oi.commandXboxController.x().whileTrue(new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed));
         oi.commandXboxController.a()
-            .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
-                new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
+                .whileTrue(new ParallelCommandGroup(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle),
+                        new IntakeNodeCommand(m_IntakeSubsystem, m_ShooterSubsystem)));
 
         oi.commandXboxController.rightBumper()
-            .whileTrue(new ParallelCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 4500),
-                new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
+                .whileTrue(new ParallelCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 4500),
+                        new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle)));
 
         oi.commandXboxController.leftBumper()
-            .whileTrue(new ArmCommand(m_ArmSubsystem, Arm.Stats.ampAngle));
+                .whileTrue(new ArmCommand(m_ArmSubsystem, Arm.Stats.ampAngle));
 
         oi.commandXboxController.b().whileTrue(new ArmCommand(m_ArmSubsystem, Arm.Stats.kIntakeAngle));
 
-                        
         // the right bumper activates the shooter
         // oi.commandXboxController.a().whileTrue(new
         // ShootVoltageCommand(m_ShooterSubsystem, 12));
@@ -196,12 +197,14 @@ public class RobotContainer {
         // FloorIntake(m_ArmSubsystem)));
     }
 
-
     public Command getAutonomousCommand() {
         // return new InstantCommand(); // NO AUTO
-        // return new DriveCommand(m_driveSubsystem, 0.15, 0.0, 0.0);
-        return new SequentialCommandGroup(new ArmCommand(m_ArmSubsystem,60).withTimeout(3),new ParallelCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 4500),
-                new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle),new SequentialCommandGroup(new WaitCommand(1.5), new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed))).withTimeout(5)) ;
+        // return new DriveCommand(m_driveSubsystem, () -> 0.15,() -> 0.0,() -> 0.0);
+        return new SequentialCommandGroup(new ArmCommand(m_ArmSubsystem, 60).withTimeout(3),
+                new ParallelCommandGroup(new ShootSmartRPMCommand(m_ShooterSubsystem, 4500),
+                        new ArmCommand(m_ArmSubsystem, Arm.Stats.speakerAngle), new SequentialCommandGroup(
+                                new WaitCommand(1.5), new IntakeCommand(m_IntakeSubsystem, Intake.Stats.kIntakeSpeed)))
+                        .withTimeout(5));
 
     }
 

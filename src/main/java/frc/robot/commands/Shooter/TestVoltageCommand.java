@@ -14,13 +14,13 @@ public class TestVoltageCommand extends Command {
     private ShooterSubsystem shooterSubsystem;
     private double m_voltage;
 
-    public TestVoltageCommand(IntakeSubsystem intakeSubsystem,ShooterSubsystem shooterSubsystem,
+    public TestVoltageCommand(IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem,
             double voltage) {
         this.shooterSubsystem = shooterSubsystem;
         this.intakeSubsystem = intakeSubsystem;
         this.m_voltage = voltage;
 
-        addRequirements(shooterSubsystem,intakeSubsystem);
+        addRequirements(shooterSubsystem, intakeSubsystem);
     }
 
     @Override
